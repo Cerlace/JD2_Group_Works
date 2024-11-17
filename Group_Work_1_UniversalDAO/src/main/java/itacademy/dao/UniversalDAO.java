@@ -11,6 +11,7 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public final class UniversalDAO<T> implements DAO<T> {
@@ -86,15 +87,47 @@ public final class UniversalDAO<T> implements DAO<T> {
         }
     }
 
+
     @Override
-    public List<T> getAll() throws SQLException {
-        //TODO по подобию с get, только собрать записи в List
-        return List.of();
+    public List<T> getAll() throws SQLException { //реализация от Саймона
+        String tableName = getTableName();
+
+        String query = "SELECT * FROM " + tableName + ";";
+
+        try (Connection connection = DriverManager.getConnection(JDBCResources.getURL(),
+                JDBCResources.getUser(),
+                JDBCResources.getPassword());
+             PreparedStatement preparedStatement = connection.prepareStatement(query);
+             ResultSet resultSet = preparedStatement.executeQuery()) {
+
+            List<T> resultList = new ArrayList<>();
+
+            while (resultSet.next()) {
+                T record = getRecordAsObject(resultSet);
+                if (record != null) {
+                    resultList.add(record);
+                }
+            }
+            return resultList;
+        }
     }
 
     @Override
-    public void update(T t) throws SQLException {
-        //TODO реализовать (по подобию с методом save, только после блока SET нужно будет еще вставить id)
+    public void update(T t) throws SQLException { //реализация от Саймона
+        String tableName = getTableName();
+
+        Serializable id = getIdValue(t);
+
+        String query = "UPDATE " + tableName + " SET " +
+                generateSetQueryPart(t) + " WHERE id = " + id + ";";
+
+        try (Connection connection = DriverManager.getConnection(JDBCResources.getURL(),
+                JDBCResources.getUser(),
+                JDBCResources.getPassword());
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+
+            preparedStatement.executeUpdate();
+        }
     }
 
     @Override

@@ -1,7 +1,7 @@
 package itacademy.api;
 
 import java.io.Serializable;
-import java.sql.*;
+import java.sql.SQLException;
 import java.util.List;
 
 public interface DAO <T>{
