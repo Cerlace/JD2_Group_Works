@@ -1,19 +1,21 @@
 package itacademy.dto;
 
-import jakarta.persistence.*;
+import itacademy.annotations.ColumnAnn;
+import itacademy.annotations.IdAnn;
+import itacademy.annotations.TableAnn;
 
-@Table(name = "people")
+@TableAnn(name = "people")
 public class People {
-    @Id
+    @IdAnn
     Integer id;
 
-    @Column(name = "name")
+    @ColumnAnn(name = "name")
     String name;
 
-    @Column(name = "surname")
+    @ColumnAnn(name = "surname")
     String surname;
 
-    @Column(name = "age")
+    @ColumnAnn(name = "age")
     int age;
 
     public People(Integer id, String name, String surname, int age) {
