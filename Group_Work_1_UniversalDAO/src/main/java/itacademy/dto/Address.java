@@ -1,15 +1,17 @@
 package itacademy.dto;
 
-import jakarta.persistence.*;
+import itacademy.annotations.ColumnAnn;
+import itacademy.annotations.IdAnn;
+import itacademy.annotations.TableAnn;
 
-@Table(name = "address")
+@TableAnn(name = "address")
 public class Address {
-    @Id
-    @Column(name = "id")
+    @IdAnn
+    @ColumnAnn(name = "id")
     private Integer id;
-    @Column(name = "street")
+    @ColumnAnn(name = "street")
     private String street;
-    @Column(name = "house")
+    @ColumnAnn(name = "house")
     private Integer house;
 
 

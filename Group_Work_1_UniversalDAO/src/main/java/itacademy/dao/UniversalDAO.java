@@ -3,14 +3,20 @@ package itacademy.dao;
 import itacademy.JDBCResources;
 import itacademy.api.DAO;
 import itacademy.utils.SQLBuilderUtils;
-import jakarta.persistence.Column;      //TODO заменить нашей аннотацией!
-import jakarta.persistence.Id;          //TODO заменить нашей аннотацией!
-import jakarta.persistence.Table;       //TODO заменить нашей аннотацией!
+import itacademy.annotations.ColumnAnn;
+import itacademy.annotations.IdAnn;
+import itacademy.annotations.TableAnn;
 
 import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 
 public final class UniversalDAO<T> implements DAO<T> {
@@ -57,7 +63,7 @@ public final class UniversalDAO<T> implements DAO<T> {
             try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
                 if (generatedKeys.next()) {
                     for (Field field : clazz.getDeclaredFields()) {
-                        if (field.isAnnotationPresent(Id.class)) {
+                        if (field.isAnnotationPresent(IdAnn.class)) {
                             field.setAccessible(true);
                             field.set(t, generatedKeys.getInt(1));
                         }
@@ -86,15 +92,47 @@ public final class UniversalDAO<T> implements DAO<T> {
         }
     }
 
+
     @Override
-    public List<T> getAll() throws SQLException {
-        //TODO по подобию с get, только собрать записи в List
-        return List.of();
+    public List<T> getAll() throws SQLException { //реализация от Саймона
+        String tableName = getTableName();
+
+        String query = "SELECT * FROM " + tableName + ";";
+
+        try (Connection connection = DriverManager.getConnection(JDBCResources.getURL(),
+                JDBCResources.getUser(),
+                JDBCResources.getPassword());
+             PreparedStatement preparedStatement = connection.prepareStatement(query);
+             ResultSet resultSet = preparedStatement.executeQuery()) {
+
+            List<T> resultList = new ArrayList<>();
+
+            while (resultSet.next()) {
+                T record = getRecordAsObject(resultSet);
+                if (record != null) {
+                    resultList.add(record);
+                }
+            }
+            return resultList;
+        }
     }
 
     @Override
-    public void update(T t) throws SQLException {
-        //TODO реализовать (по подобию с методом save, только после блока SET нужно будет еще вставить id)
+    public void update(T t) throws SQLException { //реализация от Саймона
+        String tableName = getTableName();
+
+        Serializable id = getIdValue(t);
+
+        String query = "UPDATE " + tableName + " SET " +
+                generateSetQueryPart(t) + " WHERE id = " + id + ";";
+
+        try (Connection connection = DriverManager.getConnection(JDBCResources.getURL(),
+                JDBCResources.getUser(),
+                JDBCResources.getPassword());
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+
+            preparedStatement.executeUpdate();
+        }
     }
 
     @Override
@@ -115,8 +153,8 @@ public final class UniversalDAO<T> implements DAO<T> {
     }
 
     private String getTableName() {
-        if (clazz.isAnnotationPresent(Table.class)) {
-            return clazz.getAnnotation(Table.class).name();
+        if (clazz.isAnnotationPresent(TableAnn.class)) {
+            return clazz.getAnnotation(TableAnn.class).name();
         } else {
             throw new RuntimeException("Ошибка! DTO не аннотирован!"); //TODO создать наш exception (непроверяемый)
         }
@@ -126,8 +164,8 @@ public final class UniversalDAO<T> implements DAO<T> {
         Field[] fields = clazz.getDeclaredFields();
         StringBuilder stringBuilder = new StringBuilder();
         for (int i = 0; i < fields.length; i++) {
-            if (!fields[i].isAnnotationPresent(Id.class) && fields[i].isAnnotationPresent(Column.class)) {
-                String name = fields[i].getAnnotation(Column.class).name();
+            if (!fields[i].isAnnotationPresent(IdAnn.class) && fields[i].isAnnotationPresent(ColumnAnn.class)) {
+                String name = fields[i].getAnnotation(ColumnAnn.class).name();
                 String value = SQLBuilderUtils.getValueToString(fields[i], t);
 
                 stringBuilder.append(name).append(" = ").append(value);
@@ -142,7 +180,7 @@ public final class UniversalDAO<T> implements DAO<T> {
 
     private Serializable getIdValue(T t) {
         for (Field field : clazz.getDeclaredFields()) {
-            if (field.isAnnotationPresent(Id.class)) {
+            if (field.isAnnotationPresent(IdAnn.class)) {
                 field.setAccessible(true);
                 try {
                     return (Serializable) field.get(t);
@@ -161,13 +199,13 @@ public final class UniversalDAO<T> implements DAO<T> {
         StringBuilder stringBuilder = new StringBuilder("(");
 
         for (int i = 0; i < fields.length; i++) {
-            if (fields[i].isAnnotationPresent(Column.class)) {
+            if (fields[i].isAnnotationPresent(ColumnAnn.class)) {
                 stringBuilder
-                        .append(fields[i].getAnnotation(Column.class).name())
+                        .append(fields[i].getAnnotation(ColumnAnn.class).name())
                         .append(" ")
                         .append(SQLBuilderUtils.getSqlType(fields[i].getType().getSimpleName()));
             }
-            if (fields[i].isAnnotationPresent(Id.class)) {
+            if (fields[i].isAnnotationPresent(IdAnn.class)) {
                 stringBuilder.append(" AUTO_INCREMENT PRIMARY KEY");
             }
             if (i != fields.length - 1) {
@@ -184,7 +222,7 @@ public final class UniversalDAO<T> implements DAO<T> {
                 T object = clazz.getDeclaredConstructor().newInstance();
                 for (Field field : clazz.getDeclaredFields()) {
                     field.setAccessible(true);
-                    String columnLabel = field.getAnnotation(Column.class).name();
+                    String columnLabel = field.getAnnotation(ColumnAnn.class).name();
                     Object value = resultSet.getObject(columnLabel);
                     field.set(object, value);
                     field.setAccessible(false);

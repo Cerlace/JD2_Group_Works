@@ -17,6 +17,14 @@ public class App {
         People p3 = peopleDAO.get(p2.getId());
         System.out.println(p3);
 
+        System.out.println(peopleDAO.getAll());
+
+        p3.setName("John");
+        p3.setSurname("Doe");
+        p3.setAge(31);
+        peopleDAO.update(p3);
+        System.out.println(p3);
+
         peopleDAO.delete(p2);
 
         UniversalDAO<Address> addressDAO = new UniversalDAO<>(Address.class);
@@ -25,6 +33,13 @@ public class App {
         System.out.println(a2);
 
         Address a3 = addressDAO.get(a2.getId());
+        System.out.println(a3);
+
+        System.out.println(addressDAO.getAll());
+
+        a3.setStreet("Партизанская");
+        a3.setHouse(4);
+        addressDAO.update(a3);
         System.out.println(a3);
 
         addressDAO.delete(a2);
