@@ -87,7 +87,12 @@ public final class UniversalDAO<T> implements DAO<T> {
                 JDBCResources.getPassword());
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
-                return getRecordAsObject(resultSet);
+                if (resultSet.next()) {
+                    return getRecordAsObject(resultSet);
+                } else {
+                    System.out.println("Запись не найдена!");
+                    return null;
+                }
             }
         }
     }
@@ -217,22 +222,21 @@ public final class UniversalDAO<T> implements DAO<T> {
     }
 
     private T getRecordAsObject(ResultSet resultSet) throws SQLException {
-        if (resultSet.next()) {
-            try {
-                T object = clazz.getDeclaredConstructor().newInstance();
-                for (Field field : clazz.getDeclaredFields()) {
+        try {
+            T object = clazz.getDeclaredConstructor().newInstance();
+            for (Field field : clazz.getDeclaredFields()) {
+                if (field.isAnnotationPresent(ColumnAnn.class)) {
                     field.setAccessible(true);
                     String columnLabel = field.getAnnotation(ColumnAnn.class).name();
                     Object value = resultSet.getObject(columnLabel);
                     field.set(object, value);
                     field.setAccessible(false);
                 }
-                return object;
-            } catch (InstantiationException | NoSuchMethodException |
-                     InvocationTargetException | IllegalAccessException e) {
-                throw new RuntimeException(e);
             }
+            return object;
+        } catch (InstantiationException | NoSuchMethodException |
+                 InvocationTargetException | IllegalAccessException e) {
+            throw new RuntimeException(e);
         }
-        return null;
     }
 }
