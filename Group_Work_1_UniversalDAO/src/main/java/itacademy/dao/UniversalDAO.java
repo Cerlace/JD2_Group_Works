@@ -2,6 +2,7 @@ package itacademy.dao;
 
 import itacademy.JDBCResources;
 import itacademy.api.DAO;
+import itacademy.exceptions.AnnotationMissingException;
 import itacademy.utils.SQLBuilderUtils;
 import itacademy.annotations.ColumnAnn;
 import itacademy.annotations.IdAnn;
@@ -31,12 +32,9 @@ public final class UniversalDAO<T> implements DAO<T> {
     public void createTable() throws SQLException { //реализовал Данила
         String tableName = getTableName();
 
-        String query = "CREATE TABLE IF NOT EXISTS " + tableName +
-                " " + generateColumnsDescription() + ";";
+        String query = "CREATE TABLE IF NOT EXISTS " + tableName + " " + generateColumnsDescription() + ";";
 
-        try (Connection connection = DriverManager.getConnection(JDBCResources.getURL(),
-                JDBCResources.getUser(),
-                JDBCResources.getPassword())) {
+        try (Connection connection = DriverManager.getConnection(JDBCResources.getURL(), JDBCResources.getUser(), JDBCResources.getPassword())) {
 
             Statement preparedStatement = connection.createStatement();
 
@@ -49,14 +47,9 @@ public final class UniversalDAO<T> implements DAO<T> {
     public T save(T t) throws SQLException { //реализация Ромы, Данила немного отрефакторил
         String tableName = getTableName();
 
-        String query = "INSERT INTO " + tableName + " SET " +
-                generateSetQueryPart(t) + ";";
+        String query = "INSERT INTO " + tableName + " SET " + generateSetQueryPart(t) + ";";
 
-        try (Connection connection = DriverManager.getConnection(JDBCResources.getURL(),
-                JDBCResources.getUser(),
-                JDBCResources.getPassword());
-             PreparedStatement preparedStatement = connection.prepareStatement(query,
-                     Statement.RETURN_GENERATED_KEYS)) {
+        try (Connection connection = DriverManager.getConnection(JDBCResources.getURL(), JDBCResources.getUser(), JDBCResources.getPassword()); PreparedStatement preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
 
             preparedStatement.executeUpdate();
 
@@ -82,10 +75,7 @@ public final class UniversalDAO<T> implements DAO<T> {
 
         String query = "SELECT * FROM " + tableName + " WHERE id = " + id + ";";
 
-        try (Connection connection = DriverManager.getConnection(JDBCResources.getURL(),
-                JDBCResources.getUser(),
-                JDBCResources.getPassword());
-             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+        try (Connection connection = DriverManager.getConnection(JDBCResources.getURL(), JDBCResources.getUser(), JDBCResources.getPassword()); PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 if (resultSet.next()) {
                     return getRecordAsObject(resultSet);
@@ -104,11 +94,7 @@ public final class UniversalDAO<T> implements DAO<T> {
 
         String query = "SELECT * FROM " + tableName + ";";
 
-        try (Connection connection = DriverManager.getConnection(JDBCResources.getURL(),
-                JDBCResources.getUser(),
-                JDBCResources.getPassword());
-             PreparedStatement preparedStatement = connection.prepareStatement(query);
-             ResultSet resultSet = preparedStatement.executeQuery()) {
+        try (Connection connection = DriverManager.getConnection(JDBCResources.getURL(), JDBCResources.getUser(), JDBCResources.getPassword()); PreparedStatement preparedStatement = connection.prepareStatement(query); ResultSet resultSet = preparedStatement.executeQuery()) {
 
             List<T> resultList = new ArrayList<>();
 
@@ -128,13 +114,9 @@ public final class UniversalDAO<T> implements DAO<T> {
 
         Serializable id = getIdValue(t);
 
-        String query = "UPDATE " + tableName + " SET " +
-                generateSetQueryPart(t) + " WHERE id = " + id + ";";
+        String query = "UPDATE " + tableName + " SET " + generateSetQueryPart(t) + " WHERE id = " + id + ";";
 
-        try (Connection connection = DriverManager.getConnection(JDBCResources.getURL(),
-                JDBCResources.getUser(),
-                JDBCResources.getPassword());
-             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+        try (Connection connection = DriverManager.getConnection(JDBCResources.getURL(), JDBCResources.getUser(), JDBCResources.getPassword()); PreparedStatement preparedStatement = connection.prepareStatement(query)) {
 
             preparedStatement.executeUpdate();
         }
@@ -146,9 +128,7 @@ public final class UniversalDAO<T> implements DAO<T> {
 
         Serializable id = getIdValue(t);
 
-        try (Connection connection = DriverManager.getConnection(JDBCResources.getURL(),
-                JDBCResources.getUser(),
-                JDBCResources.getPassword())) {
+        try (Connection connection = DriverManager.getConnection(JDBCResources.getURL(), JDBCResources.getUser(), JDBCResources.getPassword())) {
 
             String query = "DELETE FROM " + tableName + " WHERE id = " + id;
             Statement preparedStatement = connection.createStatement();
@@ -158,10 +138,13 @@ public final class UniversalDAO<T> implements DAO<T> {
     }
 
     private String getTableName() {
+        // Проверяем, аннотирован ли класс аннотацией @TableAnn
         if (clazz.isAnnotationPresent(TableAnn.class)) {
+            // Если аннотация присутствует, извлекаем ее значение (имя таблицы)
             return clazz.getAnnotation(TableAnn.class).name();
         } else {
-            throw new RuntimeException("Ошибка! DTO не аннотирован!"); //TODO создать наш exception (непроверяемый)
+            // Если аннотация отсутствует, выбрасывает собственное исключение
+            throw new AnnotationMissingException("Ошибка! DTO - class не аннотирован аннотацией @TableAnn!");
         }
     }
 
@@ -196,7 +179,7 @@ public final class UniversalDAO<T> implements DAO<T> {
                 }
             }
         }
-        throw new RuntimeException("Ошибка! DTO не аннотирован!"); //TODO создать наш exception (непроверяемый)
+        throw new AnnotationMissingException("Ошибка! DTO - class не аннотирован аннотацией @IdAnn!");
     }
 
     private String generateColumnsDescription() {
@@ -205,10 +188,7 @@ public final class UniversalDAO<T> implements DAO<T> {
 
         for (int i = 0; i < fields.length; i++) {
             if (fields[i].isAnnotationPresent(ColumnAnn.class)) {
-                stringBuilder
-                        .append(fields[i].getAnnotation(ColumnAnn.class).name())
-                        .append(" ")
-                        .append(SQLBuilderUtils.getSqlType(fields[i].getType().getSimpleName()));
+                stringBuilder.append(fields[i].getAnnotation(ColumnAnn.class).name()).append(" ").append(SQLBuilderUtils.getSqlType(fields[i].getType().getSimpleName()));
             }
             if (fields[i].isAnnotationPresent(IdAnn.class)) {
                 stringBuilder.append(" AUTO_INCREMENT PRIMARY KEY");
@@ -234,8 +214,8 @@ public final class UniversalDAO<T> implements DAO<T> {
                 }
             }
             return object;
-        } catch (InstantiationException | NoSuchMethodException |
-                 InvocationTargetException | IllegalAccessException e) {
+        } catch (InstantiationException | NoSuchMethodException | InvocationTargetException |
+                 IllegalAccessException e) {
             throw new RuntimeException(e);
         }
     }
