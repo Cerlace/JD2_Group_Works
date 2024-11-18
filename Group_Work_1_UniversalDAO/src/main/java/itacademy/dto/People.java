@@ -67,12 +67,7 @@ public class People {
 
     @Override
     public String toString() {
-        return "People{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", surname='" + surname + '\'' +
-                ", age=" + age +
-                '}';
+        return "Человек №" + id + ": " + name + " " + surname + ", " + age + " лет"; //edited by 51mon
     }
 
     public static class PeopleBuilder {

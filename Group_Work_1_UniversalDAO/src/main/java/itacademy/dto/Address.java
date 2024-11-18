@@ -54,11 +54,7 @@ public class Address {
 
     @Override
     public String toString() {
-        return "Address {" +
-                "id=" + id +
-                ", street='" + street + '\'' +
-                ", house=" + house +
-                '}';
+        return "Адрес №" + id + ": улица " + street + ", дом " + house; //edited by 51mon
     }
 
     public static class AddressBuilder {
