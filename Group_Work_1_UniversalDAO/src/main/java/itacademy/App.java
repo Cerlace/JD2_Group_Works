@@ -1,47 +1,25 @@
 package itacademy;
 
-import itacademy.api.DAO;
-import itacademy.dao.UniversalDAO;
-import itacademy.dto.Address;
-import itacademy.dto.People;
-
+import itacademy.utils.UtilityShowInfo;
 import java.sql.SQLException;
 
 public class App {
     public static void main(String[] args) throws SQLException {
-        DAO<People> peopleDAO = new UniversalDAO<>(People.class);
-        People p1 = new People(1,"Роман", "Гуляко", 28);
-        People p2 = peopleDAO.save(p1);
-        System.out.println(p2);
+        UtilityShowInfo util = new UtilityShowInfo();
 
-        People p3 = peopleDAO.get(p2.getId());
-        System.out.println(p3);
+        util.createPeopleTable();
+        util.savePeople(4, "Вася", "Пупкин", 40);
+        util.savePeople(15, "Jhon", "Doe", 2);
+        util.getPeople(16);
+        util.getAllPeople();
+        util.updatePeople(9, "Иван", "Рогозянский", 43);
+        util.deletePeople(19);
 
-        System.out.println(peopleDAO.getAll());
-
-        p3.setName("John");
-        p3.setSurname("Doe");
-        p3.setAge(31);
-        peopleDAO.update(p3);
-        System.out.println(p3);
-
-        peopleDAO.delete(p2);
-
-        UniversalDAO<Address> addressDAO = new UniversalDAO<>(Address.class);
-        Address a1 = new Address(1, "Независимости", 1);
-        Address a2 = addressDAO.save(a1);
-        System.out.println(a2);
-
-        Address a3 = addressDAO.get(a2.getId());
-        System.out.println(a3);
-
-        System.out.println(addressDAO.getAll());
-
-        a3.setStreet("Партизанская");
-        a3.setHouse(4);
-        addressDAO.update(a3);
-        System.out.println(a3);
-
-        addressDAO.delete(a2);
+        util.createAddressTable();
+        util.saveAddress(1, "Downing st.", 5);
+        util.getAddress(18);
+        util.getAllAddress();
+        util.updateAddress(16, "Красная", 25);
+        util.deleteAddress(23);
     }
 }
