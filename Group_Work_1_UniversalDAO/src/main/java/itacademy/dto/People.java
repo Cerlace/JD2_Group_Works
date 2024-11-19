@@ -68,10 +68,10 @@ public class People {
     @Override
     public String toString() {
         return "Человек: " +
-                "id:" + id +
-                ", имя:" + name +
-                ", фамилия:" + surname +
-                ", возраст:" + age;
+                "id: " + id +
+                ", имя: " + name +
+                ", фамилия: " + surname +
+                ", возраст: " + age;
     }
 
     public static class PeopleBuilder {

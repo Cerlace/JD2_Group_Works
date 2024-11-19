@@ -12,7 +12,10 @@ import java.util.List;
 
 public class UtilityShowInfo {
     DAO<People> peopleDAO = new UniversalDAO<>(People.class);
-    //People p1 = getPeople(, "Роман", "Гуляко", 28);
+
+    public void createPeopleTable() throws SQLException {
+        peopleDAO.createTable();
+    }
 
     public void savePeople(int id, String name, String surname, int age) throws SQLException {
         System.out.println("Метод save");
@@ -23,7 +26,7 @@ public class UtilityShowInfo {
 
     public People getPeople(int id) throws SQLException {
         System.out.println("Метод get");
-        People p = peopleDAO.get((Integer)id);
+        People p = peopleDAO.get((Integer) id);
         return p;
     }
 
@@ -36,20 +39,30 @@ public class UtilityShowInfo {
 
     public void updatePeople(int id, String name, String surname, int age) throws SQLException {
         System.out.println("Метод update");
-        People p = peopleDAO.get(id);
-        p.setName(name);
-        p.setSurname(surname);
-        p.setAge(age);
+        People p = People.builder()
+                .id(id)
+                .name(name)
+                .surname(surname)
+                .age(age)
+                .build();
         peopleDAO.update(p);
         System.out.println(p);
     }
 
     public void deletePeople(int id) throws SQLException {
         System.out.println("Метод delete");
-        peopleDAO.delete(peopleDAO.get(id));
+        peopleDAO.delete(People.builder()
+                .id(id)
+                .build());
     }
-//////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    //////////////////////////////////////////////////////////////////////////////////////////////////////
     UniversalDAO<Address> addressDAO = new UniversalDAO<>(Address.class);
+
+    public void createAddressTable() throws SQLException {
+        addressDAO.createTable();
+    }
+
     public void saveAddress(int id, String street, int house) throws SQLException {
         System.out.println("Метод save");
         Address a1 = new Address(id, street, house);
@@ -59,7 +72,7 @@ public class UtilityShowInfo {
 
     public void getAddress(int id) throws SQLException {
         System.out.println("Метод get");
-        Address a = addressDAO.get((Integer)id);
+        Address a = addressDAO.get(id);
         System.out.println(a);
     }
 
@@ -73,18 +86,20 @@ public class UtilityShowInfo {
 
     public void updateAddress(int id, String street, int house) throws SQLException {
         System.out.println("Метод update");
-        Address a = addressDAO.get(id);
-        a.setStreet(street);
-        a.setHouse(house);
+        Address a = Address.builder()
+                .id(id)
+                .street(street)
+                .house(house)
+                .build();
         addressDAO.update(a);
         System.out.println(a);
     }
 
     public void deleteAddress(int id) throws SQLException {
         System.out.println("Метод delete");
-        Address a = addressDAO.get(id);
+        Address a = Address.builder()
+                .id(id)
+                .build();
         addressDAO.delete(a);
     }
-
-
 }

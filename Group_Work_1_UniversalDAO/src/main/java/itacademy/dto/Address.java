@@ -55,9 +55,9 @@ public class Address {
     @Override
     public String toString() {
         return "Адрес: " +
-                "id:" + id +
-                ", улица:" + street +
-                ", дом:" + house;
+                "id: " + id +
+                ", улица: " + street +
+                ", дом: " + house;
     }
 
     public static class AddressBuilder {
