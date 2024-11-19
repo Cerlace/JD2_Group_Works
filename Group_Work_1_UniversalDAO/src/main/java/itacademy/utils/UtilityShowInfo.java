@@ -1,7 +1,11 @@
 package itacademy.utils;
 
+import itacademy.api.AddressDAO;
 import itacademy.api.DAO;
+import itacademy.api.PeopleDAO;
 import itacademy.dao.UniversalDAO;
+import itacademy.dao.impl.AddressDAOImpl;
+import itacademy.dao.impl.PeopleDAOImpl;
 import itacademy.dto.Address;
 import itacademy.dto.People;
 
@@ -11,7 +15,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class UtilityShowInfo {
-    DAO<People> peopleDAO = new UniversalDAO<>(People.class);
+    PeopleDAO peopleDAO = new PeopleDAOImpl();
 
     public void createPeopleTable() throws SQLException {
         peopleDAO.createTable();
@@ -57,7 +61,7 @@ public class UtilityShowInfo {
     }
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////
-    UniversalDAO<Address> addressDAO = new UniversalDAO<>(Address.class);
+    AddressDAO addressDAO = new AddressDAOImpl();
 
     public void createAddressTable() throws SQLException {
         addressDAO.createTable();

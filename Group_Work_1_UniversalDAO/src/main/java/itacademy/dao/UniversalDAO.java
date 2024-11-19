@@ -21,7 +21,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-public final class UniversalDAO<T> implements DAO<T> {
+public abstract class UniversalDAO<T> implements DAO<T> {
 
     private final Class<T> clazz;
 
