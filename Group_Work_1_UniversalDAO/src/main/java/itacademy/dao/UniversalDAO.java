@@ -3,6 +3,7 @@ package itacademy.dao;
 import itacademy.JDBCResources;
 import itacademy.api.DAO;
 import itacademy.exceptions.AnnotationMissingException;
+import itacademy.exceptions.RecordNotFoundException;
 import itacademy.utils.SQLBuilderUtils;
 import itacademy.annotations.ColumnAnn;
 import itacademy.annotations.IdAnn;
@@ -80,8 +81,7 @@ public final class UniversalDAO<T> implements DAO<T> {
                 if (resultSet.next()) {
                     return getRecordAsObject(resultSet);
                 } else {
-                    System.out.println("Запись не найдена!");
-                    return null;
+                    throw new RecordNotFoundException("Ошибка! Таблица не содержит записи с id = " + id);
                 }
             }
         }
@@ -100,9 +100,7 @@ public final class UniversalDAO<T> implements DAO<T> {
 
             while (resultSet.next()) {
                 T record = getRecordAsObject(resultSet);
-                if (record != null) {
-                    resultList.add(record);
-                }
+                resultList.add(record);
             }
             return resultList;
         }
