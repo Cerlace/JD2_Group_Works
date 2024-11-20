@@ -2,7 +2,6 @@ package itacademy.dao;
 
 import itacademy.JDBCResources;
 import itacademy.api.DAO;
-import itacademy.exceptions.RecordNotFoundException;
 import itacademy.utils.ReflectionUtils;
 import itacademy.utils.SQLBuilderUtils;
 import itacademy.annotations.ColumnAnn;
@@ -10,7 +9,6 @@ import itacademy.annotations.IdAnn;
 
 import java.io.Serializable;
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;

@@ -23,14 +23,14 @@ public class ReflectionUtils {
         List<String> columnNamesAndTypes = new ArrayList<>();
         Field[] fields = clazz.getDeclaredFields();
 
-        for (int i = 0; i < fields.length; i++) {
-            if (fields[i].isAnnotationPresent(ColumnAnn.class)) {
-                String columnName = fields[i].getAnnotation(ColumnAnn.class).name();
+        for (Field field : fields) {
+            if (field.isAnnotationPresent(ColumnAnn.class)) {
+                String columnName = field.getAnnotation(ColumnAnn.class).name();
 
-                String javaType = fields[i].getType().getSimpleName();
+                String javaType = field.getType().getSimpleName();
                 String sqlType = SQLBuilderUtils.getSqlType(javaType);
 
-                if (fields[i].isAnnotationPresent(IdAnn.class)) {
+                if (field.isAnnotationPresent(IdAnn.class)) {
                     sqlType += " AUTO_INCREMENT PRIMARY KEY";
                 }
                 columnNamesAndTypes.add(columnName + " " + sqlType);
