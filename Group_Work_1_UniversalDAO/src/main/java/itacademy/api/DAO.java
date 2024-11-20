@@ -13,7 +13,7 @@ public interface DAO <T>{
 
     List<T> getAll() throws SQLException;
 
-    void update(T t) throws SQLException;
+    void update(Serializable id, T t) throws SQLException;
 
-    int delete(T t) throws SQLException;
+    int delete(Serializable id) throws SQLException;
 }
