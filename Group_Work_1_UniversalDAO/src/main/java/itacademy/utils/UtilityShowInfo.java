@@ -49,15 +49,13 @@ public class UtilityShowInfo {
                 .surname(surname)
                 .age(age)
                 .build();
-        peopleDAO.update(p);
+        peopleDAO.update(id, p);
         System.out.println(p);
     }
 
     public void deletePeople(int id) throws SQLException {
         System.out.println("Метод delete");
-        peopleDAO.delete(People.builder()
-                .id(id)
-                .build());
+        peopleDAO.delete(id);
     }
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -95,15 +93,12 @@ public class UtilityShowInfo {
                 .street(street)
                 .house(house)
                 .build();
-        addressDAO.update(a);
+        addressDAO.update(id, a);
         System.out.println(a);
     }
 
     public void deleteAddress(int id) throws SQLException {
         System.out.println("Метод delete");
-        Address a = Address.builder()
-                .id(id)
-                .build();
-        addressDAO.delete(a);
+        addressDAO.delete(id);
     }
 }

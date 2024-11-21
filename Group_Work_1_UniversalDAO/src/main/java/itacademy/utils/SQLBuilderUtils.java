@@ -1,36 +1,59 @@
 package itacademy.utils;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
+import java.util.List;
+import java.util.Map;
 
 public class SQLBuilderUtils {
-    public static <T> String getValueToString(Field field, T t) { //реализация Ромы, Данила немного отрефакторил
-        field.setAccessible(true);
-        String returnTypeName = field.getType().getSimpleName();
-        try {
-            String result = field.get(t).toString();
-            switch (returnTypeName) {
-                case "Integer":
-                case "int":
-                case "Double":
-                case "double":
-                case "Long":
-                case "long":
-                case "Boolean":
-                case "boolean":
-                case "Byte":
-                case "byte": {
-                    return result;
-                }
-                default: {
-                    return String.format("'%s'", result);
-                }
+
+    public static <T> String generateSetQueryPart(T t) {
+        Map<String, Object> columnsAndValues = ReflectionUtils.getColumnsAndValuesFromObject(t);
+        StringBuilder stringBuilder = new StringBuilder();
+        for (String columnName : columnsAndValues.keySet()) {
+            String value = SQLBuilderUtils.getValueToString(columnsAndValues.get(columnName));
+
+            stringBuilder.append(columnName).append(" = ").append(value);
+
+            stringBuilder.append(", ");
+        }
+        stringBuilder.delete(stringBuilder.lastIndexOf(", "), stringBuilder.length());
+
+        return stringBuilder.toString();
+    }
+
+    public static <T> String generateColumnsDescription(Class<T> clazz) {
+        List<String> columnsAndTypes = ReflectionUtils.getColumnNamesAndSqlTypes(clazz);
+        StringBuilder stringBuilder = new StringBuilder("(");
+
+        for (int i = 0; i < columnsAndTypes.size(); i++) {
+            stringBuilder.append(columnsAndTypes.get(i));
+            if (i != columnsAndTypes.size() - 1) {
+                stringBuilder.append(", ");
             }
-        } catch (IllegalAccessException e) {
-            throw new RuntimeException(e);
-        } finally {
-            field.setAccessible(false);
+        }
+        stringBuilder.append(")");
+        return stringBuilder.toString();
+    }
+
+    public static String getValueToString(Object value) {
+        String returnTypeName = value.getClass().getSimpleName();
+
+        String result = value.toString();
+        switch (returnTypeName) {
+            case "Integer":
+            case "int":
+            case "Double":
+            case "double":
+            case "Long":
+            case "long":
+            case "Boolean":
+            case "boolean":
+            case "Byte":
+            case "byte": {
+                return result;
+            }
+            default: {
+                return String.format("'%s'", result);
+            }
         }
     }
 
