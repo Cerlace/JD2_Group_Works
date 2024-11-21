@@ -1,5 +1,6 @@
 package itacademy.utils;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
@@ -86,5 +87,33 @@ public class SQLBuilderUtils {
             default:
                 return "";
         }
+    }
+
+    public static String getCreateTableQuery(Class<?> clazz) {
+        return "CREATE TABLE IF NOT EXISTS " +
+                ReflectionUtils.getTableNameByClass(clazz) +
+                " " + generateColumnsDescription(clazz);
+    }
+
+    public static <T> String getInsertQuery(T t) {
+        return "INSERT INTO " + ReflectionUtils.getTableNameByClass(t.getClass())
+                + " SET " + generateSetQueryPart(t);
+    }
+
+    public static String getSelectQuery(Serializable id, Class<?> clazz) {
+        return "SELECT * FROM " + ReflectionUtils.getTableNameByClass(clazz) + " WHERE id = " + id;
+    }
+
+    public static String getSelectAllQuery(Class<?> clazz) {
+        return "SELECT * FROM " + ReflectionUtils.getTableNameByClass(clazz);
+    }
+
+    public static <T> String getUpdateQuery(Serializable id, T t) {
+        return  "UPDATE " + ReflectionUtils.getTableNameByClass(t.getClass())
+                + " SET " + generateSetQueryPart(t) + " WHERE id = " + id;
+    }
+
+    public static String getDeleteQuery(Serializable id, Class<?> clazz) {
+        return "DELETE FROM " + ReflectionUtils.getTableNameByClass(clazz) + " WHERE id = " + id;
     }
 }
