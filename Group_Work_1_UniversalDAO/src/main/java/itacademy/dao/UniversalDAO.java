@@ -1,13 +1,12 @@
 package itacademy.dao;
 
-import itacademy.JDBCResources;
 import itacademy.api.DAO;
+import itacademy.api.SQLExecutor;
+import itacademy.utils.ExecutorUtils;
 import itacademy.utils.ReflectionUtils;
 import itacademy.utils.SQLBuilderUtils;
 
 import java.io.Serializable;
-import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -22,62 +21,73 @@ public abstract class UniversalDAO<T> implements DAO<T> {
         this.clazz = clazz;
     }
 
+    /**
+     * Метод для создания таблицы в БД, если она еще не создана
+     *
+     * @throws SQLException при возникновении ошибок в ходе создания таблицы
+     *
+     * @author Данила
+     */
     @Override
-    public void createTable() throws SQLException { //реализовал Данила
-        String tableName = ReflectionUtils.getTableNameByClass(clazz);
+    public void createTable() throws SQLException {
+        SQLExecutor<T> executor = connection -> {
+            Statement statement = connection.createStatement();
+            statement.executeUpdate(SQLBuilderUtils.getCreateTableQuery(this.clazz));
 
-        String query = "CREATE TABLE IF NOT EXISTS " + tableName + " " +SQLBuilderUtils.generateColumnsDescription(clazz) + ";";
+            return null;
+        };
 
-        try (Connection connection = DriverManager.getConnection(
-                JDBCResources.getURL(),
-                JDBCResources.getUser(),
-                JDBCResources.getPassword())) {
-
-            Statement preparedStatement = connection.createStatement();
-
-            preparedStatement.executeUpdate(query);
-        }
-
+        ExecutorUtils.executeSQL(executor);
     }
 
+    /**
+     * Метод добавляет в таблицу запись
+     *
+     * @param t объект, поля которого нужно записать в таблицу
+     *
+     * @return этот же объект с полученным от БД идентификатором
+     *
+     * @throws SQLException при возникновении ошибок в ходе записи в таблицу
+     *
+     * @author Рома
+     */
     @Override
-    public T save(T t) throws SQLException { //реализация Ромы, Данила немного отрефакторил
-        String tableName = ReflectionUtils.getTableNameByClass(clazz);
+    public T save(T t) throws SQLException {
+        SQLExecutor<T> executor = connection -> {
+            PreparedStatement statement = connection.prepareStatement(SQLBuilderUtils.getInsertQuery(t),
+                    Statement.RETURN_GENERATED_KEYS);
+            statement.executeUpdate();
 
-        String query = "INSERT INTO " + tableName + " SET " + SQLBuilderUtils.generateSetQueryPart(t) + ";";
-
-        try (Connection connection = DriverManager.getConnection(
-                JDBCResources.getURL(),
-                JDBCResources.getUser(),
-                JDBCResources.getPassword());
-             PreparedStatement preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
-
-            preparedStatement.executeUpdate();
-
-            try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
+            try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
                 if (generatedKeys.next()) {
                     Serializable generatedId = generatedKeys.getInt(1);
                     ReflectionUtils.setIdValue(t, generatedId);
                 }
             }
-        }
-        return t;
+
+            return t;
+        };
+
+        return ExecutorUtils.executeSQL(executor);
     }
 
+    /**
+     * Метод получает из БД запись по ее идентификатору
+     *
+     * @param id уникальный идентификатор
+     *
+     * @return объект DTO, соответствующий таблице в БД
+     *
+     * @throws SQLException при возникновении ошибок в ходе чтения из базы данных
+     *
+     * @author Данила
+     */
     @Override
-    public T get(Serializable id) throws SQLException { //реализовал Данила
-        String tableName = ReflectionUtils.getTableNameByClass(clazz);
+    public T get(Serializable id) throws SQLException {
+        SQLExecutor<T> executor = connection -> {
+            Statement preparedStatement = connection.createStatement();
 
-        String query = "SELECT * FROM " + tableName + " WHERE id = " + id + ";";
-
-        try (Connection connection = DriverManager.getConnection(
-                JDBCResources.getURL(),
-                JDBCResources.getUser(),
-                JDBCResources.getPassword());
-             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-
-            try (ResultSet resultSet = preparedStatement.executeQuery()) {
-
+            try (ResultSet resultSet = preparedStatement.executeQuery(SQLBuilderUtils.getSelectQuery(id,this.clazz))) {
                 if (resultSet.next()) {
                     Map<String, Object> columnsAndValues = getColumnsAndValuesFromRecord(resultSet);
                     return ReflectionUtils.buildObject(clazz, columnsAndValues);
@@ -85,24 +95,27 @@ public abstract class UniversalDAO<T> implements DAO<T> {
                     return null;
                 }
             }
-        }
+        };
+
+        return ExecutorUtils.executeSQL(executor);
     }
 
-
+    /**
+     * Метод получает из таблицы все записи
+     *
+     * @return список объектов DTO, соответствующих таблице в БД
+     *
+     * @throws SQLException при возникновении ошибок в ходе чтения из базы данных
+     *
+     * @author Саймон
+     */
     @Override
-    public List<T> getAll() throws SQLException { //реализация от Саймона
-        String tableName = ReflectionUtils.getTableNameByClass(clazz);
+    public List<T> getAll() throws SQLException {
+        SQLExecutor<List<T>> executor = connection -> {
+            Statement statement = connection.createStatement();
 
-        String query = "SELECT * FROM " + tableName + ";";
+            try (ResultSet resultSet = statement.executeQuery(SQLBuilderUtils.getSelectAllQuery(this.clazz))) {
 
-        try (Connection connection = DriverManager.getConnection(
-                JDBCResources.getURL(),
-                JDBCResources.getUser(),
-                JDBCResources.getPassword());
-             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-
-            try (ResultSet resultSet = preparedStatement.executeQuery()) {
-                
                 List<T> resultList = new ArrayList<>();
 
                 while (resultSet.next()) {
@@ -112,39 +125,53 @@ public abstract class UniversalDAO<T> implements DAO<T> {
                 }
                 return resultList;
             }
-        }
+        };
+
+        return ExecutorUtils.executeSQL(executor);
     }
 
+    /**
+     * Метод обновляет поля в таблице у записи с указанным идентификатором
+     *
+     * @param id уникальный идентификатор записи в таблице
+     * @param t объект DTO, соответствующий таблице, полями которого будут заменены
+     *          поля записи с идентификатором id
+     *
+     * @throws SQLException при возникновении ошибок в ходе обновления данных в БД
+     *
+     * @author Саймон
+     */
     @Override
-    public void update(Serializable id, T t) throws SQLException { //реализация от Саймона
-        String tableName = ReflectionUtils.getTableNameByClass(clazz);
+    public void update(Serializable id, T t) throws SQLException {
+        SQLExecutor<T> executor = connection -> {
+            Statement statement = connection.createStatement();
+            statement.executeUpdate(SQLBuilderUtils.getUpdateQuery(id,t));
 
-        String query = "UPDATE " + tableName + " SET " + SQLBuilderUtils.generateSetQueryPart(t) + " WHERE id = " + id + ";";
+            return null;
+        };
 
-        try (Connection connection = DriverManager.getConnection(
-                JDBCResources.getURL(),
-                JDBCResources.getUser(),
-                JDBCResources.getPassword());
-             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-
-            preparedStatement.executeUpdate();
-        }
+        ExecutorUtils.executeSQL(executor);
     }
 
+    /**
+     * Метод удаляет из таблицы в БД запись с указанным идентификатором
+     *
+     * @param id уникальный идентификатор записи в таблице
+     *
+     * @return количество удаленных записей
+     *
+     * @throws SQLException при возникновении ошибок в ходе удаления данных из БД
+     *
+     * @author Рома
+     */
     @Override
     public int delete(Serializable id) throws SQLException { //реализация Ромы, Данила немного отрефакторил
-        String tableName = ReflectionUtils.getTableNameByClass(clazz);
+        SQLExecutor<Integer> executor = connection -> {
+            Statement statement = connection.createStatement();
+            return statement.executeUpdate(SQLBuilderUtils.getDeleteQuery(id,this.clazz));
+        };
 
-        try (Connection connection = DriverManager.getConnection(
-                JDBCResources.getURL(),
-                JDBCResources.getUser(),
-                JDBCResources.getPassword())) {
-
-            String query = "DELETE FROM " + tableName + " WHERE id = " + id;
-            Statement preparedStatement = connection.createStatement();
-
-            return preparedStatement.executeUpdate(query);
-        }
+        return ExecutorUtils.executeSQL(executor);
     }
 
     private Map<String, Object> getColumnsAndValuesFromRecord(ResultSet resultSet) throws SQLException {
