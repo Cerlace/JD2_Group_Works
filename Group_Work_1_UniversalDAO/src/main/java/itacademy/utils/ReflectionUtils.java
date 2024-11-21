@@ -132,4 +132,32 @@ public class ReflectionUtils {
             throw new RuntimeException(e);
         }
     }
+
+    /**
+     * Метод проверяет поля объекта на наличие аннотации {@code @ColumnAnn}
+     * и отсутствие аннотации {@code @IdAnn}, при соблюдении условия извлекает
+     * имя колонки и значение из поля объекта, и добавляет их в список ключ-значение.
+     *
+     * @param t   объект, из которого извлекаются значения.
+     * @param <T> тип DTO, переданный в качестве параметра.
+     * @return список ключ-значение, содержащий имена колонок и их значения.
+     */
+    public static <T> Map<String, Object> getColumnsAndValuesFromObject(T t) {
+        Map<String, Object> columnsAndValues = new HashMap<>();
+        Field[] fields = t.getClass().getDeclaredFields();
+        try {
+            for (Field field : fields) {
+                if (!field.isAnnotationPresent(IdAnn.class) && field.isAnnotationPresent(ColumnAnn.class)) {
+                    String columnName = field.getAnnotation(ColumnAnn.class).name();
+                    field.setAccessible(true);
+                    Object value = field.get(t);
+                    field.setAccessible(false);
+                    columnsAndValues.put(columnName, value);
+                }
+            }
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
+        return columnsAndValues;
+    }
 }
