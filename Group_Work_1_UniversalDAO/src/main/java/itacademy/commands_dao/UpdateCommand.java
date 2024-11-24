@@ -20,7 +20,11 @@ public abstract class UpdateCommand<T> implements CommandDAO {
     @Override
     public void execute() throws SQLException {
         int updatedRows = this.dao.update(this.id,this.entity);
-        System.out.println("В таблице " + ReflectionUtils.getTableNameByClass(this.entity.getClass()) +
-                " обновлено записей с id " + this.id + ": " + updatedRows);
+        if (updatedRows != 0) {
+            System.out.println("В таблице " + ReflectionUtils.getTableNameByClass(this.entity.getClass())
+                    + " обновлена запись с id " + this.id);
+        } else {
+            System.out.println("Не найдена запись с id " + this.id);
+        }
     }
 }

@@ -2,6 +2,7 @@ package itacademy.commands_dao;
 
 import itacademy.api.DAO;
 import itacademy.api.CommandDAO;
+import itacademy.utils.ReflectionUtils;
 
 import java.io.Serializable;
 import java.sql.SQLException;
@@ -17,6 +18,10 @@ public abstract class DeleteCommand<T> implements CommandDAO {
     @Override
     public void execute() throws SQLException {
         int deletedRows = this.dao.delete(this.id);
-        System.out.println("Удалено записей с id " + this.id + ": " + deletedRows);
+        if (deletedRows != 0) {
+            System.out.println("Удалена запись с id " + this.id);
+        } else {
+            System.out.println("Не найдена запись с id " + this.id);
+        }
     }
 }
