@@ -16,6 +16,7 @@ public abstract class DeleteCommand<T> implements CommandDAO {
     }
     @Override
     public void execute() throws SQLException {
-        this.dao.delete(this.id);
+        int deletedRows = this.dao.delete(this.id);
+        System.out.println("Удалено записей с id " + this.id + ": " + deletedRows);
     }
 }
