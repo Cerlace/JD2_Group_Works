@@ -3,7 +3,7 @@ package itacademy.utils;
 import itacademy.annotations.ColumnAnn;
 import itacademy.annotations.IdAnn;
 import itacademy.annotations.TableAnn;
-import itacademy.exceptions.AnnotationMissingException;
+import itacademy.exceptions.unchecked.AnnotationMissingException;
 
 import java.io.Serializable;
 import java.lang.reflect.Field;
