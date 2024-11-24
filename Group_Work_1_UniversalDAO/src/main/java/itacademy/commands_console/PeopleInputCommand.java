@@ -2,6 +2,7 @@ package itacademy.commands_console;
 
 import itacademy.api.CommandConsole;
 import itacademy.dto.People;
+import itacademy.exceptions.checked.InvalidInputException;
 import itacademy.utils.ConsoleUtils;
 
 import java.util.Scanner;
@@ -14,7 +15,7 @@ public class PeopleInputCommand implements CommandConsole<People> {
     }
 
     @Override
-    public People execute() {
+    public People execute() throws InvalidInputException {
         System.out.print("Введите имя: ");
         this.scanner.nextLine();
         String name = this.scanner.nextLine();

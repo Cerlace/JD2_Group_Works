@@ -7,6 +7,7 @@ import itacademy.commands_console.PeopleInputCommand;
 import itacademy.commands_dao.people.*;
 import itacademy.dao.impl.PeopleDAOImpl;
 import itacademy.dto.People;
+import itacademy.exceptions.checked.InvalidInputException;
 import itacademy.utils.ConsoleUtils;
 import itacademy.utils.MenuUtils;
 
@@ -68,7 +69,7 @@ public class AppPeople {
                         System.out.println("Такого пункта меню не существует");
                     }
                 }
-            } catch (Exception e) {
+            } catch (InvalidInputException | SQLException e) {
                 System.out.println(e.getMessage());
             }
         }
