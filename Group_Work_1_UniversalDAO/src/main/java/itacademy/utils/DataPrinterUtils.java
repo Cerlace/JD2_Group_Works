@@ -2,22 +2,23 @@ package itacademy.utils;
 
 import itacademy.dto.Address;
 import itacademy.dto.People;
+
 import java.util.List;
 
 /**
- * Класс DataPrinter отвечает за вывод информации о адресах и людях.
+ * Класс DataPrinter отвечает за вывод информации об адресах и людях.
  *
  * <p>Этот класс предоставляет методы для вывода одной записи
  * или всех записей о {@link Address} и {@link People} в консоль.</p>
  */
-public class DataPrinter {
+public class DataPrinterUtils {
 
     /**
      * Выводит информацию об одном адресе.
      *
      * @param address объект адреса для отображения
      */
-    public void oneAddressPrint(Address address) {
+    public static void printOneAddress(Address address) {
         if (address != null) {
             printAddressHeader(); // Вывод заголовка таблицы адресов
             printAddressRow(address); // Вывод строки с данными об адресе
@@ -32,7 +33,7 @@ public class DataPrinter {
      *
      * @param addresses список адресов для отображения
      */
-    public void allAddressPrint(List<Address> addresses) {
+    public static void printAllAddresses(List<Address> addresses) {
         if (addresses != null && !addresses.isEmpty()) {
             printAddressHeader(); // Вывод заголовка таблицы адресов
             for (Address address : addresses) {
@@ -49,7 +50,7 @@ public class DataPrinter {
      *
      * @param people объект человека для отображения
      */
-    public void onePeoplePrint(People people) {
+    public static void printOnePeople(People people) {
         if (people != null) {
             printPeopleHeader(); // Вывод заголовка таблицы людей
             printPeopleRow(people); // Вывод строки с данными о человеке
@@ -64,7 +65,7 @@ public class DataPrinter {
      *
      * @param peopleList список людей для отображения
      */
-    public void allPeoplePrint(List<People> peopleList) {
+    public static void printAllPeople(List<People> peopleList) {
         if (peopleList != null && !peopleList.isEmpty()) {
             printPeopleHeader(); // Вывод заголовка таблицы людей
             for (People people : peopleList) {
@@ -79,7 +80,7 @@ public class DataPrinter {
     /**
      * Выводит заголовок таблицы адресов.
      */
-    private void printAddressHeader() {
+    private static void printAddressHeader() {
         System.out.printf("+----+--------------------+-------+%n");
         System.out.printf("| ID | %-18s | %-5s |%n", "Улица", "Дом"); // Заголовки "Улица" и "Дом"
         System.out.printf("+----+--------------------+-------+%n");
@@ -90,7 +91,7 @@ public class DataPrinter {
      *
      * @param address объект адреса для отображения
      */
-    private void printAddressRow(Address address) {
+    private static void printAddressRow(Address address) {
         System.out.printf("| %-2d | %-18s | %-5s |%n",
                 address.getId(), // ID адреса
                 address.getStreet(), // Улица
@@ -101,7 +102,7 @@ public class DataPrinter {
     /**
      * Выводит заголовок таблицы людей.
      */
-    private void printPeopleHeader() {
+    private static void printPeopleHeader() {
         System.out.printf("+----+--------------------+--------------------+----------+%n");
         System.out.printf("| ID | %-18s | %-18s | %-8s |%n", "Имя", "Фамилия", "Возраст"); // Заголовки "Имя", "Фамилия" и "Возраст"
         System.out.printf("+----+--------------------+--------------------+----------+%n");
@@ -112,12 +113,20 @@ public class DataPrinter {
      *
      * @param people объект человека для отображения
      */
-    private void printPeopleRow(People people) {
+    private static void printPeopleRow(People people) {
         System.out.printf("| %-2d | %-18s | %-18s | %-8d |%n",
                 people.getId(), // ID человека
                 people.getName(), // Имя
                 people.getSurname(), // Фамилия
                 people.getAge()); // Возраст
         System.out.printf("+----+--------------------+--------------------+----------+%n"); // Завершение строки таблицы
+    }
+
+    private String shortenString(String str, int maxlength) {
+        if (str.length() > maxlength) {
+            str = str.substring(0, maxlength - 2) + "..";
+
+        }
+        return str;
     }
 }
