@@ -3,10 +3,9 @@ package itacademy.menu;
 import java.util.*;
 
 public class Menu {
-    private final List<MenuItem> items = new ArrayList<>();
     private MenuItem exit = null;
 
-    private Map<Integer, MenuItem> menuItems = new TreeMap<>();
+    private final Map<Integer, MenuItem> menuItems = new TreeMap<>();
     private Integer currentId = 1;
 
     public void addItem(MenuItem item) {
