@@ -1,20 +1,26 @@
 package itacademy.menu;
 
+import itacademy.api.Command;
+
 public class MenuItem {
     private final String title;
-    private final int id;
+    private final Command command;
 
-    public MenuItem(String title, int id) {
+    public MenuItem(String title, Command command) {
         this.title = title;
-        this.id = id;
+        this.command = command;
     }
 
-    public int getId() {
-        return id;
+    public String getTitle() {
+        return title;
+    }
+
+    public Command getCommand() {
+        return command;
     }
 
     @Override
     public String toString() {
-        return id + ". " + title;
+        return title;
     }
 }
