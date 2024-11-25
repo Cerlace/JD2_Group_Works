@@ -1,13 +1,13 @@
-package itacademy.commands_dao;
+package itacademy.commands;
 
 import itacademy.api.DAO;
-import itacademy.api.CommandDAO;
+import itacademy.api.Command;
 import itacademy.utils.ReflectionUtils;
 
 import java.sql.SQLException;
 import java.util.List;
 
-public abstract class GetAllCommand<T> implements CommandDAO {
+public abstract class GetAllCommand<T> implements Command {
     private final DAO<T> dao;
 
     public GetAllCommand(DAO<T> dao) {

@@ -2,6 +2,6 @@ package itacademy.api;
 
 import java.sql.SQLException;
 
-public interface CommandDAO {
+public interface Command {
     void execute() throws SQLException;
 }
