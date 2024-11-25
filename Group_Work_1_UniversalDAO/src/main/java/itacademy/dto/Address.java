@@ -4,13 +4,20 @@ import itacademy.annotations.ColumnAnn;
 import itacademy.annotations.IdAnn;
 import itacademy.annotations.TableAnn;
 
+/**
+ * Класс DTO {@code Address} представляет собой таблицу People в БД.
+ * Поля класса помечены аннотациями, чтобы методы класса {@code ReflectionUtils} при наличии
+ * таких аннотаций смогли извлечь из класса {@code Address} имя таблицы, имя столбца или id строки.
+ */
 @TableAnn(name = "address")
 public class Address {
     @IdAnn
     @ColumnAnn(name = "id")
     private Integer id;
+
     @ColumnAnn(name = "street")
     private String street;
+
     @ColumnAnn(name = "house")
     private Integer house;
 
@@ -60,6 +67,10 @@ public class Address {
                 ", дом: " + house;
     }
 
+    /**
+     * Здесь используется паттерн "Строитель" для создания объекта класса DTO {@code Address}.
+     * Это позволяет не заполнять обязательно все поля объекта при его создании.
+     */
     public static class AddressBuilder {
         private Integer id;
         private String street;
