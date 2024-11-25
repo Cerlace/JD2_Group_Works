@@ -18,14 +18,7 @@ public abstract class GetCommand<T> implements Command {
 
     @Override
     public T execute() throws SQLException, InvalidInputException {
-        T receivedObject = this.dao.get(this.id);
-        if (receivedObject != null) {
-            System.out.println("Из таблицы " + ReflectionUtils.getTableNameByClass(receivedObject.getClass()) + " получена запись:");
-            System.out.println(receivedObject);
-        } else {
-            System.out.println("Запись с таким id не найдена!");
-        }
-        return receivedObject;
+        return this.dao.get(this.id);
     }
 
     public void setId(Serializable id) {

@@ -16,16 +16,6 @@ public abstract class GetAllCommand<T> implements Command {
 
     @Override
     public List<T> execute() throws SQLException {
-        List<T> items = dao.getAll();
-
-        if (!items.isEmpty()) {
-            System.out.println("Все записи таблицы " + ReflectionUtils.getTableNameByClass(items.get(0).getClass()));
-            for (T item : items) {
-                System.out.println(item);
-            }
-        } else {
-            System.out.println("Записей не найдено! Таблица пуста!");
-        }
-        return items;
+        return dao.getAll();
     }
 }
