@@ -94,7 +94,7 @@ public class DataPrinterUtils {
     private static void printAddressRow(Address address) {
         System.out.printf("| %-2d | %-18s | %-5s |%n",
                 address.getId(), // ID адреса
-                address.getStreet(), // Улица
+                shortenString(address.getStreet(), 18), // Улица
                 address.getHouse()); // Дом
         System.out.printf("+----+--------------------+-------+%n"); // Завершение строки таблицы
     }
@@ -116,13 +116,13 @@ public class DataPrinterUtils {
     private static void printPeopleRow(People people) {
         System.out.printf("| %-2d | %-18s | %-18s | %-8d |%n",
                 people.getId(), // ID человека
-                people.getName(), // Имя
-                people.getSurname(), // Фамилия
+                shortenString(people.getName(), 18), // Имя
+                shortenString(people.getSurname(), 18), // Фамилия
                 people.getAge()); // Возраст
         System.out.printf("+----+--------------------+--------------------+----------+%n"); // Завершение строки таблицы
     }
 
-    private String shortenString(String str, int maxlength) {
+    private static String shortenString(String str, int maxlength) {
         if (str.length() > maxlength) {
             str = str.substring(0, maxlength - 2) + "..";
 
