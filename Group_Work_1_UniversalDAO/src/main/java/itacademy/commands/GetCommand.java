@@ -1,23 +1,26 @@
-package itacademy.commands_dao;
+package itacademy.commands;
 
 import itacademy.api.DAO;
-import itacademy.api.CommandDAO;
+import itacademy.api.Command;
 import itacademy.utils.ReflectionUtils;
 
 import java.io.Serializable;
 import java.sql.SQLException;
+import java.util.function.Supplier;
 
-public abstract class GetCommand<T> implements CommandDAO {
-    private final Serializable id;
+public abstract class GetCommand<T> implements Command {
     private final DAO<T> dao;
+    private final Supplier<Serializable> idSupplier;
 
-    public GetCommand(final Serializable id, final DAO<T> dao) {
-        this.id = id;
+    public GetCommand(DAO<T> dao, Supplier<Serializable> idSupplier) {
         this.dao = dao;
+        this.idSupplier = idSupplier;
     }
     @Override
     public void execute() throws SQLException {
-        T receivedObject= this.dao.get(this.id);
+        Serializable id = idSupplier.get();
+
+        T receivedObject= this.dao.get(id);
 
         if (receivedObject != null) {
             System.out.println("Из таблицы " + ReflectionUtils.getTableNameByClass(receivedObject.getClass()) + " получена запись:");

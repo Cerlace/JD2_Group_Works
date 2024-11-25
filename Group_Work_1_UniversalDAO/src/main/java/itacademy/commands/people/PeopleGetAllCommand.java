@@ -1,7 +1,7 @@
-package itacademy.commands_dao.people;
+package itacademy.commands.people;
 
 import itacademy.api.DAO;
-import itacademy.commands_dao.GetAllCommand;
+import itacademy.commands.GetAllCommand;
 import itacademy.dto.People;
 
 public class PeopleGetAllCommand extends GetAllCommand<People> {
