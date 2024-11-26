@@ -1,20 +1,25 @@
 package itacademy.menu;
 
+import itacademy.api.Command;
+import itacademy.exceptions.checked.InvalidInputException;
+
+import java.sql.SQLException;
+
 public class MenuItem {
     private final String title;
-    private final int id;
+    private final Command command;
 
-    public MenuItem(String title, int id) {
+    public MenuItem(String title, Command command) {
         this.title = title;
-        this.id = id;
+        this.command = command;
     }
 
-    public int getId() {
-        return id;
+    public void executeCommand() throws SQLException, InvalidInputException {
+        this.command.execute();
     }
 
     @Override
     public String toString() {
-        return id + ". " + title;
+        return title;
     }
 }

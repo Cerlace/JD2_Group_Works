@@ -2,6 +2,6 @@ package itacademy.api;
 
 import itacademy.exceptions.checked.InvalidInputException;
 
-public interface CommandConsole<T> {
-    T execute() throws InvalidInputException;
+public interface Creator<T> {
+    T create() throws InvalidInputException;
 }

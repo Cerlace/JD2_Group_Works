@@ -1,28 +1,28 @@
-package itacademy.commands_console;
+package itacademy.creators;
 
-import itacademy.api.CommandConsole;
+import itacademy.api.Creator;
 import itacademy.dto.People;
 import itacademy.exceptions.checked.InvalidInputException;
 import itacademy.utils.ConsoleUtils;
 
 import java.util.Scanner;
 
-public class PeopleInputCommand implements CommandConsole<People> {
+public class PeopleCreator implements Creator<People> {
     private final Scanner scanner;
 
-    public PeopleInputCommand(final Scanner scanner) {
+    public PeopleCreator(Scanner scanner) {
         this.scanner = scanner;
     }
 
     @Override
-    public People execute() throws InvalidInputException {
+    public People create() throws InvalidInputException {
         System.out.print("Введите имя: ");
-        this.scanner.nextLine();
-        String name = this.scanner.nextLine();
+        scanner.nextLine();
+        String name = scanner.nextLine();
         System.out.print("Введите фамилию: ");
-        String surname = this.scanner.nextLine();
+        String surname = scanner.nextLine();
         System.out.print("Введите возраст: ");
-        int age = ConsoleUtils.inputInt(this.scanner);
+        int age = ConsoleUtils.inputInt(scanner);
 
         return People.builder()
                 .name(name)
