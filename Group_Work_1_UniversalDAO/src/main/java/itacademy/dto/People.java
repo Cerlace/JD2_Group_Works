@@ -4,6 +4,11 @@ import itacademy.annotations.ColumnAnn;
 import itacademy.annotations.IdAnn;
 import itacademy.annotations.TableAnn;
 
+/**
+ * Класс DTO {@code People} представляет собой таблицу People в БД.
+ * Поля класса помечены аннотациями, чтобы методы класса {@code ReflectionUtils} при наличии
+ * таких аннотаций смогли извлечь из класса {@code People} имя таблицы, имя столбца или id строки.
+ */
 @TableAnn(name = "people")
 public class People {
     @IdAnn
@@ -74,6 +79,10 @@ public class People {
                 ", возраст: " + age;
     }
 
+    /**
+     * Здесь используется паттерн "Строитель" для создания объекта класса DTO {@code People}.
+     * Это позволяет не заполнять обязательно все поля объекта при его создании.
+     */
     public static class PeopleBuilder {
         private Integer id;
         private String name;

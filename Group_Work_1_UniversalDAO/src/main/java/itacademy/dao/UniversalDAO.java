@@ -13,19 +13,25 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.*;
 
+/**
+ * Абстрактный класс для взаимодействия с базой данных. Здесь реализованы
+ * методы CRUD - создание, чтение, обновление и удаление объектов в базе данных (БД).
+ * @param <T> любой класс, который представляет собой таблицу БД.
+ */
 public abstract class UniversalDAO<T> implements DAO<T> {
 
     private final Class<T> clazz;
 
+    /**
+     * В конструктор передается класс DTO {@code <T>}, чтобы через рефлексию получить доступ к полям и аннотациями класса {@code <T>}.
+     */
     public UniversalDAO(Class<T> clazz) {
         this.clazz = clazz;
     }
 
     /**
      * Метод для создания таблицы в БД, если она еще не создана
-     *
      * @throws SQLException при возникновении ошибок в ходе создания таблицы
-     *
      * @author Данила
      */
     @Override
@@ -42,13 +48,9 @@ public abstract class UniversalDAO<T> implements DAO<T> {
 
     /**
      * Метод добавляет в таблицу запись
-     *
      * @param t объект, поля которого нужно записать в таблицу
-     *
      * @return этот же объект с полученным от БД идентификатором
-     *
      * @throws SQLException при возникновении ошибок в ходе записи в таблицу
-     *
      * @author Рома
      */
     @Override
@@ -73,13 +75,9 @@ public abstract class UniversalDAO<T> implements DAO<T> {
 
     /**
      * Метод получает из БД запись по ее идентификатору
-     *
      * @param id уникальный идентификатор
-     *
      * @return объект DTO, соответствующий таблице в БД
-     *
      * @throws SQLException при возникновении ошибок в ходе чтения из базы данных
-     *
      * @author Данила
      */
     @Override
@@ -102,11 +100,8 @@ public abstract class UniversalDAO<T> implements DAO<T> {
 
     /**
      * Метод получает из таблицы все записи
-     *
      * @return список объектов DTO, соответствующих таблице в БД
-     *
      * @throws SQLException при возникновении ошибок в ходе чтения из базы данных
-     *
      * @author Саймон
      */
     @Override
@@ -132,13 +127,10 @@ public abstract class UniversalDAO<T> implements DAO<T> {
 
     /**
      * Метод обновляет поля в таблице у записи с указанным идентификатором
-     *
      * @param id уникальный идентификатор записи в таблице
      * @param t объект DTO, соответствующий таблице, полями которого будут заменены
      *          поля записи с идентификатором id
-     *
      * @throws SQLException при возникновении ошибок в ходе обновления данных в БД
-     *
      * @author Саймон
      */
     @Override
@@ -153,13 +145,9 @@ public abstract class UniversalDAO<T> implements DAO<T> {
 
     /**
      * Метод удаляет из таблицы в БД запись с указанным идентификатором
-     *
      * @param id уникальный идентификатор записи в таблице
-     *
      * @return количество удаленных записей
-     *
      * @throws SQLException при возникновении ошибок в ходе удаления данных из БД
-     *
      * @author Рома
      */
     @Override
