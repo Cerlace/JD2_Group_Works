@@ -21,6 +21,7 @@ public class AddressPrinter implements Printer<Address> {
         if (entity != null) {
             this.printHeader(); // Вывод заголовка таблицы адресов
             this.printAddress(entity); // Вывод строки с данными об адресе
+            this.printLine();
         } else {
             System.out.println("Адрес не предоставлен."); // Сообщение при отсутствии данных
         }

@@ -22,6 +22,7 @@ public class PeoplePrinter implements Printer<People> {
         if (entity != null) {
             this.printHeader(); // Вывод заголовка таблицы людей
             printPeople(entity); // Вывод строки с данными о человеке
+            this.printLine();
         } else {
             System.out.println("Данные о человеке не предоставлены."); // Сообщение при отсутствии данных
         }
