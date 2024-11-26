@@ -10,9 +10,9 @@ import java.lang.annotation.Target;
  * {@code ReflectionUtils} при наличии такой аннотации смогли извлечь из класса DTO
  * имя колонки таблицы.
  * <p>Аннотация записывается в .class-файл и доступна во время выполнения через рефлексию.
- * <p>Аннотация применяется только к методам и полям.
+ * <p>Аннотация применяется только к полям.
  */
-@Target({ElementType.METHOD, ElementType.FIELD})
+@Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ColumnAnn {
 
