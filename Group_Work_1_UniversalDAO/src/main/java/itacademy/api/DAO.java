@@ -38,14 +38,13 @@ public interface DAO <T>{
      * @throws SQLException при ошибках чтения данных из таблицы.
      */
     List<T> getAll() throws SQLException;
-
     /**
      * Метод обновляет параметры строки таблицы БД по идентификатору строки {@code id}.
      * @param id - идентификатор строки таблицы БД
      * @param t - обновленные параметры строки таблицы БД
      * @throws SQLException при ошибках обновления данных в таблице.
      */
-    void update(Serializable id, T t) throws SQLException;
+    int update(Serializable id, T t) throws SQLException;
 
     /**
      * Метод удаляет строку таблицы БД по идентификатору строки {@code id}.

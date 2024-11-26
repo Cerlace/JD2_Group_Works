@@ -134,15 +134,13 @@ public abstract class UniversalDAO<T> implements DAO<T> {
      * @author Саймон
      */
     @Override
-    public void update(Serializable id, T t) throws SQLException {
-        SQLExecutor<T> executor = connection -> {
+    public int update(Serializable id, T t) throws SQLException {
+        SQLExecutor<Integer> executor = connection -> {
             Statement statement = connection.createStatement();
-            statement.executeUpdate(SQLBuilderUtils.getUpdateQuery(id,t));
-
-            return null;
+            return statement.executeUpdate(SQLBuilderUtils.getUpdateQuery(id,t));
         };
 
-        ExecutorUtils.executeSQL(executor);
+        return ExecutorUtils.executeSQL(executor);
     }
 
     /**

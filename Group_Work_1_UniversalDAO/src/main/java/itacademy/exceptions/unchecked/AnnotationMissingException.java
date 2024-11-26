@@ -1,4 +1,4 @@
-package itacademy.exceptions;
+package itacademy.exceptions.unchecked;
 
 /**
  * Исключение, которое выбрасывается, когда требуется аннотация,
