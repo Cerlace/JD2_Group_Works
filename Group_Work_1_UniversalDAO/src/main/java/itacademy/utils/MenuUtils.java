@@ -3,11 +3,13 @@ package itacademy.utils;
 import itacademy.api.DAO;
 import itacademy.commands.people.*;
 import itacademy.dto.People;
+import itacademy.exceptions.checked.InvalidInputException;
 import itacademy.menu.Menu;
 import itacademy.menu.MenuItem;
-import itacademy.suppliers.IdSupplier;
-import itacademy.suppliers.PeopleSupplier;
+import itacademy.creators.IdCreator;
+import itacademy.creators.PeopleCreator;
 
+import java.sql.SQLException;
 import java.util.Scanner;
 
 public class MenuUtils {
@@ -15,12 +17,12 @@ public class MenuUtils {
         Scanner scanner = ConsoleUtils.getScanner();
 
         Menu menu = new Menu();
-        menu.addItem(new MenuItem("Добавить человека в БД", new PeopleSaveCommand(dao, new PeopleSupplier(scanner))));
+        menu.addItem(new MenuItem("Добавить человека в БД", new PeopleSaveCommand(dao, new PeopleCreator(scanner))));
         menu.addItem(new MenuItem("Изменить данные о человеке", new PeopleUpdateCommand(dao,
-                new PeopleSupplier(scanner),
-                new IdSupplier(scanner))));
-        menu.addItem(new MenuItem("Удалить человека из БД", new PeopleDeleteCommand(dao,new IdSupplier(scanner))));
-        menu.addItem(new MenuItem("Найти человека", new PeopleGetCommand(dao,new IdSupplier(scanner))));
+                new PeopleCreator(scanner),
+                new IdCreator(scanner))));
+        menu.addItem(new MenuItem("Удалить человека из БД", new PeopleDeleteCommand(dao,new IdCreator(scanner))));
+        menu.addItem(new MenuItem("Найти человека", new PeopleGetCommand(dao,new IdCreator(scanner))));
         menu.addItem(new MenuItem("Показать всех людей в БД", new PeopleGetAllCommand(dao)));
 
         menu.setExitItem(new MenuItem("Выйти из программы", null));
@@ -46,8 +48,12 @@ public class MenuUtils {
                         System.out.println("Такого пункта меню нет!");
                     }
                 }
-            } catch (Exception e) {
+            } catch (InvalidInputException e) {
                 System.out.println(e.getMessage());
+            } catch (SQLException e) {
+                System.out.println("Возникла ошибка при выполнении SQL запроса!\n" +
+                        "Код ошибки: " + e.getSQLState() + "\n" +
+                        e.getLocalizedMessage());
             }
         }
     }

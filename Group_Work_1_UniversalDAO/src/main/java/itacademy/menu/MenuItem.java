@@ -1,6 +1,7 @@
 package itacademy.menu;
 
 import itacademy.api.Command;
+import itacademy.exceptions.checked.InvalidInputException;
 
 import java.sql.SQLException;
 
@@ -13,7 +14,7 @@ public class MenuItem {
         this.command = command;
     }
 
-    public void executeCommand() throws SQLException {
+    public void executeCommand() throws SQLException, InvalidInputException {
         this.command.execute();
     }
 
