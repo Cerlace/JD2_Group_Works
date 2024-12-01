@@ -1,26 +1,22 @@
 package itacademy.creators;
 
 import itacademy.api.Creator;
-import itacademy.dto.Address;
+import itacademy.entity.Address;
 import itacademy.exceptions.checked.InvalidInputException;
 import itacademy.utils.ConsoleUtils;
-
-import java.util.Scanner;
+import itacademy.utils.DataOutputUtils;
 
 public class AddressCreator implements Creator<Address> {
-    private final Scanner scanner;
-
-    public AddressCreator(Scanner scanner) {
-        this.scanner = scanner;
-    }
+    private static final String REQUEST_STREET_ENTRY = "Введите название улицы: ";
+    private static final String REQUEST_HOUSE_ENTRY = "Введите номер дома: ";
 
     @Override
     public Address create() throws InvalidInputException {
-        System.out.print("Введите название улицы: ");
-        scanner.nextLine();
-        String street = scanner.nextLine();
-        System.out.print("Введите номер дома: ");
-        int house = ConsoleUtils.inputInt(scanner);
+        DataOutputUtils.displayMessage(REQUEST_STREET_ENTRY);
+        ConsoleUtils.inputString();
+        String street = ConsoleUtils.inputString();
+        DataOutputUtils.displayMessage(REQUEST_HOUSE_ENTRY);
+        int house = ConsoleUtils.inputInt();
 
         return Address.builder()
                 .street(street)

@@ -7,20 +7,32 @@ import java.util.Scanner;
 public class ConsoleUtils {
     private static final Scanner SCANNER = new Scanner(System.in);
 
-    public static Scanner getScanner() {
-        return SCANNER;
-    }
-
+    /**
+     * Метод закрывает сканер
+     */
     public static void closeScanner() {
         SCANNER.close();
     }
 
-    public static int inputInt(Scanner console) throws InvalidInputException {
-        if (console.hasNextInt()) {
-            return console.nextInt();
+    /**
+     * Метод для ввода с консоли целого числа
+     * @return число
+     * @throws InvalidInputException если введено не целое число
+     */
+    public static int inputInt() throws InvalidInputException {
+        if (SCANNER.hasNextInt()) {
+            return SCANNER.nextInt();
         } else {
-            console.next();
+            SCANNER.next();
             throw new InvalidInputException("Вы ввели не целое число!");
         }
+    }
+
+    /**
+     * Метод для ввода с консоли строки
+     * @return введенная строка
+     */
+    public static String inputString() {
+        return SCANNER.nextLine();
     }
 }
