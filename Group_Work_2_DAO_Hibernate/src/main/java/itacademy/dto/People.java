@@ -2,37 +2,36 @@ package itacademy.dto;
 
 import itacademy.annotations.ColumnAnn;
 import itacademy.annotations.IdAnn;
-import itacademy.annotations.TableAnn;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import javax.persistence.*;
 
 /**
  * Класс DTO {@code People} представляет собой таблицу People в БД.
  * Поля класса помечены аннотациями, чтобы методы класса {@code ReflectionUtils} при наличии
  * таких аннотаций смогли извлечь из класса {@code People} имя таблицы, имя столбца или id строки.
  */
-@TableAnn(name = "people")
+@Builder
+@Data
+@Entity
+@AllArgsConstructor
+@NoArgsConstructor
+@Table
 public class People {
-    @IdAnn
-    @ColumnAnn(name = "id")
+    @Id
+    @GeneratedValue(strategy =  GenerationType.IDENTITY)
+    @Column
     private Integer id;
 
-    @ColumnAnn(name = "name")
+    @Column
     private String name;
 
-    @ColumnAnn(name = "surname")
-    private String surname;
+    @Column    private String surname;
 
-    @ColumnAnn(name = "age")
-    private int age;
-
-    public People(Integer id, String name, String surname, int age) {
-        this.id = id;
-        this.name = name;
-        this.surname = surname;
-        this.age = age;
-    }
-
-    public People() {
-    }
+    @Column    private int age;
 
     public static PeopleBuilder builder() {
         return new PeopleBuilder();

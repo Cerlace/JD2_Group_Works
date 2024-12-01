@@ -1,35 +1,35 @@
 package itacademy.dto;
 
-import itacademy.annotations.ColumnAnn;
-import itacademy.annotations.IdAnn;
-import itacademy.annotations.TableAnn;
+
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import javax.persistence.*;
 
 /**
  * Класс DTO {@code Address} представляет собой таблицу People в БД.
  * Поля класса помечены аннотациями, чтобы методы класса {@code ReflectionUtils} при наличии
  * таких аннотаций смогли извлечь из класса {@code Address} имя таблицы, имя столбца или id строки.
  */
-@TableAnn(name = "address")
+@Builder
+@Data
+@Entity
+@AllArgsConstructor
+@NoArgsConstructor
+@Table
 public class Address {
-    @IdAnn
-    @ColumnAnn(name = "id")
+    @Id
+    @GeneratedValue (strategy =  GenerationType.IDENTITY)
+    @Column
     private Integer id;
 
-    @ColumnAnn(name = "street")
-    private String street;
+    @Column    private String street;
 
-    @ColumnAnn(name = "house")
-    private Integer house;
+    @Column    private Integer house;
 
-
-    public Address(Integer id, String street, Integer house) {
-        this.id = id;
-        this.street = street;
-        this.house = house;
-    }
-
-    public Address() {
-    }
 
     public static AddressBuilder builder() {
         return new AddressBuilder();

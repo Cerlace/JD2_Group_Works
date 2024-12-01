@@ -30,7 +30,6 @@ public class ReflectionUtils {
             throw new AnnotationMissingException("Ошибка! DTO - class не аннотирован @TableAnn!");
         }
     }
-
     /**
      * Метод проверяет поля класса на наличие аннотации {@code @ColumnAnn},
      * при ее наличии извлекает из нее имя колонки, а также тип из самого поля.
