@@ -2,7 +2,7 @@ package itacademy.dao.impl;
 
 import itacademy.api.PeopleDAO;
 import itacademy.dao.UniversalDAO;
-import itacademy.dto.People;
+import itacademy.entity.People;
 
 /**
  * Класс {@code PeopleDAOImpl} наследуется от абстрактного класса {@code UniversalDAO} для того,

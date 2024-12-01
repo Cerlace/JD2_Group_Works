@@ -1,6 +1,6 @@
 package itacademy.api;
 
-import itacademy.dto.People;
+import itacademy.entity.People;
 
 /**
  * Этот интерфейс предназначен для взаимодействия с классом DTO {@code People}. Класс DTO {@code People} представляет

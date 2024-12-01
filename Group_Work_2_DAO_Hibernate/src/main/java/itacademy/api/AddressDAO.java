@@ -1,6 +1,6 @@
 package itacademy.api;
 
-import itacademy.dto.Address;
+import itacademy.entity.Address;
 
 /**
  * Этот интерфейс предназначен для взаимодействия с классом DTO {@code Address}. Класс DTO {@code Address} представляет

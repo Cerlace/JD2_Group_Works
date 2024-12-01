@@ -2,7 +2,7 @@ package itacademy.dao.impl;
 
 import itacademy.api.AddressDAO;
 import itacademy.dao.UniversalDAO;
-import itacademy.dto.Address;
+import itacademy.entity.Address;
 
 /**
  * Класс {@code AddressDAOImpl} наследуется от абстрактного класса {@code UniversalDAO} для того,
