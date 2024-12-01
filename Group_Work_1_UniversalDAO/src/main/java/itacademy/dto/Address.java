@@ -1,39 +1,42 @@
 package itacademy.dto;
 
-import itacademy.annotations.ColumnAnn;
-import itacademy.annotations.IdAnn;
-import itacademy.annotations.TableAnn;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import javax.persistence.Column;
+import javax.persistence.Id;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+
+@Builder
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Entity
 
 /**
- * Класс DTO {@code Address} представляет собой таблицу People в БД.
+ * Класс DTO {@code Address} представляет собой таблицу Address в БД.
  * Поля класса помечены аннотациями, чтобы методы класса {@code ReflectionUtils} при наличии
  * таких аннотаций смогли извлечь из класса {@code Address} имя таблицы, имя столбца или id строки.
+ * Аннотации взяты из библиотек Hibernate и Lombok.
  */
-@TableAnn(name = "address")
+@Table(name = "address")
 public class Address {
-    @IdAnn
-    @ColumnAnn(name = "id")
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @ColumnAnn(name = "street")
+    @Column(name = "street")
     private String street;
 
-    @ColumnAnn(name = "house")
+    @Column(name = "house")
     private Integer house;
 
-
-    public Address(Integer id, String street, Integer house) {
-        this.id = id;
-        this.street = street;
-        this.house = house;
-    }
-
-    public Address() {
-    }
-
-    public static AddressBuilder builder() {
-        return new AddressBuilder();
-    }
 
     public Integer getId() {
         return id;
@@ -65,34 +68,5 @@ public class Address {
                 "id: " + id +
                 ", улица: " + street +
                 ", дом: " + house;
-    }
-
-    /**
-     * Здесь используется паттерн "Строитель" для создания объекта класса DTO {@code Address}.
-     * Это позволяет не заполнять обязательно все поля объекта при его создании.
-     */
-    public static class AddressBuilder {
-        private Integer id;
-        private String street;
-        private Integer house;
-
-        public AddressBuilder id(Integer id) {
-            this.id = id;
-            return this;
-        }
-
-        public AddressBuilder street(String street) {
-            this.street = street;
-            return this;
-        }
-
-        public AddressBuilder house(Integer house) {
-            this.house = house;
-            return this;
-        }
-
-        public Address build() {
-            return new Address(id, street, house);
-        }
     }
 }
