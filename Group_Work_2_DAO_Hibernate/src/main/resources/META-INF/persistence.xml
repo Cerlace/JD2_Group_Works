@@ -4,11 +4,13 @@
              version="2.0">
     <persistence-unit name="academy">
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+        <class> itacademy.dto.Address</class>
+        <class> itacademy.dto.People</class>
         <properties>
             <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
-            <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/XXXXXXX"/>
+            <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/hw6_db"/>
             <property name="javax.persistence.jdbc.user" value="root"/>
-            <property name="javax.persistence.jdbc.password" value="XXXXXXX"/>
+            <property name="javax.persistence.jdbc.password" value="Лщзфпфифтф_7"/>
             <property name="hibernate.dialect.storage_engine" value="innodb"/>
             <property name="hibernate.hbm2ddl.auto" value="update"/>
             <property name="hibernate.use_sql_comments" value="false"/>

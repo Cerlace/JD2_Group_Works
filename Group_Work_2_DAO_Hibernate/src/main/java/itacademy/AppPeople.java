@@ -13,11 +13,6 @@ public class AppPeople {
     public static void main(String[] args) {
         DAO<People> dao = new PeopleDAOImpl();
 
-        try {
-            dao.createTable();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
 
         Menu peopleMenu = MenuUtils.getPeopleMenu(dao);
         MenuUtils.runMenu(peopleMenu);

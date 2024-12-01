@@ -13,11 +13,6 @@ public class AppAddress {
     public static void main(String[] args) {
         DAO<Address> dao = new AddressDAOImpl();
 
-        try {
-            dao.createTable();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
 
         Menu addressMenu = MenuUtils.getAddressMenu(dao);
         MenuUtils.runMenu(addressMenu);
