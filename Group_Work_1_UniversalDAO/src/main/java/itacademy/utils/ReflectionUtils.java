@@ -1,21 +1,27 @@
 package itacademy.utils;
 
-import itacademy.annotations.ColumnAnn;
-import itacademy.annotations.IdAnn;
-import itacademy.annotations.TableAnn;
+import javax.persistence.Table;
+import javax.persistence.Column;
+import javax.persistence.Id;
+
 import itacademy.exceptions.unchecked.AnnotationMissingException;
 
 import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Утилитарный класс, который содержит методы использующие рефлексию.
  */
 public class ReflectionUtils {
     /**
-     * Метод проверят класс на наличие аннотации {@code @TableAnn},
+     * Метод проверят класс на наличие аннотации {@code @Table},
      * при ее наличии извлекает из нее имя таблицы.
      * Выбрасывает {@code AnnotationMissingException} в случае отсутствия аннотации.
      *
@@ -24,18 +30,18 @@ public class ReflectionUtils {
      * @return строку, содержащую имя таблицы в базе данных.
      */
     public static <T> String getTableNameByClass(Class<T> clazz) {
-        if (clazz.isAnnotationPresent(TableAnn.class)) {
-            return clazz.getAnnotation(TableAnn.class).name();
+        if (clazz.isAnnotationPresent(Table.class)) {
+            return clazz.getAnnotation(Table.class).name();
         } else {
             throw new AnnotationMissingException("Ошибка! DTO - class не аннотирован @TableAnn!");
         }
     }
 
     /**
-     * Метод проверяет поля класса на наличие аннотации {@code @ColumnAnn},
+     * Метод проверяет поля класса на наличие аннотации {@code @Column},
      * при ее наличии извлекает из нее имя колонки, а также тип из самого поля.
      * Полученные данные собираются в упорядоченный список. Также при наличии
-     * аннотации {@code @IdAnn} добавляется строка, обозначающая PRIMARY KEY.
+     * аннотации {@code @Id} добавляется строка, обозначающая PRIMARY KEY.
      *
      * @param clazz класс (DTO), ассоциированный с таблицей с помощью аннотаций.
      * @param <T>   тип DTO, переданный в качестве параметра.
@@ -47,13 +53,13 @@ public class ReflectionUtils {
         Field[] fields = clazz.getDeclaredFields();
 
         for (Field field : fields) {
-            if (field.isAnnotationPresent(ColumnAnn.class)) {
-                String columnName = field.getAnnotation(ColumnAnn.class).name();
+            if (field.isAnnotationPresent(Column.class)) {
+                String columnName = field.getAnnotation(Column.class).name();
 
                 String javaType = field.getType().getSimpleName();
                 String sqlType = SQLBuilderUtils.getSqlType(javaType);
 
-                if (field.isAnnotationPresent(IdAnn.class)) {
+                if (field.isAnnotationPresent(Id.class)) {
                     sqlType += " AUTO_INCREMENT PRIMARY KEY";
                 }
                 columnNamesAndTypes.add(columnName + " " + sqlType);
@@ -63,7 +69,7 @@ public class ReflectionUtils {
     }
 
     /**
-     * Метод проверяет поля объекта на наличие аннотации {@code @IdAnn},
+     * Метод проверяет поля объекта на наличие аннотации {@code @Id},
      * при ее наличии устанавливает переданное значение в соответствующее поле.
      *
      * @param t           объект, для которого нужно установить новый id.
@@ -73,7 +79,7 @@ public class ReflectionUtils {
     public static <T> void setIdValue(T t, Serializable generatedId) {
         try {
             for (Field field : t.getClass().getDeclaredFields()) {
-                if (field.isAnnotationPresent(IdAnn.class)) {
+                if (field.isAnnotationPresent(Id.class)) {
                     field.setAccessible(true);
                     field.set(t, generatedId);
                     field.setAccessible(false);
@@ -85,7 +91,7 @@ public class ReflectionUtils {
     }
 
     /**
-     * Метод проверяет поля объекта на наличие аннотации {@code @ColumnAnn},
+     * Метод проверяет поля объекта на наличие аннотации {@code @Column},
      * при ее наличии извлекает из нее имя колонки, и добавляет его во множество.
      *
      * @param clazz класс (DTO), ассоциированный с таблицей с помощью аннотаций.
@@ -96,8 +102,8 @@ public class ReflectionUtils {
     public static <T> Set<String> getColumnNames(Class<T> clazz) {
         Set<String> columns = new HashSet<>();
         for (Field field : clazz.getDeclaredFields()) {
-            if (field.isAnnotationPresent(ColumnAnn.class)) {
-                String columnLabel = field.getAnnotation(ColumnAnn.class).name();
+            if (field.isAnnotationPresent(Column.class)) {
+                String columnLabel = field.getAnnotation(Column.class).name();
                 columns.add(columnLabel);
             }
         }
@@ -119,8 +125,8 @@ public class ReflectionUtils {
             T object = clazz.getDeclaredConstructor().newInstance();
 
             for (Field field : clazz.getDeclaredFields()) {
-                if (field.isAnnotationPresent(ColumnAnn.class)) {
-                    String columnLabel = field.getAnnotation(ColumnAnn.class).name();
+                if (field.isAnnotationPresent(Column.class)) {
+                    String columnLabel = field.getAnnotation(Column.class).name();
                     field.setAccessible(true);
                     field.set(object, columnsAndValues.get(columnLabel));
                     field.setAccessible(false);
@@ -134,8 +140,8 @@ public class ReflectionUtils {
     }
 
     /**
-     * Метод проверяет поля объекта на наличие аннотации {@code @ColumnAnn}
-     * и отсутствие аннотации {@code @IdAnn}, при соблюдении условия извлекает
+     * Метод проверяет поля объекта на наличие аннотации {@code @Column}
+     * и отсутствие аннотации {@code @Id}, при соблюдении условия извлекает
      * имя колонки и значение из поля объекта, и добавляет их в список ключ-значение.
      *
      * @param t   объект, из которого извлекаются значения.
@@ -147,8 +153,8 @@ public class ReflectionUtils {
         Field[] fields = t.getClass().getDeclaredFields();
         try {
             for (Field field : fields) {
-                if (!field.isAnnotationPresent(IdAnn.class) && field.isAnnotationPresent(ColumnAnn.class)) {
-                    String columnName = field.getAnnotation(ColumnAnn.class).name();
+                if (!field.isAnnotationPresent(Id.class) && field.isAnnotationPresent(Column.class)) {
+                    String columnName = field.getAnnotation(Column.class).name();
                     field.setAccessible(true);
                     Object value = field.get(t);
                     field.setAccessible(false);
