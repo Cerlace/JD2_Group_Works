@@ -1,7 +1,6 @@
 package itacademy.api;
 
 import java.io.Serializable;
-import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -15,40 +14,35 @@ public interface DAO<T> {
      * Метод сохраняет новую строку таблицы в БД. Строка может содержать различные параметры.
      * @param t строка таблицы, представленная объектом класса DTO {@code <T>}.
      * @return сохраненный объект с присвоенным ему id
-     * @throws SQLException при ошибках записи данных в таблицу.
      */
-    T save(T t) throws SQLException;
-
+    T save(T t);
     /**
      * Метод возвращает параметры строки таблицы по идентификатору строки {@code id}.
      * <p>Интерфейс {@code Serializable} используется, чтобы идентификатор мог быть любым сериализуемым типом
      * (такой тип можно представить как последовательность байт, например Integer или String).
      * @param id идентификатор строки таблицы БД
      * @return полученный из БД объект по данному id или null, если объект не найден
-     * @throws SQLException при ошибках чтения данных из таблицы.
      */
-    T get(Serializable id) throws SQLException;
+    T get(Serializable id);
 
     /**
      * Метод возвращает список всех строк таблицы в том порядке, в котором они представлены в таблице БД
      * @return список всех объектов, хранящихся в таблице
-     * @throws SQLException при ошибках чтения данных из таблицы.
      */
-    List<T> getAll() throws SQLException;
+    List<T> getAll();
     /**
      * Метод обновляет параметры строки таблицы БД по идентификатору строки {@code id}.
      * @param id - идентификатор строки таблицы БД
      * @param t - обновленные параметры строки таблицы БД
+     * @throws IllegalAccessException при ошибке работы методов рефлексии
      * @return обновленный в БД объект или null, если объект с таким id отсутствует
-     * @throws SQLException при ошибках обновления данных в таблице.
      */
-    T update(Serializable id, T t) throws SQLException, IllegalAccessException;
+    T update(Serializable id, T t) throws IllegalAccessException;
 
     /**
      * Метод удаляет строку таблицы БД по идентификатору строки {@code id}.
      * @param id идентификатор строки таблицы БД
      * @return true - если запись удалена успешно, false - если запись с таким id не была найдена
-     * @throws SQLException при ошибках удаления данных из таблицы.
      */
-    boolean delete(Serializable id) throws SQLException;
+    boolean delete(Serializable id);
 }
