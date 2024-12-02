@@ -6,5 +6,7 @@
 
 <suppressions>
     <suppress checks="AvoidStaticImport" files="src[/\\]test[/\\]java[/\\].*"/>
+    <suppress checks="AvoidStarImport" files="src[/\\]test[/\\]java[/\\].*"/>
+    <suppress checks="MagicNumber" files="src[/\\]test[/\\]java[/\\].*"/>
     <suppress checks="LineLength" files="src[/\\]main[/\\]resources[/\\].*"/>
 </suppressions>
