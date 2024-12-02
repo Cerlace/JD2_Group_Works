@@ -77,12 +77,16 @@
          <module name="UnnecessaryParentheses"/>
 
          <!-- Проверяет Javadoc public методов и конструкторов-->
-         <!--module name="JavadocMethod">
+         <module name="JavadocMethod">
              <property name="accessModifiers" value="public"/>
-         </module-->
+         </module>
 
-         <!-- Проверяет наличие документации у public методов и конструкторов -->
-         <!--module name="MissingJavadocMethod"/-->
+         <!-- Проверяет наличие документации у public методов -->
+         <module name="MissingJavadocMethod">
+             <property name="tokens" value="METHOD_DEF"/>
+             <property name="ignoreMethodNamesRegex" value="^main"/>
+             <property name="allowMissingPropertyJavadoc" value="true"/>
+         </module>
 
          <!-- Проверка на правильность именования пакетов -->
          <module name="PackageName">
