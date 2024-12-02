@@ -1,18 +1,13 @@
 package itacademy.dao;
 
 import itacademy.api.DAO;
-import itacademy.api.SQLExecutor;
-import itacademy.utils.ExecutorUtils;
 import itacademy.utils.HibernateUtil;
-import itacademy.utils.ReflectionUtils;
-import itacademy.utils.SQLBuilderUtils;
 
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
 import java.io.Serializable;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+import java.lang.reflect.Field;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.*;
 
 /**
@@ -38,23 +33,14 @@ public abstract class UniversalDAO<T> implements DAO<T> {
      * @throws SQLException при возникновении ошибок в ходе создания таблицы
      * @author Данила
      */
-    @Override
-    public void createTable() throws SQLException {
-        SQLExecutor<T> executor = connection -> {
-            Statement statement = connection.createStatement();
-            statement.executeUpdate(SQLBuilderUtils.getCreateTableQuery(this.clazz));
-            return null;
-        };
-        ExecutorUtils.executeSQL(executor);
-    }
-
     /**
      * Метод добавляет в таблицу запись
      *
      * @param t объект, поля которого нужно записать в таблицу
      * @return этот же объект с полученным от БД идентификатором
      * @throws SQLException при возникновении ошибок в ходе записи в таблицу
-     * @author Рома
+     * @author Рома,
+     * под Hibernate переделал Сергей
      */
     @Override
     public T save(T t) throws SQLException {
@@ -72,6 +58,7 @@ public abstract class UniversalDAO<T> implements DAO<T> {
      * @return объект DTO, соответствующий таблице в БД
      * @throws SQLException при возникновении ошибок в ходе чтения из базы данных
      * @author Данила
+     * под Hibernate переделал Сергей
      */
     @Override
     public T get(Serializable id) {
@@ -88,36 +75,11 @@ public abstract class UniversalDAO<T> implements DAO<T> {
      * @author Саймон
      */
     @Override
-    public List<T> getAll() throws SQLException {
-         /* EntityManager entityManager = HibernateUtil.getEntityManager();
-
-
-        T myEntity = entityManager.find(clazz, id);
-        while (myEntity != null) {
-
-
-        }
-        List<T> list = new ArrayList<>();
-        list.add(myEntity);
-        return list;*/
-
-
-        SQLExecutor<List<T>> executor = connection -> {
-            Statement statement = connection.createStatement();
-
-            try (ResultSet resultSet = statement.executeQuery(SQLBuilderUtils.getSelectAllQuery(this.clazz))) {
-
-                List<T> resultList = new ArrayList<>();
-
-                while (resultSet.next()) {
-                    Map<String, Object> columnsAndValues = getColumnsAndValuesFromRecord(resultSet);
-                    T record = ReflectionUtils.buildObject(clazz, columnsAndValues);
-                    resultList.add(record);
-                }
-                return resultList;
-            }
-        };
-        return ExecutorUtils.executeSQL(executor);
+    public List<T> getAll() {
+        EntityManager entityManager = HibernateUtil.getEntityManager();
+        Query query = entityManager.createQuery("select a from " + this.clazz.getSimpleName() + " a");
+        List resultList1 = query.getResultList();
+        return resultList1;
     }
 
     /**
@@ -128,35 +90,42 @@ public abstract class UniversalDAO<T> implements DAO<T> {
      *           поля записи с идентификатором id
      * @throws SQLException при возникновении ошибок в ходе обновления данных в БД
      * @author Саймон
+     * под Hibernate переделал Сергей
      */
     @Override
     public int update(Serializable id, T t) throws SQLException {
-        /*EntityManager em = entityManagerFactory.createEntityManager();
-        EntityTransaction transaction = em.getTransaction();
-
-        try{
-            transaction.begin();
-            T existingEntity = em.find(entityClass, id);
-            if (existingEntity != null) {
-                em.merge(entity);
-            }
-            transaction.commit();*/
-
         EntityManager entityManager = HibernateUtil.getEntityManager();
         entityManager.getTransaction().begin();
 
         T myEntity = entityManager.find(clazz, id);
         if (myEntity != null) {
+            updateEntity(myEntity, t);
             entityManager.merge(myEntity);
         }
-
         entityManager.getTransaction().commit();
+        if (entityManager.getTransaction().isActive()) {
+            entityManager.getTransaction().rollback();
+        }
 
-      /*  SQLExecutor<Integer> executor = connection -> {
-            Statement statement = connection.createStatement();
-            return statement.executeUpdate(SQLBuilderUtils.getUpdateQuery(id, t));
-        };*/
         return (int) id;
+    }
+
+
+
+    private <T> void updateEntity(T source, T target) {
+        try {
+            Field[] fields = source.getClass().getDeclaredFields();
+            for (Field field : fields) {
+                field.setAccessible(true);
+                Object value = field.get(target);
+                if (value != null) {
+                    field.set(source, value);
+                }
+                field.setAccessible(false);
+            }
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
@@ -166,6 +135,7 @@ public abstract class UniversalDAO<T> implements DAO<T> {
      * @return количество удаленных записей
      * @throws SQLException при возникновении ошибок в ходе удаления данных из БД
      * @author Рома
+     * под Hibernate переделал Сергей
      */
     @Override
     public int delete(Serializable id) throws SQLException { //реализация Ромы, Данила немного отрефакторил
@@ -177,12 +147,6 @@ public abstract class UniversalDAO<T> implements DAO<T> {
     }
 
 
-    private Map<String, Object> getColumnsAndValuesFromRecord(ResultSet resultSet) throws SQLException {
-        Set<String> columns = ReflectionUtils.getColumnNames(clazz);
-        Map<String, Object> columnsAndValues = new HashMap<>();
-        for (String column : columns) {
-            columnsAndValues.put(column, resultSet.getObject(column));
-        }
-        return columnsAndValues;
-    }
+
+
 }

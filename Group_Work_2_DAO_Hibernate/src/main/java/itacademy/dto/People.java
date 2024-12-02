@@ -1,7 +1,5 @@
 package itacademy.dto;
 
-import itacademy.annotations.ColumnAnn;
-import itacademy.annotations.IdAnn;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
