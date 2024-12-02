@@ -4,6 +4,7 @@ import itacademy.api.Creator;
 import itacademy.api.DAO;
 import itacademy.api.Command;
 import itacademy.exceptions.checked.InvalidInputException;
+import itacademy.utils.DataOutputUtils;
 
 import java.io.Serializable;
 import java.sql.SQLException;
@@ -11,7 +12,6 @@ import java.sql.SQLException;
 public abstract class DeleteCommand<T> implements Command {
     private final DAO<T> dao;
     private final Creator<Serializable> idCreator;
-    protected boolean isDeleted;
 
     public DeleteCommand(DAO<T> dao, Creator<Serializable> idCreator) {
         this.dao = dao;
@@ -21,9 +21,10 @@ public abstract class DeleteCommand<T> implements Command {
     @Override
     public void execute() throws SQLException, InvalidInputException {
         Serializable id = this.idCreator.create();
-
-        if (this.dao.delete(id) != 0) {
-            this.isDeleted = true;
+        if (this.dao.delete(id)) {
+            DataOutputUtils.displayMessage("Запись с id " + id + " удалена");
+        } else {
+            DataOutputUtils.displayMessage("Запись с id " + id + " не найдена!");
         }
     }
 }

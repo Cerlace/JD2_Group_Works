@@ -3,6 +3,7 @@ package itacademy.commands;
 import itacademy.api.Creator;
 import itacademy.api.DAO;
 import itacademy.api.Command;
+import itacademy.api.Printer;
 import itacademy.exceptions.checked.InvalidInputException;
 
 import java.io.Serializable;
@@ -11,15 +12,17 @@ import java.sql.SQLException;
 public abstract class GetCommand<T> implements Command {
     private final DAO<T> dao;
     private final Creator<Serializable> idCreator;
-    protected T receivedEntity;
+    private final Printer<T> printer;
 
-    public GetCommand(DAO<T> dao, Creator<Serializable> idCreator) {
+    public GetCommand(DAO<T> dao, Creator<Serializable> idCreator, Printer<T> printer) {
         this.dao = dao;
         this.idCreator = idCreator;
+        this.printer = printer;
     }
+
     @Override
-    public void execute() throws SQLException, InvalidInputException {
+    public void execute() throws SQLException, InvalidInputException, IllegalAccessException {
         Serializable id = idCreator.create();
-        this.receivedEntity = dao.get(id);
+        printer.printEntity(dao.get(id));
     }
 }

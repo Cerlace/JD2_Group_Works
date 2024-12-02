@@ -1,28 +1,25 @@
 package itacademy.creators;
 
 import itacademy.api.Creator;
-import itacademy.dto.People;
+import itacademy.entity.People;
 import itacademy.exceptions.checked.InvalidInputException;
 import itacademy.utils.ConsoleUtils;
-
-import java.util.Scanner;
+import itacademy.utils.DataOutputUtils;
 
 public class PeopleCreator implements Creator<People> {
-    private final Scanner scanner;
-
-    public PeopleCreator(Scanner scanner) {
-        this.scanner = scanner;
-    }
+    public static final String REQUEST_NAME_ENTRY = "Введите имя: ";
+    public static final String REQUEST_SURNAME_ENTRY = "Введите фамилию: ";
+    public static final String REQUEST_AGE_ENTRY = "Введите возраст: ";
 
     @Override
     public People create() throws InvalidInputException {
-        System.out.print("Введите имя: ");
-        scanner.nextLine();
-        String name = scanner.nextLine();
-        System.out.print("Введите фамилию: ");
-        String surname = scanner.nextLine();
-        System.out.print("Введите возраст: ");
-        int age = ConsoleUtils.inputInt(scanner);
+        DataOutputUtils.displayMessage(REQUEST_NAME_ENTRY);
+        ConsoleUtils.inputString();
+        String name = ConsoleUtils.inputString();
+        DataOutputUtils.displayMessage(REQUEST_SURNAME_ENTRY);
+        String surname = ConsoleUtils.inputString();
+        DataOutputUtils.displayMessage(REQUEST_AGE_ENTRY);
+        int age = ConsoleUtils.inputInt();
 
         return People.builder()
                 .name(name)

@@ -1,49 +1,42 @@
 package itacademy.utils;
 
-import itacademy.api.DAO;
-import itacademy.commands.address.*;
-import itacademy.commands.people.*;
-import itacademy.creators.AddressCreator;
-import itacademy.dto.Address;
-import itacademy.dto.People;
+import itacademy.commands.address.AddressDeleteCommand;
+import itacademy.commands.address.AddressGetAllCommand;
+import itacademy.commands.address.AddressGetCommand;
+import itacademy.commands.address.AddressSaveCommand;
+import itacademy.commands.address.AddressUpdateCommand;
+import itacademy.commands.people.PeopleDeleteCommand;
+import itacademy.commands.people.PeopleGetAllCommand;
+import itacademy.commands.people.PeopleSaveCommand;
+import itacademy.commands.people.PeopleUpdateCommand;
+import itacademy.commands.people.PeopleGetCommand;
 import itacademy.exceptions.checked.InvalidInputException;
 import itacademy.menu.Menu;
 import itacademy.menu.MenuItem;
-import itacademy.creators.IdCreator;
-import itacademy.creators.PeopleCreator;
 
 import java.sql.SQLException;
-import java.util.Scanner;
 
 public class MenuUtils {
-    public static Menu getPeopleMenu(DAO<People> dao) {
-        Scanner scanner = ConsoleUtils.getScanner();
-
+    public static Menu getPeopleMenu() {
         Menu menu = new Menu();
-        menu.addItem(new MenuItem("Добавить человека в БД", new PeopleSaveCommand(dao, new PeopleCreator(scanner))));
-        menu.addItem(new MenuItem("Изменить данные о человеке", new PeopleUpdateCommand(dao,
-                new PeopleCreator(scanner),
-                new IdCreator(scanner))));
-        menu.addItem(new MenuItem("Удалить человека из БД", new PeopleDeleteCommand(dao,new IdCreator(scanner))));
-        menu.addItem(new MenuItem("Найти человека", new PeopleGetCommand(dao,new IdCreator(scanner))));
-        menu.addItem(new MenuItem("Показать всех людей в БД", new PeopleGetAllCommand(dao)));
+        menu.addItem(new MenuItem("Добавить человека в БД", new PeopleSaveCommand()));
+        menu.addItem(new MenuItem("Изменить данные о человеке", new PeopleUpdateCommand()));
+        menu.addItem(new MenuItem("Удалить человека из БД", new PeopleDeleteCommand()));
+        menu.addItem(new MenuItem("Найти человека", new PeopleGetCommand()));
+        menu.addItem(new MenuItem("Показать всех людей в БД", new PeopleGetAllCommand()));
 
         menu.setExitItem(new MenuItem("Выйти из программы", null));
 
         return menu;
     }
 
-    public static Menu getAddressMenu(DAO<Address> dao) {
-        Scanner scanner = ConsoleUtils.getScanner();
-
+    public static Menu getAddressMenu() {
         Menu menu = new Menu();
-        menu.addItem(new MenuItem("Добавить адрес в БД", new AddressSaveCommand(dao, new AddressCreator(scanner))));
-        menu.addItem(new MenuItem("Изменить данные об адресе", new AddressUpdateCommand(dao,
-                new AddressCreator(scanner),
-                new IdCreator(scanner))));
-        menu.addItem(new MenuItem("Удалить адрес из БД", new AddressDeleteCommand(dao,new IdCreator(scanner))));
-        menu.addItem(new MenuItem("Найти адрес", new AddressGetCommand(dao,new IdCreator(scanner))));
-        menu.addItem(new MenuItem("Показать все адреса в БД", new AddressGetAllCommand(dao)));
+        menu.addItem(new MenuItem("Добавить адрес в БД", new AddressSaveCommand()));
+        menu.addItem(new MenuItem("Изменить данные об адресе", new AddressUpdateCommand()));
+        menu.addItem(new MenuItem("Удалить адрес из БД", new AddressDeleteCommand()));
+        menu.addItem(new MenuItem("Найти адрес", new AddressGetCommand()));
+        menu.addItem(new MenuItem("Показать все адреса в БД", new AddressGetAllCommand()));
 
         menu.setExitItem(new MenuItem("Выйти из программы", null));
 
@@ -51,15 +44,16 @@ public class MenuUtils {
     }
 
     public static void runMenu(Menu menu) {
-        Scanner scanner = ConsoleUtils.getScanner();
         boolean isExit = false;
 
         while (!isExit) {
             try {
                 System.out.print(menu);
-                int choice = ConsoleUtils.inputInt(scanner);
+                int choice = ConsoleUtils.inputInt();
                 if (choice == 0) {
                     isExit = true;
+                    HibernateUtils.close();
+                    ConsoleUtils.closeScanner();
                 } else {
                     MenuItem item = menu.getMenuItem(choice);
                     if (item != null) {
@@ -68,7 +62,7 @@ public class MenuUtils {
                         System.out.println("Такого пункта меню нет!");
                     }
                 }
-            } catch (InvalidInputException e) {
+            } catch (InvalidInputException | IllegalAccessException e) {
                 System.out.println(e.getMessage());
             } catch (SQLException e) {
                 System.out.println("Возникла ошибка при выполнении SQL запроса!\n" +

@@ -1,6 +1,9 @@
 package itacademy.utils;
 
-public class DataPrinterUtils {
+public class DataOutputUtils {
+    public static void displayMessage(String message) {
+        System.out.println(message);
+    }
 
     public static String getShortString(String str, int maxlength) {
         if (str.length() > maxlength) {

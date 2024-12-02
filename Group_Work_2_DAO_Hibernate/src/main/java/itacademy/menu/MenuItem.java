@@ -14,7 +14,13 @@ public class MenuItem {
         this.command = command;
     }
 
-    public void executeCommand() throws SQLException, InvalidInputException {
+    /**
+     * Метод выполняет команду, привязанную к пункту меню
+     * @throws SQLException при ошибке в работе с БД
+     * @throws InvalidInputException при ошибке при вводе данных
+     * @throws IllegalAccessException при ошибке в методах работы рефлексии
+     */
+    public void executeCommand() throws SQLException, InvalidInputException, IllegalAccessException {
         this.command.execute();
     }
 
