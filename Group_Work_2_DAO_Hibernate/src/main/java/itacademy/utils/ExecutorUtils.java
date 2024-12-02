@@ -1,20 +1,17 @@
 package itacademy.utils;
 
-import itacademy.JDBCResources;
-import itacademy.api.SQLExecutor;
+import itacademy.api.HibernateExecutor;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import javax.persistence.EntityManager;
 
 public class ExecutorUtils {
-    public static  <T> T executeSQL(SQLExecutor<T> sqlExecutor) {
-        try (Connection connection = DriverManager.getConnection(JDBCResources.getURL(),
-                JDBCResources.getUser(),
-                JDBCResources.getPassword());) {
-            return sqlExecutor.execute(connection);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+    public static <T> T executeHibernate(HibernateExecutor<T> hibernateExecutor) {
+        EntityManager em = HibernateUtils.getEntityManager();
+        em.getTransaction().begin();
+        T t = hibernateExecutor.execute(em);
+        em.getTransaction().commit();
+        em.close();
+
+        return t;
     }
 }
