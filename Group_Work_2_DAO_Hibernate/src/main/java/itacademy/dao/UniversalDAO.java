@@ -40,7 +40,7 @@ public abstract class UniversalDAO<T> implements DAO<T> {
      * @return этот же объект с полученным от БД идентификатором
      * @throws SQLException при возникновении ошибок в ходе записи в таблицу
      * @author Рома,
-     * под Hibernate переделал Сергей
+     *
      */
     @Override
     public T save(T t) throws SQLException {
@@ -58,7 +58,7 @@ public abstract class UniversalDAO<T> implements DAO<T> {
      * @return объект DTO, соответствующий таблице в БД
      * @throws SQLException при возникновении ошибок в ходе чтения из базы данных
      * @author Данила
-     * под Hibernate переделал Сергей
+     *
      */
     @Override
     public T get(Serializable id) {
@@ -90,7 +90,7 @@ public abstract class UniversalDAO<T> implements DAO<T> {
      *           поля записи с идентификатором id
      * @throws SQLException при возникновении ошибок в ходе обновления данных в БД
      * @author Саймон
-     * под Hibernate переделал Сергей
+     *
      */
     @Override
     public int update(Serializable id, T t) throws SQLException {
@@ -135,7 +135,6 @@ public abstract class UniversalDAO<T> implements DAO<T> {
      * @return количество удаленных записей
      * @throws SQLException при возникновении ошибок в ходе удаления данных из БД
      * @author Рома
-     * под Hibernate переделал Сергей
      */
     @Override
     public int delete(Serializable id) throws SQLException { //реализация Ромы, Данила немного отрефакторил
