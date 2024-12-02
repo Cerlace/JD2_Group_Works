@@ -82,9 +82,12 @@
                 <version>0.8.12</version>
                 <configuration>
                     <excludes>
-                        <exclude>**/dto/*</exclude>
+                        <exclude>**/entity/*</exclude>
                         <exclude>**/menu/*</exclude>
-                        <exclude>**/JDBCResources.class</exclude>
+                        <exclude>**/exceptions/**</exclude>
+                        <exclude>**/utils/ConsoleUtils.class</exclude>
+                        <exclude>**/utils/DataOutputUtils.class</exclude>
+                        <exclude>/itacademy/*</exclude>
                     </excludes>
                 </configuration>
                 <executions>
