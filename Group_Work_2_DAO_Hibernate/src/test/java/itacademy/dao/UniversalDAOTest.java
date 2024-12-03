@@ -89,7 +89,7 @@ public class UniversalDAOTest {
     @Test
     public void closeTest() {
         dao.close();
-        assertThrows(IllegalStateException.class, HibernateUtils::getEntityManager);
+        assertNull(dao.getAll());
     }
 
     /**

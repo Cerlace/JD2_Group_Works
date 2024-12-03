@@ -65,7 +65,7 @@ public class MenuUtils {
 
         while (!isExit) {
             try {
-                System.out.print(menu);
+                DataOutputUtils.displayMessage(menu.toString());
                 int choice = ConsoleUtils.inputInt();
                 if (choice == 0) {
                     isExit = true;

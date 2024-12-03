@@ -105,6 +105,5 @@ public abstract class UniversalDAO<T> implements DAO<T> {
     @Override
     public void close() {
         this.em.close();
-        HibernateUtils.close();
     }
 }
