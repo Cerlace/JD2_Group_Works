@@ -8,7 +8,6 @@ import itacademy.utils.DataOutputUtils;
 import itacademy.utils.ReflectionUtils;
 
 import java.io.Serializable;
-import java.sql.SQLException;
 
 public abstract class UpdateCommand<T> implements Command {
     private final DAO<T> dao;
@@ -22,7 +21,7 @@ public abstract class UpdateCommand<T> implements Command {
     }
 
     @Override
-    public void execute() throws SQLException, InvalidInputException, IllegalAccessException {
+    public void execute() throws InvalidInputException, IllegalAccessException {
         Serializable id = this.idCreator.create();
         T entity = this.entityCreator.create();
 

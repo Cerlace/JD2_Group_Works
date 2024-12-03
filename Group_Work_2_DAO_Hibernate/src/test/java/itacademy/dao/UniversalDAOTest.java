@@ -15,6 +15,9 @@ import static org.junit.jupiter.api.Assertions.*;
 public class UniversalDAOTest {
     private final DAO<People> dao = new PeopleDAOImpl();
 
+    /**
+     * Метод закрывает EntityManagerFactory
+     */
     @AfterAll
     public static void tearDown() {
         HibernateUtils.close();
@@ -85,6 +88,9 @@ public class UniversalDAOTest {
         assertFalse(dao.delete(savedUser.getId()));
     }
 
+    /**
+     * Метод очищает базу данных перед запуском каждого метода
+     */
     @BeforeEach
     public void cleanDatabase() {
         EntityManager em = HibernateUtils.getEntityManager();

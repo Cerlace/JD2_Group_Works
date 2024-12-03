@@ -4,8 +4,6 @@ import itacademy.api.DAO;
 import itacademy.api.Command;
 import itacademy.api.Printer;
 
-import java.sql.SQLException;
-
 public abstract class GetAllCommand<T> implements Command {
     private final DAO<T> dao;
     private final Printer<T> printer;
@@ -16,7 +14,7 @@ public abstract class GetAllCommand<T> implements Command {
     }
 
     @Override
-    public void execute() throws SQLException, IllegalAccessException {
+    public void execute() throws IllegalAccessException {
         printer.printAllEntities(this.dao.getAll());
     }
 }

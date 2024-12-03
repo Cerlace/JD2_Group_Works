@@ -39,6 +39,12 @@ public class ReflectionUtils {
         }
     }
 
+    /**
+     * Метод получает у объекта поле, помеченное аннотацией @Id
+     * @param t объект, поля которого проверяем
+     * @return поле id
+     * @param <T> тип объекта, с таблицей которого проводятся операции в БД
+     */
     public static <T> Field getIdField(T t) {
         Field[] fields = t.getClass().getDeclaredFields();
         for (Field field : fields) {
@@ -50,6 +56,13 @@ public class ReflectionUtils {
         return null;
     }
 
+    /**
+     * Метод записывает в поле, помеченное аннотацией @Id, переданное значение
+     * @param t объект, которому нужно установить id
+     * @param id переданный id
+     * @param <T> тип объекта, с таблицей которого проводятся операции в БД
+     * @throws IllegalAccessException при ошибке в работе методов рефлексии
+     */
     public static <T> void setId(T t, Serializable id) throws IllegalAccessException {
         Field idField = getIdField(t);
         if (idField != null) {
@@ -84,6 +97,13 @@ public class ReflectionUtils {
         return list;
     }
 
+    /**
+     * Получает значения у объекта полей, помеченных аннотацией @Column
+     * @param t объект, значения полей которого необходимо получить
+     * @return список значений полей, представленных строкой
+     * @param <T> тип объекта, с таблицей которого проводятся операции в БД
+     * @throws IllegalAccessException при ошибке в работе методов рефлексии
+     */
     public static <T> List<String> getColumnsValues(T t) throws IllegalAccessException {
         List<String> valuesList = new ArrayList<>();
         List<Field> fields = getColumnsFields(t.getClass());
