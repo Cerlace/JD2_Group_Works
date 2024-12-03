@@ -3,7 +3,7 @@ package itacademy.utils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-public class DataPrinterUtilsTest {
+public class DataOutputUtilsTest {
     private static final int MAX_SIZE_ROW = 10;
     @Test
     void shorterStringTest() {
