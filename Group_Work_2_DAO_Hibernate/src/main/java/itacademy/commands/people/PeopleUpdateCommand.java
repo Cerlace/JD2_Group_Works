@@ -1,14 +1,14 @@
 package itacademy.commands.people;
 
+import itacademy.api.PeopleDAO;
 import itacademy.commands.UpdateCommand;
 import itacademy.creators.IdCreator;
 import itacademy.creators.PeopleCreator;
-import itacademy.dao.impl.PeopleDAOImpl;
 import itacademy.entity.People;
 
 public class PeopleUpdateCommand extends UpdateCommand<People> {
 
-    public PeopleUpdateCommand() {
-        super(new PeopleDAOImpl(), new PeopleCreator(), new IdCreator());
+    public PeopleUpdateCommand(PeopleDAO dao) {
+        super(dao, new PeopleCreator(), new IdCreator());
     }
 }

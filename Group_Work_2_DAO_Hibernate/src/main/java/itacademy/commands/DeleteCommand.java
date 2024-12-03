@@ -7,7 +7,6 @@ import itacademy.exceptions.checked.InvalidInputException;
 import itacademy.utils.DataOutputUtils;
 
 import java.io.Serializable;
-import java.sql.SQLException;
 
 public abstract class DeleteCommand<T> implements Command {
     private final DAO<T> dao;
@@ -19,7 +18,7 @@ public abstract class DeleteCommand<T> implements Command {
     }
 
     @Override
-    public void execute() throws SQLException, InvalidInputException {
+    public void execute() throws InvalidInputException {
         Serializable id = this.idCreator.create();
         if (this.dao.delete(id)) {
             DataOutputUtils.displayMessage("Запись с id " + id + " удалена");

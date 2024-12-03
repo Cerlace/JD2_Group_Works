@@ -15,6 +15,7 @@ public abstract class UniversalPrinter<T> implements Printer<T> {
     private static final String HEADERS_SEPARATOR = " + ";
     private static final String LINE_ELEMENT = "-";
     private static final String NEW_LINE = "\n";
+    private static final String NOT_FOUND = "Запись с таким id не найдена!";
 
     private final Class<T> clazz;
 
@@ -24,9 +25,14 @@ public abstract class UniversalPrinter<T> implements Printer<T> {
 
     @Override
     public void printEntity(T entity) throws IllegalAccessException {
-        this.printHeader();
-        this.printOneEntity(entity);
-        DataOutputUtils.displayMessage(this.getLine());
+        if (entity != null) {
+            this.printHeader();
+            this.printOneEntity(entity);
+            DataOutputUtils.displayMessage(this.getLine());
+        } else {
+            DataOutputUtils.displayMessage(NOT_FOUND);
+        }
+
     }
 
     @Override

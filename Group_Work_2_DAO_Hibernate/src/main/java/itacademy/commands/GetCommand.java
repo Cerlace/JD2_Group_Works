@@ -7,7 +7,6 @@ import itacademy.api.Printer;
 import itacademy.exceptions.checked.InvalidInputException;
 
 import java.io.Serializable;
-import java.sql.SQLException;
 
 public abstract class GetCommand<T> implements Command {
     private final DAO<T> dao;
@@ -21,7 +20,7 @@ public abstract class GetCommand<T> implements Command {
     }
 
     @Override
-    public void execute() throws SQLException, InvalidInputException, IllegalAccessException {
+    public void execute() throws InvalidInputException, IllegalAccessException {
         Serializable id = idCreator.create();
         printer.printEntity(dao.get(id));
     }

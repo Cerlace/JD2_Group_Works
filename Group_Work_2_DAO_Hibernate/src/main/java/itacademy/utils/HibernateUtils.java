@@ -12,6 +12,9 @@ public class HibernateUtils {
         return ENTITY_MANAGER_FACTORY.createEntityManager();
     }
 
+    /**
+     * Метод закрывает EntityManagerFactory
+     */
     public static void close() {
         ENTITY_MANAGER_FACTORY.close();
     }

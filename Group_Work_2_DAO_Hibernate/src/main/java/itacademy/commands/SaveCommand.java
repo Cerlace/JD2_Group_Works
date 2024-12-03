@@ -8,8 +8,6 @@ import itacademy.exceptions.checked.InvalidInputException;
 import itacademy.utils.DataOutputUtils;
 import itacademy.utils.ReflectionUtils;
 
-import java.sql.SQLException;
-
 public abstract class SaveCommand<T> implements Command {
     private final DAO<T> dao;
     private final Creator<T> entityCreator;
@@ -22,7 +20,7 @@ public abstract class SaveCommand<T> implements Command {
     }
 
     @Override
-    public void execute() throws SQLException, InvalidInputException, IllegalAccessException {
+    public void execute() throws InvalidInputException, IllegalAccessException {
         T entity = this.entityCreator.create();
         DataOutputUtils.displayMessage("В таблицу "
                 + ReflectionUtils.getTableNameByClass(entity.getClass())

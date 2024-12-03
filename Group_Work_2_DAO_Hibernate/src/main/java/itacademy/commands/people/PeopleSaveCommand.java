@@ -1,14 +1,14 @@
 package itacademy.commands.people;
 
+import itacademy.api.PeopleDAO;
 import itacademy.commands.SaveCommand;
 import itacademy.creators.PeopleCreator;
-import itacademy.dao.impl.PeopleDAOImpl;
 import itacademy.entity.People;
 import itacademy.printers.impl.PeoplePrinter;
 
 public class PeopleSaveCommand extends SaveCommand<People> {
 
-    public PeopleSaveCommand() {
-        super(new PeopleDAOImpl(), new PeopleCreator(), new PeoplePrinter());
+    public PeopleSaveCommand(PeopleDAO dao) {
+        super(dao, new PeopleCreator(), new PeoplePrinter());
     }
 }

@@ -3,8 +3,6 @@ package itacademy.menu;
 import itacademy.api.Command;
 import itacademy.exceptions.checked.InvalidInputException;
 
-import java.sql.SQLException;
-
 public class MenuItem {
     private final String title;
     private final Command command;
@@ -16,11 +14,10 @@ public class MenuItem {
 
     /**
      * Метод выполняет команду, привязанную к пункту меню
-     * @throws SQLException при ошибке в работе с БД
      * @throws InvalidInputException при ошибке при вводе данных
      * @throws IllegalAccessException при ошибке в методах работы рефлексии
      */
-    public void executeCommand() throws SQLException, InvalidInputException, IllegalAccessException {
+    public void executeCommand() throws InvalidInputException, IllegalAccessException {
         this.command.execute();
     }
 
