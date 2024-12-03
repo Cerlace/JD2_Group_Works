@@ -11,21 +11,14 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class UniversalDAOTest {
     private final DAO<People> dao = new PeopleDAOImpl();
 
     /**
-     * Метод закрывает EntityManagerFactory
-     */
-    @AfterAll
-    public static void tearDown() {
-        HibernateUtils.close();
-    }
-
-    /**
      * Метод для тестирования сохранения в БД объекта
      */
+    @Order(1)
     @Test
     public void saveTest() {
         People people = getPeople();
@@ -38,6 +31,7 @@ public class UniversalDAOTest {
     /**
      * Метод для тестирования получения из БД объекта
      */
+    @Order(2)
     @Test
     public void getTest() {
         People people = getPeople();
@@ -49,6 +43,7 @@ public class UniversalDAOTest {
     /**
      * Метод для получения всех объектов в таблице
      */
+    @Order(3)
     @Test
     void getAllTest() {
         People people1 = getPeople();
@@ -63,6 +58,7 @@ public class UniversalDAOTest {
      * Метод для обновления записи в БД
      * @throws IllegalAccessException при ошибке работы методов рефлексии
      */
+    @Order(4)
     @Test
     void updateTest() throws IllegalAccessException {
         People people = getPeople();
@@ -80,12 +76,20 @@ public class UniversalDAOTest {
     /**
      * Метод для удаления записи из БД
      */
+    @Order(5)
     @Test
     void deleteTest() {
         People people = getPeople();
         People savedUser = dao.save(people);
         assertTrue(dao.delete(savedUser.getId()));
         assertFalse(dao.delete(savedUser.getId()));
+    }
+
+    @Order(6)
+    @Test
+    public void closeTest() {
+        dao.close();
+        assertThrows(IllegalStateException.class, HibernateUtils::getEntityManager);
     }
 
     /**
