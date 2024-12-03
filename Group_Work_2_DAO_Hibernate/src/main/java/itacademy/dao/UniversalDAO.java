@@ -2,8 +2,10 @@ package itacademy.dao;
 
 import itacademy.api.DAO;
 import itacademy.utils.ExecutorUtils;
+import itacademy.utils.HibernateUtils;
 import itacademy.utils.ReflectionUtils;
 
+import javax.persistence.EntityManager;
 import java.io.Serializable;
 import java.util.List;
 
@@ -15,14 +17,16 @@ import java.util.List;
  */
 public abstract class UniversalDAO<T> implements DAO<T> {
     private final Class<T> clazz;
+    private final EntityManager em;
 
     /**
-     * В конструктор передается класс DTO {@code <T>},
+     * В конструктор передается класс Entity {@code <T>},
      * чтобы через рефлексию получить доступ к полям и аннотациями класса {@code <T>}.
      * @param clazz класс, с которым работает DAO
      */
     public UniversalDAO(Class<T> clazz) {
         this.clazz = clazz;
+        this.em = HibernateUtils.getEntityManager();
     }
 
     /**
@@ -32,45 +36,48 @@ public abstract class UniversalDAO<T> implements DAO<T> {
      */
     @Override
     public T save(T t) {
-        return ExecutorUtils.executeHibernate(em -> {
+        return ExecutorUtils.executeHibernate(this.em, em -> {
             em.persist(t);
             return t;
         });
+
+
     }
 
     /**
      * Метод получает из БД запись по ее идентификатору
      * @param id уникальный идентификатор
-     * @return объект DTO, соответствующий таблице в БД
+     * @return объект Entity, соответствующий таблице в БД
      */
     @Override
     public T get(Serializable id) {
-        return ExecutorUtils.executeHibernate(em -> em.find(clazz, id));
+        return ExecutorUtils.executeHibernate(this.em, em -> em.find(clazz, id));
     }
 
     /**
      * Метод получает из таблицы все записи
-     * @return список объектов DTO, соответствующих таблице в БД
+     * @return список объектов Entity, соответствующих таблице в БД
      */
     @Override
     public List<T> getAll() {
         String query = "FROM " + ReflectionUtils.getTableNameByClass(this.clazz);
-        return ExecutorUtils.executeHibernate(em -> em.createQuery(query, clazz).getResultList());
+        return ExecutorUtils.executeHibernate(this.em,
+                em -> em.createQuery(query, clazz).getResultList());
     }
 
     /**
      * Метод обновляет поля в таблице у записи с указанным идентификатором
      * @param id уникальный идентификатор записи в таблице
-     * @param t объект DTO, соответствующий таблице, полями которого будут заменены
+     * @param t объект Entity, соответствующий таблице, полями которого будут заменены
      * поля записи с идентификатором id
      */
     @Override
     public T update(Serializable id, T t) throws IllegalAccessException {
         ReflectionUtils.setId(t, id);
-        return ExecutorUtils.executeHibernate(em -> {
+        return ExecutorUtils.executeHibernate(this.em, em -> {
             T updatedEntity;
             if ((updatedEntity = em.find(this.clazz, id)) != null) {
-                em.merge(t);
+                updatedEntity = em.merge(t);
             }
 
             return updatedEntity;
@@ -84,7 +91,7 @@ public abstract class UniversalDAO<T> implements DAO<T> {
      */
     @Override
     public boolean delete(Serializable id) {
-        return ExecutorUtils.executeHibernate(em -> {
+        return Boolean.TRUE.equals(ExecutorUtils.executeHibernate(this.em, em -> {
             T t = em.find(this.clazz, id);
             if (t != null) {
                 em.remove(t);
@@ -92,6 +99,12 @@ public abstract class UniversalDAO<T> implements DAO<T> {
             } else {
                 return false;
             }
-        });
+        }));
+    }
+
+    @Override
+    public void close() {
+        this.em.close();
+        HibernateUtils.close();
     }
 }

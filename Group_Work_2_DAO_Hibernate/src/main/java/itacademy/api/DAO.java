@@ -45,4 +45,9 @@ public interface DAO<T> {
      * @return true - если запись удалена успешно, false - если запись с таким id не была найдена
      */
     boolean delete(Serializable id);
+
+    /**
+     * Метод для закрытия EntityManager и EntityManagerFactory
+     */
+    void close();
 }
