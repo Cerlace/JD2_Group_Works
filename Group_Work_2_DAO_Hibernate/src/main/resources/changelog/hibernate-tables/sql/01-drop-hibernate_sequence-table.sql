@@ -1,0 +1,2 @@
+drop table hibernate_sequence
+GO
