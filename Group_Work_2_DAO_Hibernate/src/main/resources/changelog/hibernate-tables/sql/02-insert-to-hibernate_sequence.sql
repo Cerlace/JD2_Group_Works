@@ -1,2 +1,2 @@
-insert into hibernate_sequence values (0)
+insert into hibernate_sequence values (1)
 GO
