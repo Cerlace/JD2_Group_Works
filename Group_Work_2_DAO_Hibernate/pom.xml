@@ -72,6 +72,16 @@
             <version>2.3.232</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.liquibase</groupId>
+            <artifactId>liquibase-core</artifactId>
+            <version>4.30.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.liquibase</groupId>
+            <artifactId>liquibase-maven-plugin</artifactId>
+            <version>4.30.0</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -123,6 +133,26 @@
                         <phase>validate</phase>
                         <goals>
                             <goal>check</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.liquibase</groupId>
+                <artifactId>liquibase-maven-plugin</artifactId>
+                <version>4.30.0</version>
+                <configuration>
+                    <changeLogFile>src/main/resources/changelog/db.changelog-master.xml</changeLogFile>
+                    <url>jdbc:mysql://localhost:3306/group_hw</url>
+                    <username>root</username>
+                    <password>123456</password>
+                    <driver>com.mysql.cj.jdbc.Driver</driver>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>pre-integration-test</phase>
+                        <goals>
+                            <goal>update</goal>
                         </goals>
                     </execution>
                 </executions>
