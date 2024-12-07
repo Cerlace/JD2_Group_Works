@@ -18,8 +18,11 @@ import itacademy.dao.impl.PeopleDAOImpl;
 import itacademy.exceptions.checked.InvalidInputException;
 import itacademy.menu.Menu;
 import itacademy.menu.MenuItem;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class MenuUtils {
+    private static final Logger LOGGER = LoggerFactory.getLogger(MenuUtils.class);
     /**
      * Метод создает и возвращает меню для работы с entity People
      * @return меню
@@ -78,6 +81,7 @@ public class MenuUtils {
                 }
             } catch (InvalidInputException | IllegalAccessException e) {
                 DataOutputUtils.displayMessage(e.getMessage());
+                LOGGER.error("Ошибка ввода или доступа к данным.", e);
             }
         }
     }
