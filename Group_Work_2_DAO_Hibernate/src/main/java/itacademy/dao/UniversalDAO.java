@@ -8,6 +8,7 @@ import itacademy.utils.ReflectionUtils;
 import javax.persistence.EntityManager;
 import java.io.Serializable;
 import java.util.List;
+import org.slf4j.Logger;
 
 
 /**
@@ -16,17 +17,28 @@ import java.util.List;
  * @param <T> любой класс, который представляет собой таблицу БД.
  */
 public abstract class UniversalDAO<T> implements DAO<T> {
+    private static final String SAVE_LOG_MESSAGE = "Table: '{}', start saving object {}";
+    private static final String UPDATE_LOG_MESSAGE = "Table: '{}', start updating row with id = {}";
+    private static final String DELETE_LOG_MESSAGE = "Table: '{}', start deleting row with id = {}";
+    private static final String GET_LOG_MESSAGE = "Table: '{}', start getting row with id = {}";
+    private static final String GET_ALL_LOG_MESSAGE = "Table: '{}', start getting all rows";
+    private static final String CLOSING_SESSION_MESSAGE = "Closing session";
+
+    private final Logger logger;
     private final Class<T> clazz;
     private final EntityManager em;
+    private final String tableName;
 
     /**
      * В конструктор передается класс Entity {@code <T>},
      * чтобы через рефлексию получить доступ к полям и аннотациями класса {@code <T>}.
      * @param clazz класс, с которым работает DAO
      */
-    public UniversalDAO(Class<T> clazz) {
+    public UniversalDAO(Class<T> clazz, Logger logger) {
         this.clazz = clazz;
         this.em = HibernateUtils.getEntityManager();
+        this.logger = logger;
+        this.tableName = ReflectionUtils.getTableNameByClass(clazz);
     }
 
     /**
@@ -36,6 +48,8 @@ public abstract class UniversalDAO<T> implements DAO<T> {
      */
     @Override
     public T save(T t) {
+        logger.info(SAVE_LOG_MESSAGE, this.tableName, t);
+
         return ExecutorUtils.executeHibernate(this.em, em -> {
             em.persist(t);
             return t;
@@ -51,6 +65,8 @@ public abstract class UniversalDAO<T> implements DAO<T> {
      */
     @Override
     public T get(Serializable id) {
+        logger.info(GET_LOG_MESSAGE, this.tableName, id);
+
         return ExecutorUtils.executeHibernate(this.em, em -> em.find(clazz, id));
     }
 
@@ -60,7 +76,9 @@ public abstract class UniversalDAO<T> implements DAO<T> {
      */
     @Override
     public List<T> getAll() {
-        String query = "FROM " + ReflectionUtils.getTableNameByClass(this.clazz);
+        logger.info(GET_ALL_LOG_MESSAGE, this.tableName);
+
+        String query = "FROM " + this.tableName;
         return ExecutorUtils.executeHibernate(this.em,
                 em -> em.createQuery(query, clazz).getResultList());
     }
@@ -73,6 +91,8 @@ public abstract class UniversalDAO<T> implements DAO<T> {
      */
     @Override
     public T update(Serializable id, T t) throws IllegalAccessException {
+        logger.info(UPDATE_LOG_MESSAGE,this.tableName, id);
+
         ReflectionUtils.setId(t, id);
         return ExecutorUtils.executeHibernate(this.em, em -> {
             T updatedEntity;
@@ -91,6 +111,8 @@ public abstract class UniversalDAO<T> implements DAO<T> {
      */
     @Override
     public boolean delete(Serializable id) {
+        logger.info(DELETE_LOG_MESSAGE,this.tableName, id);
+
         return Boolean.TRUE.equals(ExecutorUtils.executeHibernate(this.em, em -> {
             T t = em.find(this.clazz, id);
             if (t != null) {
@@ -104,6 +126,7 @@ public abstract class UniversalDAO<T> implements DAO<T> {
 
     @Override
     public void close() {
+        logger.info(CLOSING_SESSION_MESSAGE);
         this.em.close();
     }
 }

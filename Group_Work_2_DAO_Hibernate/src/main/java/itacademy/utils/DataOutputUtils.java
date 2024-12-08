@@ -2,14 +2,6 @@ package itacademy.utils;
 
 public class DataOutputUtils {
     /**
-     * Метод для вывода сообщения в консоль
-     * @param message сообщение
-     */
-    public static void displayMessage(String message) {
-        System.out.println(message);
-    }
-
-    /**
      * Метод обрезает строку, если она длиннее ширины столбца таблицы
      * @param str строка, которая проверяется
      * @param maxlength ширина столбца

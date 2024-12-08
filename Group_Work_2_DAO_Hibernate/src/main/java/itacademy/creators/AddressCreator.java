@@ -4,18 +4,23 @@ import itacademy.api.Creator;
 import itacademy.entity.Address;
 import itacademy.exceptions.checked.InvalidInputException;
 import itacademy.utils.ConsoleUtils;
-import itacademy.utils.DataOutputUtils;
+import org.slf4j.Logger;
 
 public class AddressCreator implements Creator<Address> {
     private static final String REQUEST_STREET_ENTRY = "Введите название улицы: ";
     private static final String REQUEST_HOUSE_ENTRY = "Введите номер дома: ";
+    private final Logger logger;
+
+    public AddressCreator(Logger logger) {
+        this.logger = logger;
+    }
 
     @Override
     public Address create() throws InvalidInputException {
-        DataOutputUtils.displayMessage(REQUEST_STREET_ENTRY);
+        this.logger.debug(REQUEST_STREET_ENTRY);
         ConsoleUtils.inputString();
         String street = ConsoleUtils.inputString();
-        DataOutputUtils.displayMessage(REQUEST_HOUSE_ENTRY);
+        this.logger.debug(REQUEST_HOUSE_ENTRY);
         int house = ConsoleUtils.inputInt();
 
         return Address.builder()

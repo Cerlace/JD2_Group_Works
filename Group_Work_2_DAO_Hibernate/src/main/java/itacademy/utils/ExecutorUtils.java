@@ -1,10 +1,13 @@
 package itacademy.utils;
 
 import itacademy.api.HibernateExecutor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.persistence.EntityManager;
 
 public class ExecutorUtils {
+    private static final Logger LOGGER = LoggerFactory.getLogger(ExecutorUtils.class);
     /**
      * Метод для сокращения повторяющегося кода
      * Начинает транзакцию и делает коммит, если операция с БД прошла успешно
@@ -21,10 +24,12 @@ public class ExecutorUtils {
             entityManager.getTransaction().begin();
             T t = hibernateExecutor.execute(entityManager);
             entityManager.getTransaction().commit();
+            LOGGER.info("Transaction completed successfully");
 
             return t;
         } catch (Exception e) {
             entityManager.getTransaction().rollback();
+            LOGGER.error("Error executing transaction", e);
             return null;
         }
     }
