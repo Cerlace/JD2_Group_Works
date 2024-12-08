@@ -9,9 +9,12 @@
         <Console name="CONSOLE">
             <PatternLayout pattern="[ %-5level] %d{HH:mm:ss} | %logger{36} - %msg%n"/>
         </Console>
+        <Console name="CONSOLE_APP">
+            <PatternLayout pattern="%msg%n"/>
+        </Console>
         <RollingFile name="RollingFile"
                      filePattern="Group_Work_2_DAO_Hibernate/logs/$${date:yyyy-MM}/app-%d{dd-MM-yyyy}-%i.log">
-            <PatternLayout pattern="[%-5level] %d{yyyy-MM-dd HH:mm:ss} | %c | %msg%n%throwable"/>
+            <PatternLayout pattern="[%-5level] %d{yyyy-MM-dd HH:mm:ss} | %c - %msg%n%throwable"/>
             <Policies>
                 <TimeBasedTriggeringPolicy />
                 <SizeBasedTriggeringPolicy size="1 MB"/>
@@ -31,6 +34,12 @@
         </Logger>
         <Logger name="org.hibernate.SQL" level="DEBUG" additivity="false">
             <AppenderRef ref="RollingFile" />
+        </Logger>
+        <Logger name="itacademy.commands" level="DEBUG" additivity="false">
+            <AppenderRef ref="CONSOLE_APP"/>
+        </Logger>
+        <Logger name="itacademy.utils.MenuUtils" level="DEBUG" additivity="false">
+            <AppenderRef ref="CONSOLE_APP"/>
         </Logger>
         <Root level="ERROR">
             <AppenderRef ref="CONSOLE"/>

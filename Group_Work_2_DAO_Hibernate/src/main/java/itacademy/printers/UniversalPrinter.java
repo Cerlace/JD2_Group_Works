@@ -3,6 +3,7 @@ package itacademy.printers;
 import itacademy.api.Printer;
 import itacademy.utils.DataOutputUtils;
 import itacademy.utils.ReflectionUtils;
+import org.slf4j.Logger;
 
 import java.util.List;
 
@@ -18,9 +19,11 @@ public abstract class UniversalPrinter<T> implements Printer<T> {
     private static final String NOT_FOUND = "Запись с таким id не найдена!";
 
     private final Class<T> clazz;
+    private final Logger logger;
 
-    public UniversalPrinter(Class<T> clazz) {
+    public UniversalPrinter(Class<T> clazz, Logger logger) {
         this.clazz = clazz;
+        this.logger = logger;
     }
 
     @Override
@@ -28,9 +31,9 @@ public abstract class UniversalPrinter<T> implements Printer<T> {
         if (entity != null) {
             this.printHeader();
             this.printOneEntity(entity);
-            DataOutputUtils.displayMessage(this.getLine());
+            this.logger.debug(this.getLine());
         } else {
-            DataOutputUtils.displayMessage(NOT_FOUND);
+            this.logger.debug(NOT_FOUND);
         }
 
     }
@@ -41,7 +44,7 @@ public abstract class UniversalPrinter<T> implements Printer<T> {
         for (T entity : entities) {
             this.printOneEntity(entity);
         }
-        DataOutputUtils.displayMessage(this.getLine());
+        this.logger.debug(this.getLine());
     }
 
     @Override
@@ -54,7 +57,7 @@ public abstract class UniversalPrinter<T> implements Printer<T> {
                 NEW_LINE +
                 this.getLine();
 
-        DataOutputUtils.displayMessage(headerBuilder);
+        this.logger.debug(headerBuilder);
     }
 
     private String getLine() {
@@ -90,6 +93,6 @@ public abstract class UniversalPrinter<T> implements Printer<T> {
 
     private void printOneEntity(T entity) throws IllegalAccessException {
         List<String> values = ReflectionUtils.getColumnsValues(entity);
-        DataOutputUtils.displayMessage(this.getTableRow(values));
+        this.logger.debug(this.getTableRow(values));
     }
 }

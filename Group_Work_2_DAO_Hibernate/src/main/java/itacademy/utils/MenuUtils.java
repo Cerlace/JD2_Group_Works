@@ -18,8 +18,12 @@ import itacademy.dao.impl.PeopleDAOImpl;
 import itacademy.exceptions.checked.InvalidInputException;
 import itacademy.menu.Menu;
 import itacademy.menu.MenuItem;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class MenuUtils {
+    private static final Logger LOGGER = LoggerFactory.getLogger(MenuUtils.class);
+
     /**
      * Метод создает и возвращает меню для работы с entity People
      * @return меню
@@ -65,7 +69,7 @@ public class MenuUtils {
 
         while (!isExit) {
             try {
-                DataOutputUtils.displayMessage(menu.toString());
+                LOGGER.debug(menu.toString());
                 int choice = ConsoleUtils.inputInt();
                 if (choice == 0) {
                     isExit = true;
@@ -74,10 +78,10 @@ public class MenuUtils {
                 if (item != null) {
                     item.executeCommand();
                 } else {
-                    DataOutputUtils.displayMessage("Такого пункта меню нет!");
+                    LOGGER.debug("Такого пункта меню нет!");
                 }
             } catch (InvalidInputException | IllegalAccessException e) {
-                DataOutputUtils.displayMessage(e.getMessage());
+                LOGGER.error(e.getMessage());
             }
         }
     }
