@@ -3,16 +3,21 @@ package itacademy.creators;
 import itacademy.api.Creator;
 import itacademy.exceptions.checked.InvalidInputException;
 import itacademy.utils.ConsoleUtils;
-import itacademy.utils.DataOutputUtils;
+import org.slf4j.Logger;
 
 import java.io.Serializable;
 
 public class IdCreator implements Creator<Serializable> {
-    public static final String REQUEST_ID_ENTRY = "Введите id: ";
+    private static final String REQUEST_ID_ENTRY = "Введите id: ";
+    private final Logger logger;
+
+    public IdCreator(Logger logger) {
+        this.logger = logger;
+    }
 
     @Override
     public Serializable create() throws InvalidInputException {
-        DataOutputUtils.displayMessage(REQUEST_ID_ENTRY);
+        this.logger.debug(REQUEST_ID_ENTRY);
         return ConsoleUtils.inputInt();
     }
 }

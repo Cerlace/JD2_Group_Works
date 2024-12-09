@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+               xmlns="https://logging.apache.org/xml/ns"
+               xsi:schemaLocation="
+                       https://logging.apache.org/xml/ns
+                       https://logging.apache.org/xml/ns/log4j-config-2.xsd">
+
+    <Appenders>
+        <Console name="CONSOLE">
+            <PatternLayout pattern="[ %-5level] %d{HH:mm:ss} | %logger{36} - %msg%n"/>
+        </Console>
+        <Console name="CONSOLE_APP">
+            <PatternLayout pattern="%msg%n"/>
+        </Console>
+        <RollingFile name="RollingFile"
+                     filePattern="Group_Work_2_DAO_Hibernate/logs/$${date:yyyy-MM}/app-%d{dd-MM-yyyy}-%i.log">
+            <PatternLayout pattern="[%-5level] %d{yyyy-MM-dd HH:mm:ss} | %c - %msg%n%throwable"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy />
+                <SizeBasedTriggeringPolicy size="1 MB"/>
+            </Policies>
+        </RollingFile>
+    </Appenders>
+
+    <Loggers>
+        <Logger name="itacademy.dao" level="INFO" additivity="false">
+            <AppenderRef ref="RollingFile"/>
+        </Logger>
+        <Logger name="itacademy.utils.ExecutorUtils" level="INFO" additivity="false">
+            <AppenderRef ref="RollingFile"/>
+        </Logger>
+        <Logger name="org.hibernate" level="INFO" additivity="false">
+            <AppenderRef ref="RollingFile" />
+        </Logger>
+        <Logger name="org.hibernate.SQL" level="DEBUG" additivity="false">
+            <AppenderRef ref="RollingFile" />
+        </Logger>
+        <Logger name="itacademy.commands" level="DEBUG" additivity="false">
+            <AppenderRef ref="CONSOLE_APP"/>
+        </Logger>
+        <Logger name="itacademy.utils.MenuUtils" level="DEBUG" additivity="false">
+            <AppenderRef ref="CONSOLE_APP"/>
+        </Logger>
+        <Root level="ERROR">
+            <AppenderRef ref="CONSOLE"/>
+            <AppenderRef ref="RollingFile"/>
+        </Root>
+    </Loggers>
+
+</Configuration>
