@@ -33,6 +33,7 @@ public abstract class UniversalDAO<T> implements DAO<T> {
      * В конструктор передается класс Entity {@code <T>},
      * чтобы через рефлексию получить доступ к полям и аннотациями класса {@code <T>}.
      * @param clazz класс, с которым работает DAO
+     * @param logger объект logger соответствующего класса
      */
     public UniversalDAO(Class<T> clazz, Logger logger) {
         this.clazz = clazz;
@@ -91,7 +92,7 @@ public abstract class UniversalDAO<T> implements DAO<T> {
      */
     @Override
     public T update(Serializable id, T t) throws IllegalAccessException {
-        logger.info(UPDATE_LOG_MESSAGE,this.tableName, id);
+        logger.info(UPDATE_LOG_MESSAGE, this.tableName, id);
 
         ReflectionUtils.setId(t, id);
         return ExecutorUtils.executeHibernate(this.em, em -> {
@@ -111,7 +112,7 @@ public abstract class UniversalDAO<T> implements DAO<T> {
      */
     @Override
     public boolean delete(Serializable id) {
-        logger.info(DELETE_LOG_MESSAGE,this.tableName, id);
+        logger.info(DELETE_LOG_MESSAGE, this.tableName, id);
 
         return Boolean.TRUE.equals(ExecutorUtils.executeHibernate(this.em, em -> {
             T t = em.find(this.clazz, id);
