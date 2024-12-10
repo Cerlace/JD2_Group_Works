@@ -5,7 +5,14 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
         https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.0.xsd">
 
-    <include file="01-changeset-hibernate-sequence-table.xml" relativeToChangelogFile="true"/>
-    <include file="02-changeset-hibernate-sequence-insert.xml" relativeToChangelogFile="true"/>
+    <changeSet id="8" author="Daniil Nesterov" dbms="mysql">
+        <createTable tableName="hibernate_sequence">
+            <column name="next_val" type="bigint"/>
+        </createTable>
+        <insert tableName="hibernate_sequence">
+            <column name="next_val"
+                    value="1"/>
+        </insert>
+    </changeSet>
 
 </databaseChangeLog>

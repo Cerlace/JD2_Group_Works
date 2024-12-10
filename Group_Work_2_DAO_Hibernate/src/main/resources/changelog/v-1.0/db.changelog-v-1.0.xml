@@ -7,5 +7,7 @@
 
     <include file="01-changeset-people-table.xml" relativeToChangelogFile="true"/>
     <include file="02-changeset-address-table.xml" relativeToChangelogFile="true"/>
+    <include file="03-changeset-auto-increments-sequence.xml" relativeToChangelogFile="true"/>
+    <include file="04-changeset-auto-increments-table.xml" relativeToChangelogFile="true"/>
 
 </databaseChangeLog>
