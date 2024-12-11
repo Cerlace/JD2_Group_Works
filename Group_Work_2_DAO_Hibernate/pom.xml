@@ -148,14 +148,14 @@
                 <version>4.30.0</version>
                 <configuration>
                     <changeLogFile>src/main/resources/changelog/db.changelog-master.xml</changeLogFile>
-                    <url>jdbc:mysql://localhost:3306/group_hw</url>
+                    <url>jdbc:mysql://localhost:3306/hw6_db</url>
                     <username>root</username>
-                    <password>123456</password>
+                    <password>lspsds13</password>
                     <driver>com.mysql.cj.jdbc.Driver</driver>
                 </configuration>
                 <executions>
                     <execution>
-                        <phase>pre-integration-test</phase>
+                        <phase>compile</phase>
                         <goals>
                             <goal>update</goal>
                         </goals>

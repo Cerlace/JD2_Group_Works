@@ -5,22 +5,14 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
         https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.0.xsd">
 
-    <changeSet id="5" author="Roman Gulyako">
-        <sqlFile dbms="mysql"
-                 endDelimiter="\nGO"
-                 relativeToChangelogFile="true"
-                 splitStatements="true"
-                 stripComments="true"
-                 path="sql/02-create-address-table.sql"/>
-
-        <rollback>
-            <sqlFile dbms="mysql"
-                     endDelimiter="\nGO"
-                     relativeToChangelogFile="true"
-                     splitStatements="true"
-                     stripComments="true"
-                     path="sql/02-drop-address-table.sql"/>
-        </rollback>
+    <changeSet id="5" author="Daniil Nesterov">
+        <createTable tableName="address">
+            <column name="id" type="int">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="street" type="varchar(255)"/>
+            <column name="house" type="int"/>
+        </createTable>
     </changeSet>
 
 </databaseChangeLog>

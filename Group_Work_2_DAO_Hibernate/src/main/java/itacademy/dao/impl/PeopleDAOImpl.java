@@ -19,6 +19,6 @@ public class PeopleDAOImpl extends UniversalDAO<People> implements PeopleDAO {
      * чтобы через рефлексию получить доступ к полям и аннотациями класса DTO {@code People}.
      */
     public PeopleDAOImpl() {
-        super(People.class,LOGGER);
+        super(People.class, LOGGER);
     }
 }
