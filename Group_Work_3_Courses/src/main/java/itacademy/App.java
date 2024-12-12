@@ -13,6 +13,9 @@ import javax.persistence.EntityManager;
 import java.util.Set;
 
 public class App {
+
+    public static final int COURSE_DURATION = 198;
+
     public static void main(String[] args) {
         Student student = Student.builder()
                 .personData(PersonData.builder()
@@ -34,7 +37,7 @@ public class App {
 
         Course course = Course.builder()
                 .name("Java")
-                .duration(198)
+                .duration(COURSE_DURATION)
                 .teacher(teacher)
                 .students(Set.of(student))
                 .build();
