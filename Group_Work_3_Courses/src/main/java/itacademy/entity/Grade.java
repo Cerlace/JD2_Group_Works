@@ -24,7 +24,7 @@ import javax.persistence.FetchType;
 @Table(name = "grades")
 public class Grade {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column
     private Integer id;
 
