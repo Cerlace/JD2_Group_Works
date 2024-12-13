@@ -17,6 +17,27 @@
         <maven.compiler.target>11</maven.compiler.target>
     </properties>
 
+
+    <profiles>
+        <profile>
+            <id>test</id>
+            <properties>
+                <liquibase.config>src/test/resources/liquibase_test.properties</liquibase.config>
+                <liquibase-maven-plugin.phase>test-compile</liquibase-maven-plugin.phase>
+            </properties>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+        </profile>
+        <profile>
+            <id>main</id>
+            <properties>
+                <liquibase.config>src/main/resources/liquibase.properties</liquibase.config>
+                <liquibase-maven-plugin.phase>compile</liquibase-maven-plugin.phase>
+            </properties>
+        </profile>
+    </profiles>
+
     <dependencyManagement>
         <dependencies>
             <dependency>
@@ -137,16 +158,20 @@
                 <groupId>org.liquibase</groupId>
                 <artifactId>liquibase-maven-plugin</artifactId>
                 <version>4.30.0</version>
+
                 <configuration>
-                    <changeLogFile>src/main/resources/changelog/db.changelog-master.xml</changeLogFile>
-                    <url>jdbc:mysql://localhost:3306/group_hw_3</url>
-                    <username>root</username>
-                    <password>123456</password>
-                    <driver>com.mysql.cj.jdbc.Driver</driver>
+                    <propertyFile>${liquibase.config}</propertyFile>
                 </configuration>
+<!--                <configuration>-->
+<!--                    <changeLogFile>src/main/resources/changelog/db.changelog-master.xml</changeLogFile>-->
+<!--                    <url>jdbc:mysql://localhost:3306/group_hw_3</url>-->
+<!--                    <username>root</username>-->
+<!--                    <password>lspsds13</password>-->
+<!--                    <driver>com.mysql.cj.jdbc.Driver</driver>-->
+<!--                </configuration>-->
                 <executions>
                     <execution>
-                        <phase>compile</phase>
+                        <phase>${liquibase-maven-plugin.phase}</phase>
                         <goals>
                             <goal>update</goal>
                         </goals>
