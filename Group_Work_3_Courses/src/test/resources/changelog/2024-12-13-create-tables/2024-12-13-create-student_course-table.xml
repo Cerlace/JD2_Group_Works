@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                        https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.0.xsd">
+
+    <changeSet id="01-create-student_course-table" author="Roman Gulyako">
+        <createTable tableName="student_course">
+            <column name="STUDENT_ID" type="INT"/>
+            <column name="COURSE_ID" type="INT"/>
+        </createTable>
+        <addNotNullConstraint tableName="student_course" columnName="student_id"/>
+        <addNotNullConstraint tableName="student_course" columnName="course_id"/>
+    </changeSet>
+
+    <changeSet id="02-create-student_course-table" author="Roman Gulyako">
+        <addPrimaryKey tableName="student_course"
+                       columnNames="course_id, student_id"
+                       constraintName="student_course_PK"/>
+    </changeSet>
+
+</databaseChangeLog>
