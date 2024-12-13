@@ -7,7 +7,7 @@
 
     <changeSet id="create-tasks-table" author="Roman Gulyako">
         <createTable tableName="tasks">
-            <column name="id" type="INT">
+            <column name="id" type="INT" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="description" type="VARCHAR(255)"/>

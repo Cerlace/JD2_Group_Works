@@ -5,7 +5,6 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
         https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.0.xsd">
 
-    <include file="2024-12-12-create-hibernate_sequence-table.xml" relativeToChangelogFile="true"/>
     <include file="2024-12-12-create-teachers-table.xml" relativeToChangelogFile="true"/>
     <include file="2024-12-12-create-students-table.xml" relativeToChangelogFile="true"/>
     <include file="2024-12-12-create-courses-table.xml" relativeToChangelogFile="true"/>

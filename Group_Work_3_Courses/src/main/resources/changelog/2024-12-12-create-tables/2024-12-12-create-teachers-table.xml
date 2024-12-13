@@ -7,7 +7,7 @@
 
     <changeSet id="create-teachers-table" author="Roman Gulyako">
         <createTable tableName="teachers">
-            <column name="id" type="INT">
+            <column name="id" type="INT" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="email" type="VARCHAR(255)"/>

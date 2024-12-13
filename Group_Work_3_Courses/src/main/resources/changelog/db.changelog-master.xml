@@ -7,7 +7,5 @@
 
     <include file="2024-12-12-create-tables/2024-12-12-create-tables.xml"
              relativeToChangelogFile="true"/>
-    <include file="2024-12-13-change-id-generation/2024-12-13-change-id-generation.xml"
-             relativeToChangelogFile="true"/>
 
 </databaseChangeLog>
