@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.0.xsd">
+
+    <include file="2024-12-13-create-teachers-table.xml" relativeToChangelogFile="true"/>
+    <include file="2024-12-13-create-students-table.xml" relativeToChangelogFile="true"/>
+    <include file="2024-12-13-create-courses-table.xml" relativeToChangelogFile="true"/>
+    <include file="2024-12-13-create-tasks-table.xml" relativeToChangelogFile="true"/>
+    <include file="2024-12-13-create-grades-table.xml" relativeToChangelogFile="true"/>
+    <include file="2024-12-13-create-student_course-table.xml" relativeToChangelogFile="true"/>
+
+</databaseChangeLog>
