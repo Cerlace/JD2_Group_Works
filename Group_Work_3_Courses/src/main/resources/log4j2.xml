@@ -23,6 +23,9 @@
         <Logger name="itacademy.dao" level="INFO" additivity="false">
             <AppenderRef ref="RollingFile"/>
         </Logger>
+        <Logger name="itacademy.utils.HibernateUtils" level="INFO" additivity="false">
+            <AppenderRef ref="RollingFile"/>
+        </Logger>
         <Logger name="itacademy.utils.ExecutorUtils" level="INFO" additivity="false">
             <AppenderRef ref="RollingFile"/>
         </Logger>
