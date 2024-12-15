@@ -46,7 +46,7 @@ public class Task {
     @Column
     private String description;
 
-    @OneToMany(cascade = CascadeType.ALL,
+    @OneToMany(cascade = CascadeType.REMOVE,
             fetch = FetchType.LAZY,
             orphanRemoval = true,
             mappedBy = "task")
