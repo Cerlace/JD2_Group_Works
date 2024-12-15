@@ -1,25 +1,17 @@
 package itacademy.entity;
 
 import itacademy.entity.embedded.PersonData;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Column;
-import javax.persistence.Embedded;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.util.Set;
 
 @Builder
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString(exclude = "courses")
+@EqualsAndHashCode(exclude = "courses")
 @Entity
 @Table(name = "teachers")
 public class Teacher {
@@ -31,6 +23,8 @@ public class Teacher {
     @Embedded
     private PersonData personData;
 
-    @OneToMany(mappedBy = "teacher")
+    @OneToMany(cascade = CascadeType.MERGE,
+            fetch = FetchType.LAZY,
+            mappedBy = "teacher")
     private Set<Course> courses;
 }
