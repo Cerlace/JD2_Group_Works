@@ -40,7 +40,7 @@ public class Grade {
     private Task task;
 
     @Column
-    private String grade;
+    private Integer score;
 
     @Column
     private String feedback;
