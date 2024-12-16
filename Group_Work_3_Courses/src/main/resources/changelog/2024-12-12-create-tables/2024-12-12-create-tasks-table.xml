@@ -12,6 +12,7 @@
             </column>
             <column name="description" type="VARCHAR(255)"/>
             <column name="title" type="VARCHAR(255)"/>
+            <column name="task_date" type="date"/>
             <column name="course_id" type="INT">
                 <constraints foreignKeyName="FK_course" references="courses(id)"/>
             </column>
