@@ -11,6 +11,6 @@
     <suppress checks="MissingJavadocMethod" files="src[/\\]test[/\\]java[/\\].*"/>
     <suppress checks="LineLength" files="src[/\\]main[/\\]resources[/\\].*"/>
 
-    <suppress checks="MagicNumber" files="[\\/]src[\\/]main[\\/]java[\\/]itacademy[\\/]App\.java"/>
+    <suppress checks="MagicNumber" files="[\\/]src[\\/]main[\\/]java[\\/]itacademy[\\/].*App\.java"/>
     <suppress checks="MissingJavadocMethod" files="[\\/]src[\\/]main[\\/]java[\\/]itacademy[\\/]utils[\\/]ObjectSupplierUtil\.java"/>
 </suppressions>
