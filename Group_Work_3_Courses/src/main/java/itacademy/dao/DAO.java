@@ -39,6 +39,9 @@ public abstract class DAO<T> implements IDAO<T> {
     protected EntityManager getEntityManager() {
         return entityManager;
     }
+    protected String getTableName(){
+        return tableName;
+    }
 
     /**
      * Метод добавляет в таблицу запись
