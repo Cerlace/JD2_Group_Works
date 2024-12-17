@@ -10,15 +10,16 @@ import lombok.EqualsAndHashCode;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.persistence.Id;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
-import javax.persistence.OneToMany;
+import javax.persistence.FetchType;
 import javax.persistence.ManyToMany;
-import javax.persistence.CascadeType;
 import javax.persistence.JoinTable;
+import javax.persistence.OneToMany;
 import javax.persistence.JoinColumn;
 
 import java.util.Set;
@@ -40,15 +41,17 @@ public class Student {
     @Embedded
     private PersonData personData;
 
-    @ManyToMany(cascade = {CascadeType.DETACH,
-            CascadeType.MERGE,
-            CascadeType.PERSIST,
-            CascadeType.REFRESH})
+    @ManyToMany(cascade = {CascadeType.PERSIST,
+            CascadeType.MERGE},
+            fetch = FetchType.LAZY)
     @JoinTable(name = "student_course",
-    joinColumns = {@JoinColumn(name = "student_id")},
-    inverseJoinColumns = {@JoinColumn(name = "course_id")})
+            joinColumns = {@JoinColumn(name = "student_id")},
+            inverseJoinColumns = {@JoinColumn(name = "course_id")})
     private Set<Course> courses;
 
-    @OneToMany(mappedBy = "student")
+    @OneToMany(cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY,
+            orphanRemoval = true,
+            mappedBy = "student")
     private Set<Grade> grades;
 }
