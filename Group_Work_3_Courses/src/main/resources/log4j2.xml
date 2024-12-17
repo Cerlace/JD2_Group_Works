@@ -10,7 +10,7 @@
             <PatternLayout pattern="[ %-5level] %d{HH:mm:ss} | %logger{36} - %msg%n"/>
         </Console>
         <RollingFile name="RollingFile"
-                     filePattern="Group_Work_3_Courses/logs/$${date:yyyy-MM}/app-%d{dd-MM-yyyy}-%i.log">
+                     filePattern="Group_Work_3_Courses/logs_main/$${date:yyyy-MM}/app-%d{dd-MM-yyyy}-%i.log">
             <PatternLayout pattern="[%-5level] %d{yyyy-MM-dd HH:mm:ss} | %c - %msg%n%throwable"/>
             <Policies>
                 <TimeBasedTriggeringPolicy/>

@@ -8,6 +8,8 @@ import itacademy.entity.Task;
 import itacademy.entity.Teacher;
 import itacademy.entity.embedded.PersonData;
 
+import java.util.Date;
+
 public class ObjectSupplierUtil {
 
     public static final int DEFAULT_COURSE_DURATION = 50;
@@ -45,6 +47,7 @@ public class ObjectSupplierUtil {
         return Task.builder()
                 .title("Task " + suffix)
                 .description("Task description " + suffix)
+                .taskDate(new Date())
                 .build();
     }
 

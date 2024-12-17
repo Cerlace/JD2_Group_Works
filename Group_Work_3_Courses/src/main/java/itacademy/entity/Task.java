@@ -19,6 +19,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -45,6 +46,9 @@ public class Task {
 
     @Column
     private String description;
+
+    @Column(name = "task_date")
+    private Date taskDate;
 
     @OneToMany(cascade = CascadeType.REMOVE,
             fetch = FetchType.LAZY,
