@@ -21,9 +21,7 @@ import itacademy.utils.ObjectSupplierUtil;
 
 import java.util.Set;
 
-public class App {
-
-    public static final int COURSE_DURATION = 198;
+public class SaveApp {
 
     public static void main(String[] args) {
         StudentDAO studentDAO = new StudentDAOImpl();
@@ -90,17 +88,6 @@ public class App {
 
         studentDAO.save(student1);
         studentDAO.save(student2);
-
-        Set<Student> students = studentDAO.getStudentsByMinAvgGrade(3);
-        students.forEach(System.out::println);
-
-        Set<Grade> student1Grades = gradeDAO.getStudentsGradesByCourse(course1, student1);
-        student1Grades.forEach(System.out::println);
-
-        studentDAO.delete(student1.getId());
-
-        Course course = courseDAO.get(course1.getId());
-        course.getStudents().forEach(System.out::println);
 
         studentDAO.close();
         teacherDAO.close();
