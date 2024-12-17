@@ -5,17 +5,17 @@ import itacademy.dao.DAO;
 import itacademy.entity.Course;
 import itacademy.entity.Grade;
 import itacademy.entity.Student;
-import itacademy.entity.Task;
 import itacademy.utils.ExecutorUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.persistence.EntityManager;
-import javax.persistence.Query;
-import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class GradeDAOImpl extends DAO<Grade> implements GradeDAO {
+    private static final String START_GETTING_STUDENT_GRADES_BY_COURSE_LOG_MESSAGE
+            = "Table: 'grades', start getting grades with student = {} and course = {}";
     private static final Logger LOGGER = LoggerFactory.getLogger(GradeDAOImpl.class);
     private final EntityManager em;
 
@@ -27,22 +27,14 @@ public class GradeDAOImpl extends DAO<Grade> implements GradeDAO {
 
     @Override
     public Set<Grade> getStudentsGradesByCourse(Course course, Student student) {
+        LOGGER.info(START_GETTING_STUDENT_GRADES_BY_COURSE_LOG_MESSAGE, student, course);
+
         return ExecutorUtils.executeHibernate(this.em, em -> {
-            Course foundCourse = em.find(Course.class, course.getId());
-
-            if (foundCourse != null) {
-                Set<Task> coursesTasks = foundCourse.getTasks();
-                Query query = em.createQuery("SELECT g FROM Grade g WHERE g.task = :task AND g.student= :student");
-                query.setParameter("student", student);
-                Set<Grade> resultGrades = new HashSet<>();
-                if (coursesTasks != null) {
-                    for (Task coursesTask : coursesTasks) {
-                        query.setParameter("task", coursesTask);
-                        resultGrades.addAll(query.getResultList());
-                    }
-
-                    return resultGrades;
-                }
+            Set<Grade> grades = student.getGrades();
+            if (grades != null) {
+                return grades.stream()
+                        .filter(grade -> grade.getTask().getCourse().equals(course))
+                        .collect(Collectors.toSet());
             }
 
             return null;

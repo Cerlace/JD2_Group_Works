@@ -39,7 +39,8 @@ public class Teacher {
     @Embedded
     private PersonData personData;
 
-    @OneToMany(cascade = CascadeType.MERGE,
+    @OneToMany(cascade = {CascadeType.PERSIST,
+            CascadeType.MERGE},
             fetch = FetchType.LAZY,
             mappedBy = "teacher")
     private Set<Course> courses = new HashSet<>();

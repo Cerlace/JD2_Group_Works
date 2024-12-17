@@ -50,7 +50,6 @@ public abstract class DAO<T> implements IDAO<T> {
         logger.info(SAVE_LOG_MESSAGE, this.tableName, t);
 
         return ExecutorUtils.executeHibernate(this.entityManager, em -> {
-            em.clear();
             em.persist(t);
             return t;
         });
