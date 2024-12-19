@@ -3,10 +3,6 @@ package itacademy;
 import itacademy.api.*;
 import itacademy.dao.impl.*;
 import itacademy.entity.*;
-import itacademy.utils.ObjectSupplierUtil;
-
-import java.util.HashSet;
-import java.util.Set;
 
 public class App {
     public static void main(String[] args) throws IllegalAccessException {

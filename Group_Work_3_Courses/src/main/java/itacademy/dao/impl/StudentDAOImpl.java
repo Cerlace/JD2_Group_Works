@@ -35,7 +35,7 @@ public class StudentDAOImpl extends DAO<Student> implements StudentDAO {
 
         return ExecutorUtils.executeHibernate(this.em, em ->
                 new HashSet<>(em.createQuery(QUERY_FOR_GET_STUDENTS_BY_AVG_GRADE)
-                        .setParameter("minAvgGrade", (double)minAvgGrade)
+                        .setParameter("minAvgGrade", (double) minAvgGrade)
                         .getResultList()));
     }
 }
