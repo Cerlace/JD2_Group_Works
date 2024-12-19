@@ -43,5 +43,6 @@ public class Teacher {
             CascadeType.MERGE},
             fetch = FetchType.LAZY,
             mappedBy = "teacher")
+    @Builder.Default
     private Set<Course> courses = new HashSet<>();
 }

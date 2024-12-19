@@ -50,9 +50,10 @@ public class Task {
     @Column(name = "task_date")
     private Date taskDate;
 
-    @OneToMany(cascade = CascadeType.REMOVE,
+    @OneToMany(cascade = CascadeType.ALL,
             fetch = FetchType.LAZY,
             orphanRemoval = true,
             mappedBy = "task")
+    @Builder.Default
     private Set<Grade> grades = new HashSet<>();
 }

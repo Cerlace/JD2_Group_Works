@@ -18,6 +18,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Builder
@@ -40,13 +41,15 @@ public class Course {
 
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE},
             mappedBy = "courses")
-    private Set<Student> students;
+    @Builder.Default
+    private Set<Student> students = new HashSet<>();
 
     @OneToMany(cascade = CascadeType.ALL,
             fetch = FetchType.LAZY,
             orphanRemoval = true,
             mappedBy = "course")
-    private Set<Task> tasks;
+    @Builder.Default
+    private Set<Task> tasks = new HashSet<>();
 
     @Column
     private String name;

@@ -22,6 +22,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
 import javax.persistence.JoinColumn;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Builder
@@ -53,5 +54,6 @@ public class Student {
             fetch = FetchType.LAZY,
             orphanRemoval = true,
             mappedBy = "student")
-    private Set<Grade> grades;
+    @Builder.Default
+    private Set<Grade> grades = new HashSet<>();
 }
