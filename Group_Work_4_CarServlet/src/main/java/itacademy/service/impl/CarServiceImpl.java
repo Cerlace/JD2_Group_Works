@@ -17,7 +17,7 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
-    public CarDTO getById(Serializable id) {
+    public CarDTO get(Serializable id) {
         return null;
     }
 

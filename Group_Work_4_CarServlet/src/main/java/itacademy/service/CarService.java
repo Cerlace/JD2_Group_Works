@@ -8,7 +8,7 @@ import java.util.List;
 public interface CarService {
     CarDTO save(CarDTO t);
 
-    CarDTO getById(Serializable id);
+    CarDTO get(Serializable id);
 
     List<CarDTO> getAll();
 
