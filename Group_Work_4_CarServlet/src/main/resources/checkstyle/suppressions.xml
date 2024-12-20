@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+
+<!DOCTYPE suppressions PUBLIC
+        "-//Puppy Crawl//DTD Suppressions 1.1//EN"
+        "http://www.puppycrawl.com/dtds/suppressions_1_1.dtd">
+
+<suppressions>
+    <suppress checks="AvoidStaticImport" files="src[/\\]test[/\\]java[/\\].*"/>
+    <suppress checks="AvoidStarImport" files="src[/\\]test[/\\]java[/\\].*"/>
+    <suppress checks="MagicNumber" files="src[/\\]test[/\\]java[/\\].*"/>
+    <suppress checks="MissingJavadocMethod" files="src[/\\]test[/\\]java[/\\].*"/>
+    <suppress checks="LineLength" files="src[/\\]main[/\\]resources[/\\].*"/>
+
+    <suppress checks="MagicNumber" files="[\\/]src[\\/]main[\\/]java[\\/]itacademy[\\/].*App\.java"/>
+    <suppress checks="AvoidStarImport" files="[\\/]src[\\/]main[\\/]java[\\/]itacademy[\\/].*App\.java"/>
+    <suppress checks="MissingJavadocMethod" files="[\\/]src[\\/]main[\\/]java[\\/]itacademy[\\/]utils[\\/]ObjectSupplierUtil\.java"/>
+</suppressions>
