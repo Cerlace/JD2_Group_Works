@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @Data
 public class CarDTO {
+    private Integer id;
     private String vin;
     private String name;
 }
