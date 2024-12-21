@@ -5,9 +5,8 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
         https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.0.xsd">
 
-    <!-- Подключаем файл с изменениями -->
-    <include file="/changelog/V1.0.0-create-tables/2024-12-21-create-schema.xml"/>
-    <include file="/changelog/V1.0.0-create-tables/2024-12-21-create-carEntity-table.xml"/>
-
-
+    <!-- Изменение для создания схемы -->
+    <changeSet id="1" author="Sergey">
+        <sql>CREATE SCHEMA "group_hw_4"</sql>
+    </changeSet>
 </databaseChangeLog>
