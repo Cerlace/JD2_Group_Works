@@ -159,16 +159,16 @@
                 <artifactId>liquibase-maven-plugin</artifactId>
                 <version>4.30.0</version>
 
-                <configuration>
-                    <propertyFile>${liquibase.config}</propertyFile>
-                </configuration>
 <!--                <configuration>-->
-<!--                    <changeLogFile>src/main/resources/changelog/db.changelog-master.xml</changeLogFile>-->
-<!--                    <url>jdbc:mysql://localhost:3306/group_hw_3</url>-->
-<!--                    <username>root</username>-->
-<!--                    <password>lspsds13</password>-->
-<!--                    <driver>com.mysql.cj.jdbc.Driver</driver>-->
+<!--                    <propertyFile>${liquibase.config}</propertyFile>-->
 <!--                </configuration>-->
+                <configuration>
+                    <changeLogFile>src/main/resources/changelog/db.changelog-master.xml</changeLogFile>
+                    <url>jdbc:mysql://localhost:3306/group_hw_3</url>
+                    <username>root</username>
+                    <password>Лщзфпфифтф_7</password>
+                    <driver>com.mysql.cj.jdbc.Driver</driver>
+                </configuration>
                 <executions>
                     <execution>
                         <phase>${liquibase-maven-plugin.phase}</phase>

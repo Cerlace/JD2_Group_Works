@@ -30,7 +30,7 @@ public class ReflectionUtils {
             return tableName;
         } else {
             throw new IllegalArgumentException("Ошибка! Entity-class не аннотирован @Table!");
-        }
+        }//ЛУЧШЕ ЭТО НАПИСАТЬ В ТЕСТАХ
     }
 
     /**

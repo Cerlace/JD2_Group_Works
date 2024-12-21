@@ -66,6 +66,13 @@
             <version>1.18.32</version>
             <scope>provided</scope>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/org.liquibase/liquibase-core -->
+        <dependency>
+            <groupId>org.liquibase</groupId>
+            <artifactId>liquibase-core</artifactId>
+            <version>4.30.0</version>
+        </dependency>
+
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
@@ -95,22 +102,14 @@
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
                 <version>0.8.12</version>
-                <configuration>
-                    <excludes>
-                        <exclude>**/entity/*</exclude>
-                        <exclude>**/menu/*</exclude>
-                        <exclude>**/exceptions/**</exclude>
-                        <exclude>**/utils/ConsoleUtils.class</exclude>
-                        <exclude>**/utils/DataOutputUtils.class</exclude>
-                        <exclude>/itacademy/*</exclude>
-                    </excludes>
-                </configuration>
                 <executions>
+                    <!-- Подготовка агента JaCoCo для сбора данных покрытия -->
                     <execution>
                         <goals>
                             <goal>prepare-agent</goal>
                         </goals>
                     </execution>
+                    <!-- Генерация отчета после выполнения тестов -->
                     <execution>
                         <id>report</id>
                         <phase>test</phase>
@@ -119,7 +118,12 @@
                         </goals>
                     </execution>
                 </executions>
+                <configuration>
+                    <!-- Папка для отчётов -->
+                    <outputDirectory>target/jacoco-report</outputDirectory>
+                </configuration>
             </plugin>
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-checkstyle-plugin</artifactId>
