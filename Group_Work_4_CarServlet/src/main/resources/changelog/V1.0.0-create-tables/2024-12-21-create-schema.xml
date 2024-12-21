@@ -7,6 +7,6 @@
 
     <!-- Изменение для создания схемы -->
     <changeSet id="1" author="Sergey">
-        <sql>CREATE SCHEMA "group_hw_4"</sql>
+        <sql>CREATE SCHEMA group_hw_4</sql>
     </changeSet>
 </databaseChangeLog>
