@@ -7,4 +7,9 @@
 
     <include file="db/changelog/V1.0.0-create-tables/2024-12-21-create-carEntity-table.xml"/>
 
+    <!-- Подключаем файлы с изменениями -->
+    <include file="/changelog/V1.0.0-create-tables/2024-12-21-create-schema.xml"/>
+    <include file="/changelog/V1.0.0-create-tables/2024-12-21-create-carEntity-table.xml"/>
+
+
 </databaseChangeLog>
