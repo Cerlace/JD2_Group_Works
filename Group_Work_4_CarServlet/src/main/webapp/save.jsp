@@ -8,12 +8,12 @@
 <form name="save" method="post" action="save">
     <label>
         Fill car vin:
-        <input name="vin" type="text">
+        <input name="vin" type="text" required>
     </label>
     <br/>
     <label>
         Fill car name:
-        <input name="name" type="text">
+        <input name="name" type="text" required>
     </label>
     <br/>
     <button>Send</button>

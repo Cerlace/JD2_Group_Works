@@ -27,7 +27,7 @@
         <td>Car Name
         </td>
         <td>
-            <form id="delete" method="post" action="list">
+            <form id="delete" method="post" action="delete">
                 <button>delete</button>
             </form>
         </td>
@@ -44,7 +44,7 @@
         </td>
         <td>
             <label>
-                <input form="delete" name="id" type="radio"
+                <input form="delete" name="ids" type="checkbox"
                        value="<%= car.getId() %>">
             </label>
         </td>
@@ -54,6 +54,11 @@
     %>
 </table>
 <br/>
-<a href="index.jsp">RETURN TO TITLE PAGE</a><br/>
+Result: <%= request.getParameter("resultMessage") %> <br/>
+<br/>
+<a href="save">SAVE PAGE</a>
+<br/>
+<br/>
+<a href="update">UPDATE PAGE</a>
 </body>
 </html>

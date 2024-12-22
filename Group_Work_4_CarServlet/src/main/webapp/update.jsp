@@ -8,17 +8,17 @@
 <form name="update" method="post" action="update">
     <label>
         Fill car id:
-        <input name="id" type="number">
+        <input name="id" type="number" required>
     </label>
     <br/>
     <label>
         Fill new car vin:
-        <input name="vin" type="text">
+        <input name="vin" type="text" required>
     </label>
     <br/>
     <label>
         Fill new car name:
-        <input name="name" type="text">
+        <input name="name" type="text" required>
     </label>
     <br/>
     <button>Send</button>
