@@ -8,11 +8,11 @@ import java.util.List;
 public interface CarService {
     CarDTO save(CarDTO t);
 
-    CarDTO get(Serializable id);
-
     List<CarDTO> getAll();
 
-    CarDTO update(Serializable id, CarDTO car) throws IllegalAccessException;
+    CarDTO update(Serializable id, CarDTO car);
 
-    boolean delete(Serializable id);
+    boolean delete(String id);
+
+    void closeDao();
 }
