@@ -26,6 +26,6 @@
 <br/>
 Result: <%= request.getAttribute("resultMessage") %> <br/>
 <br/>
-<a href="index.jsp">RETURN TO TITLE PAGE</a><br/>
+<a href="cars_manager">RETURN TO LIST CARS</a><br/>
 </body>
 </html>

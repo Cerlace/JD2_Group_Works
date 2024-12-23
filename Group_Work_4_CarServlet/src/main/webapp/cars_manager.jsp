@@ -26,7 +26,7 @@
         <td>Car Name
         </td>
         <td>
-            <form id="delete" method="post" action="cars_manager">
+            <form id="delete" method="post" action="delete">
                 <button>delete</button>
             </form>
         </td>
