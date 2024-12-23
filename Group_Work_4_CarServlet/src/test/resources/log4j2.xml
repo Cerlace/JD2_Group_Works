@@ -23,9 +23,7 @@
         <Logger name="itacademy.utils.HibernateUtils" level="INFO" additivity="false">
             <AppenderRef ref="RollingFile"/>
         </Logger>
-        <Logger name="itacademy.LiquiRunner" level="INFO" additivity="false">
-            <AppenderRef ref="RollingFile"/>
-        </Logger>
+
         <Logger name="org.hibernate" level="INFO" additivity="false">
             <AppenderRef ref="RollingFile"/>
         </Logger>
