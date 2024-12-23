@@ -16,9 +16,9 @@ import java.io.IOException;
 
 @WebServlet(name = "updateCarServlet", value = "/update")
 public class UpdateCarServlet extends HttpServlet {
-    public static final String RESULT_MESSAGE_ATTRIBUTE = "resultMessage";
-    public static final String UPDATE_JSP = "/update.jsp";
-    public static final String CAR_NOT_FOUND = "Car not found";
+    private static final String RESULT_MESSAGE_ATTRIBUTE = "resultMessage";
+    private static final String UPDATE_JSP = "/update.jsp";
+    private static final String CAR_NOT_FOUND = "Car not found";
     private final CarService carService = new CarServiceImpl();
 
     @Override
