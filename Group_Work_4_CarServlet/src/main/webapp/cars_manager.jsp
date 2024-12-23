@@ -16,8 +16,22 @@
     </style>
 </head>
 <body>
-<h2>Cars list:</h2>
-
+<h1>Save or update car:</h1>
+<h2>Input car data here, and press button above to save car, or one of the buttons near car record, to update it.</h2>
+<form id="saveOrUpdate" method="post">
+    <label>
+        Fill car vin:
+        <input name="vin" type="text" required>
+    </label>
+    <br/>
+    <label>
+        Fill car name:
+        <input name="name" type="text" required>
+    </label>
+    <br/>
+    <button formaction="save">Save</button>
+</form>
+<h1>Cars list:</h1>
 <table>
     <tr>
         <td>Car ID
@@ -27,9 +41,7 @@
         <td>Car Name
         </td>
         <td>
-            <form id="delete" method="post" action="list">
-                <button>delete</button>
-            </form>
+            Action
         </td>
     </tr>
     <% List<CarDTO> cars = (List<CarDTO>) request.getAttribute("cars");
@@ -43,17 +55,20 @@
         <td><%= car.getName() %>
         </td>
         <td>
-            <label>
-                <input form="delete" name="id" type="radio"
-                       value="<%= car.getId() %>">
-            </label>
+            <form id="delete" method="post" action="delete">
+                <button name="id" value="<%= car.getId() %>">
+                    Delete
+                </button>
+            </form>
+            <button form="saveOrUpdate" formaction="update"
+                    name="id" value="<%= car.getId() %>">
+                Update
+            </button>
         </td>
     </tr>
     <%
         }
     %>
 </table>
-<br/>
-<a href="index.jsp">RETURN TO TITLE PAGE</a><br/>
 </body>
 </html>
