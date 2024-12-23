@@ -1,4 +1,4 @@
-<%@ page contentType="text/html;charset=UTF-8"%>
+<%@ page contentType="text/html;charset=UTF-8" %>
 <%@ page import="itacademy.dto.CarDTO" %>
 <%@ page import="java.util.List" %>
 <html>
@@ -17,7 +17,6 @@
 </head>
 <body>
 <h2>Cars list:</h2>
-
 <table>
     <tr>
         <td>Car ID
@@ -27,7 +26,7 @@
         <td>Car Name
         </td>
         <td>
-            <form id="delete" method="post" action="delete">
+            <form id="delete" method="post" action="cars_manager">
                 <button>delete</button>
             </form>
         </td>
