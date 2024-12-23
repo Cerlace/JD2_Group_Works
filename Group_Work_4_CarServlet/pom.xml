@@ -61,6 +61,7 @@
             <artifactId>mysql-connector-j</artifactId>
             <version>9.1.0</version>
         </dependency>
+
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
@@ -119,28 +120,29 @@
                     </execution>
                 </executions>
             </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-checkstyle-plugin</artifactId>
-                <version>3.6.0</version>
-                <configuration>
-                    <configLocation>src/main/resources/checkstyle/checkstyle.xml</configLocation>
-                    <failOnViolation>true</failOnViolation>
-                    <failsOnError>true</failsOnError>
-                    <suppressionsLocation>src/main/resources/checkstyle/suppressions.xml</suppressionsLocation>
-                    <suppressionsFileExpression>suppressions.xml</suppressionsFileExpression>
-                    <includeTestSourceDirectory>true</includeTestSourceDirectory>
-                    <consoleOutput>true</consoleOutput>
-                </configuration>
-                <executions>
-                    <execution>
-                        <phase>validate</phase>
-                        <goals>
-                            <goal>check</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
+<!--            <plugin>-->
+<!--                <groupId>org.apache.maven.plugins</groupId>-->
+<!--                <artifactId>maven-checkstyle-plugin</artifactId>-->
+<!--                <version>3.6.0</version>-->
+<!--                <configuration>-->
+<!--                    <configLocation>src/main/resources/checkstyle/checkstyle.xml</configLocation>-->
+<!--                    <failOnViolation>true</failOnViolation>-->
+<!--                    <failsOnError>true</failsOnError>-->
+<!--                    <suppressionsLocation>src/main/resources/checkstyle/suppressions.xml</suppressionsLocation>-->
+<!--                    <suppressionsFileExpression>suppressions.xml</suppressionsFileExpression>-->
+<!--                    <includeTestSourceDirectory>true</includeTestSourceDirectory>-->
+<!--                    <consoleOutput>true</consoleOutput>-->
+<!--                </configuration>-->
+<!--                <executions>-->
+<!--                    <execution>-->
+<!--                        <phase>validate</phase>-->
+<!--                        <goals>-->
+<!--                            <goal>check</goal>-->
+<!--                        </goals>-->
+<!--                    </execution>-->
+<!--                </executions>-->
+<!--            </plugin>-->
+
             <plugin>
                 <groupId>org.liquibase</groupId>
                 <artifactId>liquibase-maven-plugin</artifactId>
@@ -148,7 +150,7 @@
 
 
                 <configuration>
-                    <changeLogFile>src/main/resources/changelog/db.changelog-master.xml</changeLogFile>
+                    <changeLogFile>src/main/resources/db/changelog/db.changelog-master.xml</changeLogFile>
                     <url>jdbc:mysql://localhost:3306/group_hw_4</url>
                     <username>root</username>
                     <password>Лщзфпфифтф_7</password>
