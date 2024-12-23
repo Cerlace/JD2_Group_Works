@@ -31,9 +31,6 @@
     <br/>
     <button formaction="save">Save</button>
 </form>
-<br/>
-Result: <%= request.getParameter("resultMessage") %> <br/>
-<br/>
 <h1>Cars list:</h1>
 <table>
     <tr>
@@ -63,10 +60,10 @@ Result: <%= request.getParameter("resultMessage") %> <br/>
                     Delete
                 </button>
             </form>
-                <button form="saveOrUpdate" formaction="update"
-                        name="id" value="<%= car.getId() %>">
-                    Update
-                </button>
+            <button form="saveOrUpdate" formaction="update"
+                    name="id" value="<%= car.getId() %>">
+                Update
+            </button>
         </td>
     </tr>
     <%
