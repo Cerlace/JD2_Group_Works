@@ -36,6 +36,7 @@ public class CarServiceImpl implements CarService {
                                 .id(carEntity.getId())
                                 .vin(carEntity.getVin())
                                 .name(carEntity.getName())
+                                .changeTime(carEntity.getChangeTime())
                                 .build()).collect(Collectors.toList());
     }
 

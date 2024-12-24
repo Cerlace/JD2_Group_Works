@@ -17,7 +17,8 @@
 </head>
 <body>
 <h1>Save or update car:</h1>
-<h2>Input car data here, and press button above to save car, or one of the buttons near car record, to update it.</h2>
+<h2>Input car data here, and press button above to <ins>save</ins> car,
+<br/>Or press one of the buttons near car record, to <ins>update</ins> it.</h2>
 <form id="saveOrUpdate" method="post">
     <label>
         Fill car vin:
@@ -34,13 +35,19 @@
 <h1>Cars list:</h1>
 <table>
     <tr>
-        <td>Car ID
-        </td>
-        <td>VIN
-        </td>
-        <td>Car Name
+        <td>
+            Car ID
         </td>
         <td>
+            VIN
+        </td>
+        <td>
+            Car Name
+        </td>
+        <td>
+            Change time
+        </td>
+        <td colspan="2">
             Action
         </td>
     </tr>
@@ -48,18 +55,27 @@
         for (CarDTO car : cars) {
     %>
     <tr>
-        <td><%= car.getId() %>
+        <td>
+            <%= car.getId() %>
         </td>
-        <td><%= car.getVin() %>
+        <td>
+            <%= car.getVin() %>
         </td>
-        <td><%= car.getName() %>
+        <td>
+            <%= car.getName() %>
+        </td>
+        <td>
+            <%= car.getChangeTime() %>
         </td>
         <td>
             <form id="delete" method="post" action="delete">
-                <button name="id" value="<%= car.getId() %>">
+                <button formmethod="post" formaction="delete"
+                        name="id" value="<%= car.getId() %>">
                     Delete
                 </button>
             </form>
+        </td>
+        <td>
             <button form="saveOrUpdate" formaction="update"
                     name="id" value="<%= car.getId() %>">
                 Update

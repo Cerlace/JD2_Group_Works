@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.sql.Timestamp;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -13,4 +15,5 @@ public class CarDTO {
     private Integer id;
     private String vin;
     private String name;
+    private Timestamp changeTime;
 }
