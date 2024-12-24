@@ -13,21 +13,25 @@ public class HibernateUtil {
             Persistence.createEntityManagerFactory("academy");
     public static final String CREATED_NEW_ENTITY_MANAGER = "Created new Entity Manager.";
     public static final String CLOSING_ENTITY_MANAGER_FACTORY = "Closing Entity Manager Factory.";
+    public static final EntityManager ENTITY_MANAGER = ENTITY_MANAGER_FACTORY.createEntityManager();
 
     /**
      * Метод создает новый объект EntityManager
+     *
      * @return новый EntityManager
      */
     public static EntityManager getEntityManager() {
         LOGGER.info(CREATED_NEW_ENTITY_MANAGER);
-        return ENTITY_MANAGER_FACTORY.createEntityManager();
+        return ENTITY_MANAGER;
     }
 
     /**
      * Метод закрывает EntityManagerFactory
      */
     public static void close() {
-        LOGGER.info(CLOSING_ENTITY_MANAGER_FACTORY);
-        ENTITY_MANAGER_FACTORY.close();
+        if (ENTITY_MANAGER_FACTORY.isOpen()) {
+            LOGGER.info(CLOSING_ENTITY_MANAGER_FACTORY);
+            ENTITY_MANAGER_FACTORY.close();
+        }
     }
 }

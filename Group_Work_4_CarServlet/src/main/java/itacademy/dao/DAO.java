@@ -21,10 +21,9 @@ public interface DAO<T> {
      * Метод обновляет параметры строки таблицы БД по идентификатору строки {@code id}.
      * @param id - идентификатор строки таблицы БД
      * @param t - обновленные параметры строки таблицы БД
-     * @throws IllegalAccessException при ошибке работы методов рефлексии
      * @return обновленный в БД объект или null, если объект с таким id отсутствует
      */
-    T update(Serializable id, T t) throws IllegalAccessException;
+    T update(Serializable id, T t);
 
     /**
      * Метод удаляет строку таблицы БД по идентификатору строки {@code id}.
@@ -34,7 +33,7 @@ public interface DAO<T> {
     boolean delete(Serializable id);
 
     /**
-     * Метод для закрытия EntityManager и EntityManagerFactory
+     * Метод для закрытия EntityManager
      */
     void close();
 }
