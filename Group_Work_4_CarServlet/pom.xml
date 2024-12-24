@@ -14,7 +14,6 @@
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
         <liquibase.config>src/main/resources/liquibase.properties</liquibase.config>
-        <liquibase-maven-plugin.phase>deploy</liquibase-maven-plugin.phase>
     </properties>
 
     <dependencies>
@@ -120,50 +119,36 @@
                     </execution>
                 </executions>
             </plugin>
-<!--            <plugin>-->
-<!--                <groupId>org.apache.maven.plugins</groupId>-->
-<!--                <artifactId>maven-checkstyle-plugin</artifactId>-->
-<!--                <version>3.6.0</version>-->
-<!--                <configuration>-->
-<!--                    <configLocation>src/main/resources/checkstyle/checkstyle.xml</configLocation>-->
-<!--                    <failOnViolation>true</failOnViolation>-->
-<!--                    <failsOnError>true</failsOnError>-->
-<!--                    <suppressionsLocation>src/main/resources/checkstyle/suppressions.xml</suppressionsLocation>-->
-<!--                    <suppressionsFileExpression>suppressions.xml</suppressionsFileExpression>-->
-<!--                    <includeTestSourceDirectory>true</includeTestSourceDirectory>-->
-<!--                    <consoleOutput>true</consoleOutput>-->
-<!--                </configuration>-->
-<!--                <executions>-->
-<!--                    <execution>-->
-<!--                        <phase>validate</phase>-->
-<!--                        <goals>-->
-<!--                            <goal>check</goal>-->
-<!--                        </goals>-->
-<!--                    </execution>-->
-<!--                </executions>-->
-<!--            </plugin>-->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-checkstyle-plugin</artifactId>
+                <version>3.6.0</version>
+                <configuration>
+                    <configLocation>src/main/resources/checkstyle/checkstyle.xml</configLocation>
+                    <failOnViolation>true</failOnViolation>
+                    <failsOnError>true</failsOnError>
+                    <suppressionsLocation>src/main/resources/checkstyle/suppressions.xml</suppressionsLocation>
+                    <suppressionsFileExpression>suppressions.xml</suppressionsFileExpression>
+                    <includeTestSourceDirectory>true</includeTestSourceDirectory>
+                    <consoleOutput>true</consoleOutput>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
 
             <plugin>
                 <groupId>org.liquibase</groupId>
                 <artifactId>liquibase-maven-plugin</artifactId>
                 <version>4.30.0</version>
-
-
                 <configuration>
-                    <changeLogFile>src/main/resources/db/changelog/db.changelog-master.xml</changeLogFile>
-                    <url>jdbc:mysql://localhost:3306/group_hw_4</url>
-                    <username>root</username>
-                    <password>Лщзфпфифтф_7</password>
-                    <driver>com.mysql.cj.jdbc.Driver</driver>
+                    <propertyFile>${liquibase.config}</propertyFile>
                 </configuration>
-                <executions>
-                    <execution>
-                        <phase>${liquibase-maven-plugin.phase}</phase>
-                        <goals>
-                            <goal>update</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
         </plugins>
     </build>
