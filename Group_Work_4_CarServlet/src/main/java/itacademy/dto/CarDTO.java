@@ -1,5 +1,6 @@
 package itacademy.dto;
 
+import itacademy.utils.CarConverter;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -9,8 +10,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 @Data
-public class CarDTO {
-    private Integer id;
-    private String vin;
-    private String name;
+public class CarDTO extends CarConverter {
+    /**
+     * Поля CarDTO копируются из класса CarConverter
+     */
 }
