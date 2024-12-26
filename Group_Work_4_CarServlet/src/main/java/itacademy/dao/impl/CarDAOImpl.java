@@ -38,7 +38,7 @@ public class CarDAOImpl implements CarDAO {
         LOGGER.info(GET_ALL_LOG_MESSAGE);
         String query = "FROM " + CarEntity.class.getSimpleName();
         return ExecutorUtil.executeHibernate(this.entityManager,
-                em -> em.createQuery(query).getResultList());
+                em -> em.createQuery(query, CarEntity.class).getResultList());
     }
 
     @Override
