@@ -5,9 +5,9 @@ import itacademy.dao.impl.CarDAOImpl;
 import itacademy.dto.CarDTO;
 import itacademy.entity.CarEntity;
 import itacademy.service.CarService;
+import itacademy.utils.CarConverter;
 
 import java.io.Serializable;
-import java.sql.Timestamp;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -16,13 +16,8 @@ public class CarServiceImpl implements CarService {
 
     @Override
     public CarDTO save(CarDTO carDTO) {
-        CarEntity carEntity = carDAO.save(CarEntity.builder()
-                .vin(carDTO.getVin())
-                .name(carDTO.getName())
-                .changeTime(new Timestamp(System.currentTimeMillis()))
-                .build());
+        CarEntity carEntity = carDAO.save(CarConverter.toEntity(carDTO));
         carDTO.setId(carEntity.getId());
-
         return carDTO;
     }
 
@@ -31,26 +26,15 @@ public class CarServiceImpl implements CarService {
         List<CarEntity> cars = carDAO.getAll();
 
         return cars.stream()
-                .map(carEntity ->
-                        CarDTO.builder()
-                                .id(carEntity.getId())
-                                .vin(carEntity.getVin())
-                                .name(carEntity.getName())
-                                .changeTime(carEntity.getChangeTime())
-                                .build()).collect(Collectors.toList());
+                .map(CarConverter::toDTO)
+                .collect(Collectors.toList());
     }
 
     @Override
     public CarDTO update(Serializable id, CarDTO carDTO) {
         Integer intId = Integer.parseInt((String) id);
         CarEntity carEntity = carDAO.update(intId,
-                CarEntity.builder()
-                        .id(intId)
-                        .vin(carDTO.getVin())
-                        .name(carDTO.getName())
-                        .changeTime(new Timestamp(System.currentTimeMillis()))
-                        .build());
-
+                CarConverter.toEntity(carDTO));
         if (carEntity != null) {
             carDTO.setId(carEntity.getId());
         }
