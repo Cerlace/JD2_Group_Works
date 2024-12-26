@@ -34,17 +34,17 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
-    public CarDTO update(Serializable id, CarDTO carDTO) {
+    public CarDTO update(Integer id, CarDTO carDTO) {
         CarEntity carEntity = ConverterUtil.convertCar(carDTO);
         carEntity.setChangeTime(new Timestamp(System.currentTimeMillis()));
-        carEntity.setId((Integer) id);
+        carEntity.setId(id);
         carDTO.setId(carDAO.update(id, carEntity).getId());
 
         return carDTO;
     }
 
     @Override
-    public boolean delete(Serializable id) {
+    public boolean delete(Integer id) {
         return carDAO.delete(id);
     }
 

@@ -28,7 +28,7 @@ public interface CarService {
      * @param id идентификатор записи в БД
      * @return обновленный в БД объект
      */
-    CarDTO update(Serializable id, CarDTO car);
+    CarDTO update(Integer id, CarDTO car);
 
     /**
      * С помощью слоя DAO инициирует удаление объекта из БД
@@ -36,7 +36,7 @@ public interface CarService {
      * @return true, если запись удалена, false, если запись не была найдена
      * или не произошло удаление
      */
-    boolean delete(Serializable id);
+    boolean delete(Integer id);
 
     /**
      * Закрывает сессию у объекта DAO

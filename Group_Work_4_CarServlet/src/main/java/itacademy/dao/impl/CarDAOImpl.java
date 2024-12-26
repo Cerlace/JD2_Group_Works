@@ -8,7 +8,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.persistence.EntityManager;
-import java.io.Serializable;
 import java.util.List;
 
 public class CarDAOImpl implements CarDAO {
@@ -43,7 +42,7 @@ public class CarDAOImpl implements CarDAO {
     }
 
     @Override
-    public CarEntity update(Serializable id, CarEntity carEntity) {
+    public CarEntity update(Integer id, CarEntity carEntity) {
         LOGGER.info(UPDATE_LOG_MESSAGE, id);
         return ExecutorUtil.executeHibernate(this.entityManager, em -> {
             CarEntity updatedCar = this.entityManager.find(CarEntity.class, id);
@@ -56,7 +55,7 @@ public class CarDAOImpl implements CarDAO {
     }
 
     @Override
-    public boolean delete(Serializable id) {
+    public boolean delete(Integer id) {
         LOGGER.info(DELETE_LOG_MESSAGE, id);
 
         return Boolean.TRUE.equals(ExecutorUtil.executeHibernate(this.entityManager, em -> {

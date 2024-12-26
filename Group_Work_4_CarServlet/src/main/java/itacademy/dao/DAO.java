@@ -23,14 +23,14 @@ public interface DAO<T> {
      * @param t - обновленные параметры строки таблицы БД
      * @return обновленный в БД объект или null, если объект с таким id отсутствует
      */
-    T update(Serializable id, T t);
+    T update(Integer id, T t);
 
     /**
      * Метод удаляет строку таблицы БД по идентификатору строки {@code id}.
      * @param id идентификатор строки таблицы БД
      * @return true - если запись удалена успешно, false - если запись с таким id не была найдена
      */
-    boolean delete(Serializable id);
+    boolean delete(Integer id);
 
     /**
      * Метод для закрытия EntityManager
