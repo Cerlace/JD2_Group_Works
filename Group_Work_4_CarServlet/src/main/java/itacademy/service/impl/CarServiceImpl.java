@@ -7,7 +7,6 @@ import itacademy.entity.CarEntity;
 import itacademy.service.CarService;
 import itacademy.utils.ConverterUtil;
 
-import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.stream.Collectors;

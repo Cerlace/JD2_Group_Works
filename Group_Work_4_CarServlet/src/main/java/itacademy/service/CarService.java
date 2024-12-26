@@ -2,7 +2,6 @@ package itacademy.service;
 
 import itacademy.dto.CarDTO;
 
-import java.io.Serializable;
 import java.util.List;
 
 public interface CarService {
