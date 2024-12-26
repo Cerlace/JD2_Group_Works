@@ -1,6 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8"%>
 <%@ page import="itacademy.dto.CarDTO" %>
 <%@ page import="java.util.List" %>
+<%@ page import="itacademy.utils.ServletConstants" %>
 <html>
 <head>
     <title>Cars list</title>
@@ -16,22 +17,9 @@
     </style>
 </head>
 <body>
-<h1>Save or update car:</h1>
-<h2>Input car data here, and press button above to <ins>save</ins> car,
-<br/>Or press one of the buttons near car record, to <ins>update</ins> it.</h2>
-<form id="saveOrUpdate" method="post">
-    <label>
-        Fill car vin:
-        <input name="vin" type="text" required>
-    </label>
-    <br/>
-    <label>
-        Fill car name:
-        <input name="name" type="text" required>
-    </label>
-    <br/>
-    <button formaction="save">Save</button>
-</form>
+
+<a href="<%= ServletConstants.CARS_SAVE_SERVLET %>"><h1>SAVE CAR PAGE</h1></a><br/>
+<br/>
 <h1>Cars list:</h1>
 <table>
     <tr>
@@ -51,7 +39,7 @@
             Action
         </td>
     </tr>
-    <% List<CarDTO> cars = (List<CarDTO>) request.getAttribute("cars");
+    <% List<CarDTO> cars = (List<CarDTO>) request.getAttribute(ServletConstants.CARS_LIST_ATTRIBUTE);
         for (CarDTO car : cars) {
     %>
     <tr>
@@ -68,18 +56,24 @@
             <%= car.getChangeTime() %>
         </td>
         <td>
-            <form id="delete" method="post" action="delete">
-                <button formmethod="post" formaction="delete"
-                        name="id" value="<%= car.getId() %>">
+            <form name="delete"
+                  method="post"
+                  action="<%= ServletConstants.CARS_DELETE_SERVLET %>">
+                <button name="<%= ServletConstants.CAR_ID_PARAMETER %>"
+                        value="<%= car.getId() %>">
                     Delete
                 </button>
             </form>
         </td>
         <td>
-            <button form="saveOrUpdate" formaction="update"
-                    name="id" value="<%= car.getId() %>">
+            <form name="update"
+                  method="get"
+                  action="<%= ServletConstants.CARS_UPDATE_SERVLET %>">
+            <button name="<%= ServletConstants.CAR_ID_PARAMETER %>"
+                    value="<%= car.getId() %>">
                 Update
             </button>
+            </form>
         </td>
     </tr>
     <%

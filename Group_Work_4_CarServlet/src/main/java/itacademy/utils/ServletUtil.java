@@ -4,7 +4,6 @@ import itacademy.dto.CarDTO;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Objects;
 import java.util.Optional;
 
 public class ServletUtil {
@@ -39,6 +38,7 @@ public class ServletUtil {
      * @return представление параметра типа {@code Integer}
      */
     public static Integer getIntegerParam(HttpServletRequest req, String nameField) {
-        return Integer.parseInt(Objects.requireNonNull(req.getParameter(nameField)));
+        String idStr = req.getParameter(nameField);
+        return idStr != null ? Integer.parseInt(idStr) : null;
     }
 }

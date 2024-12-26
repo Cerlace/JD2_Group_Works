@@ -17,7 +17,6 @@ import java.util.List;
 
 @WebServlet(name = "listCarsServlet", value = "/cars_manager")
 public class ListCarsServlet extends HttpServlet {
-    private static final String LIST_JSP = "/cars_manager.jsp";
     private final CarService carService = new CarServiceImpl();
 
     @Override
