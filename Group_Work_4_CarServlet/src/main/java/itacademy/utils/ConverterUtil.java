@@ -11,6 +11,9 @@ public class ConverterUtil {
      * @return объект типа {@code CarDTO}
      */
     public static CarDTO convertCar(CarEntity entity) {
+        if (entity == null) {
+            return null;
+        }
         return CarDTO.builder()
                 .id(entity.getId())
                 .vin(entity.getVin())
@@ -26,6 +29,9 @@ public class ConverterUtil {
      * @return объект типа {@code CarEntity}
      */
     public static CarEntity convertCar(CarDTO dto) {
+        if (dto == null) {
+            return null;
+        }
         return CarEntity.builder()
                 .id(dto.getId())
                 .vin(dto.getVin())
