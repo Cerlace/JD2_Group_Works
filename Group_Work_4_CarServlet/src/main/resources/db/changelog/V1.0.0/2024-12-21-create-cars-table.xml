@@ -14,6 +14,8 @@
             </column>
             <column name="name" type="varchar(255)"/>
             <column name="vin" type="varchar(255)"/>
+            <column name="change_time" type="timestamp"/>
+            <column name="creation_time" type="timestamp"/>
         </createTable>
     </changeSet>
 

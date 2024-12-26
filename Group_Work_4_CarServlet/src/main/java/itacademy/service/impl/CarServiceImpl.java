@@ -20,6 +20,7 @@ public class CarServiceImpl implements CarService {
                 .vin(carDTO.getVin())
                 .name(carDTO.getName())
                 .changeTime(new Timestamp(System.currentTimeMillis()))
+                .creationTime(new Timestamp(System.currentTimeMillis()))
                 .build());
         carDTO.setId(carEntity.getId());
 
@@ -37,7 +38,9 @@ public class CarServiceImpl implements CarService {
                                 .vin(carEntity.getVin())
                                 .name(carEntity.getName())
                                 .changeTime(carEntity.getChangeTime())
-                                .build()).collect(Collectors.toList());
+                                .creationTime(carEntity.getCreationTime())
+                                .build())
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -49,6 +52,7 @@ public class CarServiceImpl implements CarService {
                         .vin(carDTO.getVin())
                         .name(carDTO.getName())
                         .changeTime(new Timestamp(System.currentTimeMillis()))
+                        .creationTime(carDTO.getCreationTime())
                         .build());
 
         if (carEntity != null) {

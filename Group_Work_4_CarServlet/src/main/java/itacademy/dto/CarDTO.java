@@ -16,4 +16,5 @@ public class CarDTO {
     private String vin;
     private String name;
     private Timestamp changeTime;
+    private Timestamp creationTime;
 }
