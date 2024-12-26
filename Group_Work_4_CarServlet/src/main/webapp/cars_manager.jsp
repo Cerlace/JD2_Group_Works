@@ -35,6 +35,9 @@
         <td>
             Change time
         </td>
+        <td>
+            Creation time
+        </td>
         <td colspan="2">
             Action
         </td>
@@ -54,6 +57,9 @@
         </td>
         <td>
             <%= car.getChangeTime() %>
+        </td>
+        <td>
+            <%= car.getCreationTime() %>
         </td>
         <td>
             <form name="delete"
