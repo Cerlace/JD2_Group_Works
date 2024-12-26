@@ -3,6 +3,7 @@ package itacademy.servlet;
 import itacademy.service.CarService;
 import itacademy.service.impl.CarServiceImpl;
 import itacademy.utils.HibernateUtil;
+import itacademy.utils.ServletConstants;
 import itacademy.utils.ServletUtil;
 
 import javax.servlet.annotation.WebServlet;
@@ -17,9 +18,9 @@ public class DeleteCarServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        String id = ServletUtil.getParam(req, "id");
-        this.carService.delete(id);
-        resp.sendRedirect("cars_manager");
+        this.carService.delete(
+                ServletUtil.getIntegerParam(req, ServletConstants.CAR_ID_PARAMETER));
+        resp.sendRedirect(ServletConstants.CARS_LIST_SERVLET);
     }
 
     @Override

@@ -34,4 +34,7 @@ public class CarEntity implements Serializable {
 
     @Column(name = "change_time")
     private Timestamp changeTime;
+
+    @Column(name = "creation_time")
+    private Timestamp creationTime;
 }

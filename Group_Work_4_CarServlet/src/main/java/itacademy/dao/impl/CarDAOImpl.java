@@ -8,11 +8,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.persistence.EntityManager;
-import java.io.Serializable;
 import java.util.List;
 
 public class CarDAOImpl implements CarDAO {
     private static final String SAVE_LOG_MESSAGE = "start saving object {}";
+    private static final String GET_LOG_MESSAGE = "start getting car row with id = {}";
     private static final String UPDATE_LOG_MESSAGE = "start updating row with id = {}";
     private static final String DELETE_LOG_MESSAGE = "start deleting row with id = {}";
     private static final String GET_ALL_LOG_MESSAGE = "start getting all cars";
@@ -35,15 +35,22 @@ public class CarDAOImpl implements CarDAO {
     }
 
     @Override
+    public CarEntity get(Integer id) {
+        LOGGER.info(GET_LOG_MESSAGE, id);
+
+        return ExecutorUtil.executeHibernate(this.entityManager, em -> em.find(CarEntity.class, id));
+    }
+
+    @Override
     public List<CarEntity> getAll() {
         LOGGER.info(GET_ALL_LOG_MESSAGE);
         String query = "FROM " + CarEntity.class.getSimpleName();
         return ExecutorUtil.executeHibernate(this.entityManager,
-                em -> em.createQuery(query).getResultList());
+                em -> em.createQuery(query, CarEntity.class).getResultList());
     }
 
     @Override
-    public CarEntity update(Serializable id, CarEntity carEntity) {
+    public CarEntity update(Integer id, CarEntity carEntity) {
         LOGGER.info(UPDATE_LOG_MESSAGE, id);
         return ExecutorUtil.executeHibernate(this.entityManager, em -> {
             CarEntity updatedCar = this.entityManager.find(CarEntity.class, id);
@@ -56,7 +63,7 @@ public class CarDAOImpl implements CarDAO {
     }
 
     @Override
-    public boolean delete(Serializable id) {
+    public boolean delete(Integer id) {
         LOGGER.info(DELETE_LOG_MESSAGE, id);
 
         return Boolean.TRUE.equals(ExecutorUtil.executeHibernate(this.entityManager, em -> {

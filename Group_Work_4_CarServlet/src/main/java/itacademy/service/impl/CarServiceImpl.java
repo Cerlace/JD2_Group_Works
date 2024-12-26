@@ -5,8 +5,8 @@ import itacademy.dao.impl.CarDAOImpl;
 import itacademy.dto.CarDTO;
 import itacademy.entity.CarEntity;
 import itacademy.service.CarService;
+import itacademy.utils.ConverterUtil;
 
-import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -16,51 +16,40 @@ public class CarServiceImpl implements CarService {
 
     @Override
     public CarDTO save(CarDTO carDTO) {
-        CarEntity carEntity = carDAO.save(CarEntity.builder()
-                .vin(carDTO.getVin())
-                .name(carDTO.getName())
-                .changeTime(new Timestamp(System.currentTimeMillis()))
-                .build());
-        carDTO.setId(carEntity.getId());
+        CarEntity carEntity = ConverterUtil.convertCar(carDTO);
+        carEntity.setCreationTime(new Timestamp(System.currentTimeMillis()));
+        carEntity.setChangeTime(new Timestamp(System.currentTimeMillis()));
+
+        carDTO.setId(carDAO.save(carEntity).getId());
 
         return carDTO;
+    }
+
+    @Override
+    public CarDTO get(Integer id) {
+        return ConverterUtil.convertCar(carDAO.get(id));
     }
 
     @Override
     public List<CarDTO> getAll() {
-        List<CarEntity> cars = carDAO.getAll();
-
-        return cars.stream()
-                .map(carEntity ->
-                        CarDTO.builder()
-                                .id(carEntity.getId())
-                                .vin(carEntity.getVin())
-                                .name(carEntity.getName())
-                                .changeTime(carEntity.getChangeTime())
-                                .build()).collect(Collectors.toList());
+        return carDAO.getAll().stream()
+                .map(ConverterUtil::convertCar)
+                .collect(Collectors.toList());
     }
 
     @Override
-    public CarDTO update(Serializable id, CarDTO carDTO) {
-        Integer intId = Integer.parseInt((String) id);
-        CarEntity carEntity = carDAO.update(intId,
-                CarEntity.builder()
-                        .id(intId)
-                        .vin(carDTO.getVin())
-                        .name(carDTO.getName())
-                        .changeTime(new Timestamp(System.currentTimeMillis()))
-                        .build());
-
-        if (carEntity != null) {
-            carDTO.setId(carEntity.getId());
-        }
+    public CarDTO update(Integer id, CarDTO carDTO) {
+        CarEntity carEntity = ConverterUtil.convertCar(carDTO);
+        carEntity.setChangeTime(new Timestamp(System.currentTimeMillis()));
+        carEntity.setId(id);
+        carDTO.setId(carDAO.update(id, carEntity).getId());
 
         return carDTO;
     }
 
     @Override
-    public boolean delete(Serializable id) {
-        return carDAO.delete(Integer.parseInt((String) id));
+    public boolean delete(Integer id) {
+        return carDAO.delete(id);
     }
 
     @Override

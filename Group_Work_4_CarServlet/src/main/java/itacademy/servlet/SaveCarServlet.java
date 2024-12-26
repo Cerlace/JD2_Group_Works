@@ -1,11 +1,12 @@
 package itacademy.servlet;
 
-import itacademy.dto.CarDTO;
 import itacademy.service.CarService;
 import itacademy.service.impl.CarServiceImpl;
 import itacademy.utils.HibernateUtil;
+import itacademy.utils.ServletConstants;
 import itacademy.utils.ServletUtil;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -18,16 +19,17 @@ public class SaveCarServlet extends HttpServlet {
     private final CarService carService = new CarServiceImpl();
 
     @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        RequestDispatcher requestDispatcher = getServletContext()
+                .getRequestDispatcher(ServletConstants.CARS_SAVE_JSP);
+        requestDispatcher.forward(req, resp);
+    }
+
+    @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String vin = ServletUtil.getParam(req, "vin");
-        String name = ServletUtil.getParam(req, "name");
+        carService.save(ServletUtil.mapCar(req));
 
-        carService.save(CarDTO.builder()
-                .name(name)
-                .vin(vin)
-                .build());
-
-        resp.sendRedirect("cars_manager");
+        resp.sendRedirect(ServletConstants.CARS_LIST_SERVLET);
     }
 
     @Override

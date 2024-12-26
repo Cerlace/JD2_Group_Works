@@ -4,6 +4,7 @@ import itacademy.dto.CarDTO;
 import itacademy.service.CarService;
 import itacademy.service.impl.CarServiceImpl;
 import itacademy.utils.HibernateUtil;
+import itacademy.utils.ServletConstants;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -16,18 +17,16 @@ import java.util.List;
 
 @WebServlet(name = "listCarsServlet", value = "/cars_manager")
 public class ListCarsServlet extends HttpServlet {
-    private static final String CARS = "cars";
-    private static final String LIST_JSP = "/cars_manager.jsp";
     private final CarService carService = new CarServiceImpl();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         final List<CarDTO> carDTOList = this.carService.getAll();
 
-        req.setAttribute(CARS, carDTOList);
+        req.setAttribute(ServletConstants.CARS_LIST_ATTRIBUTE, carDTOList);
 
         RequestDispatcher requestDispatcher = getServletContext()
-                .getRequestDispatcher(LIST_JSP);
+                .getRequestDispatcher(ServletConstants.CARS_LIST_JSP);
         requestDispatcher.forward(req, resp);
     }
 
