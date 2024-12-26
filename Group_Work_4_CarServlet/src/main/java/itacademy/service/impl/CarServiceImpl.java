@@ -27,6 +27,11 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
+    public CarDTO get(Integer id) {
+        return ConverterUtil.convertCar(carDAO.get(id));
+    }
+
+    @Override
     public List<CarDTO> getAll() {
         return carDAO.getAll().stream()
                 .map(ConverterUtil::convertCar)
