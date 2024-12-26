@@ -1,4 +1,4 @@
-package itacademy.api;
+package itacademy.utils;
 
 import javax.persistence.EntityManager;
 
