@@ -3,7 +3,9 @@ package itacademy.converter;
 import itacademy.dto.EngineDto;
 import itacademy.entity.EngineEntity;
 import org.springframework.core.convert.converter.Converter;
+import org.springframework.stereotype.Component;
 
+@Component
 public class EngineEntityToDtoConverter implements Converter<EngineEntity, EngineDto> {
     @Override
     public EngineDto convert(EngineEntity source) {
