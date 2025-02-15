@@ -12,13 +12,17 @@ import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import java.util.HashSet;
 import java.util.Set;
 
 @Builder
 @Data
+@ToString(exclude = "cars")
+@EqualsAndHashCode(exclude = "cars")
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
