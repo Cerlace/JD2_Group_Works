@@ -34,4 +34,8 @@ target
 hs_err_pid*
 replay_pid*
 
+# Spring Boot
+mvnw*
+.gitattributes
+
 # End of https://www.toptal.com/developers/gitignore/api/java
