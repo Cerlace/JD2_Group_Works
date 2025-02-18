@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.2.xsd">
+
+    <changeSet id="test-data-engines" author="Daniil Nesterov">
+        <insert tableName="engines">
+            <column name="model" value="Ferrari Engine" type="varchar(255)"/>
+            <column name="horse_power" value="720" type="int"/>
+        </insert>
+        <insert tableName="engines">
+            <column name="model" value="Lada Engine" type="varchar(255)"/>
+            <column name="horse_power" value="100" type="int"/>
+        </insert>
+        <insert tableName="engines">
+            <column name="model" value="Lamborghini Engine" type="varchar(255)"/>
+            <column name="horse_power" value="750" type="int"/>
+        </insert>
+    </changeSet>
+    <changeSet id="test-data-cars" author="Daniil Nesterov">
+        <insert tableName="cars">
+            <column name="brand" value="Ferrari" type="varchar(255)"/>
+            <column name="model" value="F40" type="varchar(255)"/>
+            <column name="engine_id" value="1" type="bigint"/>
+        </insert>
+        <insert tableName="cars">
+            <column name="brand" value="Ferrari" type="varchar(255)"/>
+            <column name="model" value="F50" type="varchar(255)"/>
+            <column name="engine_id" value="1" type="bigint"/>
+        </insert>
+        <insert tableName="cars">
+            <column name="brand" value="Ferrari" type="varchar(255)"/>
+            <column name="model" value="F60" type="varchar(255)"/>
+            <column name="engine_id" value="1" type="bigint"/>
+        </insert>
+        <insert tableName="cars">
+            <column name="brand" value="Lada" type="varchar(255)"/>
+            <column name="model" value="Priora" type="varchar(255)"/>
+            <column name="engine_id" value="2" type="bigint"/>
+        </insert>
+        <insert tableName="cars">
+            <column name="brand" value="Lamborghini" type="varchar(255)"/>
+            <column name="model" value="Veneno" type="varchar(255)"/>
+            <column name="engine_id" value="3" type="bigint"/>
+        </insert>
+        <insert tableName="cars">
+            <column name="brand" value="Lamborghini" type="varchar(255)"/>
+            <column name="model" value="Aventador" type="varchar(255)"/>
+            <column name="engine_id" value="3" type="bigint"/>
+        </insert>
+    </changeSet>
+
+</databaseChangeLog>

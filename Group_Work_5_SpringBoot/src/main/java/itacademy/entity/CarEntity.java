@@ -1,5 +1,6 @@
 package itacademy.entity;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -31,7 +32,8 @@ public class CarEntity {
     @Column(nullable = false)
     private String model;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE},
+            fetch = FetchType.LAZY)
     @JoinColumn(name = "engine_id", nullable = false)
     private EngineEntity engine;
 }
