@@ -13,5 +13,5 @@ public class CarDto {
     private Long id;
     private String brand;
     private String model;
-    private Long engineId;
+    private EngineDto engine;
 }
