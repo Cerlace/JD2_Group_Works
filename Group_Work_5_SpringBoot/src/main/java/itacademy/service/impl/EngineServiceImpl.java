@@ -11,6 +11,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -19,21 +21,11 @@ public class EngineServiceImpl implements EngineService {
     private final EngineRepository engineRepository;
 
     @Override
-    public void addEngine(EngineDto engineDto) {
+    public EngineDto saveOrUpdateEngine(EngineDto engineDto) {
         EngineEntity entity = conversionService.convert(engineDto, EngineEntity.class);
         if (entity != null) {
-            engineRepository.save(entity);
-        }
-    }
-
-    @Override
-    public void updateEngine(EngineDto engineDto) {
-        EngineEntity newEntity = conversionService.convert(engineDto, EngineEntity.class);
-        if (newEntity != null) {
-            engineRepository.findById(engineDto.getId())
-                    .ifPresent(oldEntity -> newEntity.setCars(oldEntity.getCars()));
-            engineRepository.save(newEntity);
-        }
+            return conversionService.convert(engineRepository.save(entity), EngineDto.class);
+        } else return null;
     }
 
     @Override
@@ -43,7 +35,9 @@ public class EngineServiceImpl implements EngineService {
 
     @Override
     public EngineDto getEngine(Long id) {
-        return conversionService.convert(engineRepository.findById(id), EngineDto.class);
+        Optional<EngineEntity> engineEntity = engineRepository.findById(id);
+        return engineEntity.map(entity -> conversionService.convert(entity, EngineDto.class))
+                .orElse(null);
     }
 
     @Override
