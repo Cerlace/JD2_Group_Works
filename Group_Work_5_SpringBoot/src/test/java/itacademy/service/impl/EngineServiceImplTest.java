@@ -8,6 +8,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 import static itacademy.TestConstants.TEST_ENGINE;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -48,14 +50,11 @@ class EngineServiceImplTest {
         assertNull(engineService.getEngine(10L));
     }
 
-    /*@Test
-    void getAllEngines() {
-        Page<EngineDto> page2 = engineService.getAllEngines(0,2);
-        assertEquals(3, page2.getTotalElements());
-        assertEquals(2, page2.getTotalPages());
-        assertEquals(0, page2.getNumber());
-        assertEquals(2, page2.getNumberOfElements());
-    }*/
+    @Test
+    void findAllEngines() {
+        List<EngineDto> list = engineService.findAll();
+        assertEquals(3, list.size());
+    }
 
     @Test
     void getEnginesByHorsePower() {
