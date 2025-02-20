@@ -1,6 +1,7 @@
 package itacademy.service.impl;
 
 import itacademy.dto.CarDto;
+import itacademy.dto.CarFilterDto;
 import itacademy.entity.CarEntity;
 import itacademy.repository.CarRepository;
 import itacademy.service.api.CarService;
@@ -42,20 +43,18 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
-    public Page<CarDto> getAllCars(int pageNumber, int pageSize) {
-        return carRepository.findAll(PageRequest.of(pageNumber, pageSize))
-                .map(entity -> conversionService.convert(entity, CarDto.class));
-    }
-
-    @Override
-    public Page<CarDto> getCarsByEngineId(Long engineId, int pageNumber, int pageSize) {
-        return carRepository.findByEngineId(engineId, PageRequest.of(pageNumber, pageSize))
-                .map(entity -> conversionService.convert(entity, CarDto.class));
-    }
-
-    @Override
-    public Page<CarDto> getCarsByBrand(String brand, int pageNumber, int pageSize) {
-        return carRepository.findByBrand(brand, PageRequest.of(pageNumber, pageSize))
-                .map(entity -> conversionService.convert(entity, CarDto.class));
+    public Page<CarDto> getCarsByFilter(CarFilterDto filter) {
+        Page<CarEntity> carsPage;
+        if (filter.getBrand() != null && !filter.getBrand().isBlank()) {
+            carsPage = carRepository.findByBrand(filter.getBrand(),
+                    PageRequest.of(filter.getPageNumber(), filter.getPageSize()));
+        } else if (filter.getEngineId() != null) {
+            carsPage = carRepository.findByEngineId(filter.getEngineId(),
+                    PageRequest.of(filter.getPageNumber(), filter.getPageSize()));
+        } else {
+            carsPage = carRepository.findAll(
+                    PageRequest.of(filter.getPageNumber(), filter.getPageSize()));
+        }
+        return carsPage.map(entity -> conversionService.convert(entity, CarDto.class));
     }
 }

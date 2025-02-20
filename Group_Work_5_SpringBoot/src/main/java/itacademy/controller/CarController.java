@@ -26,17 +26,7 @@ public class CarController {
     @GetMapping
     public String getCarsPaginated(@ModelAttribute("carFilter") CarFilterDto carFilter,
                                    Model model) {
-        Page<CarDto> carsPage;
-        if (carFilter.getBrand() != null && !carFilter.getBrand().isBlank()) {
-            carsPage = carService.getCarsByBrand(carFilter.getBrand(),
-                    carFilter.getPageNumber(), carFilter.getPageSize());
-        } else if (carFilter.getEngineId() != null) {
-            carsPage = carService.getCarsByEngineId(carFilter.getEngineId(),
-                    carFilter.getPageNumber(), carFilter.getPageSize());
-        } else {
-            carsPage = carService.getAllCars(
-                    carFilter.getPageNumber(), carFilter.getPageSize());
-        }
+        Page<CarDto> carsPage = carService.getCarsByFilter(carFilter);
         model.addAttribute("carsPageContent", carsPage.getContent());
         model.addAttribute("totalPages", carsPage.getTotalPages());
         return "cars/list";
