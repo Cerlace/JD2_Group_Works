@@ -8,10 +8,9 @@
 </head>
 <body>
 <h1>Car List</h1>
-
-<a th:href="@{/cars/save}">
-    Add New Car
-</a>
+<form th:action="@{/cars/save}" method="get">
+    <button type="submit">Add New Car</button>
+</form>
 <table>
     <thead>
     <tr>
@@ -27,20 +26,20 @@
         <td th:text="${car.brand}"></td>
         <td th:text="${car.model}"></td>
         <td>
-            <a th:href="@{/cars/{id}(id=${car.id})}">
-                Details
-            </a>
+            <form th:action="@{/cars/{id}(id=${car.id})}" method="get">
+                <button type="submit">Details</button>
+            </form>
         </td>
         <td>
-            <a th:href="@{/cars/save/{id}(id=${car.id})}">
-                Update
-            </a>
+            <form th:action="@{/cars/save/{id}(id=${car.id})}" method="get">
+                <button type="submit">Update</button>
+            </form>
         </td>
         <td>
-            <a th:href="@{/cars/delete/{id}(id=${car.id})}"
-               onclick="return confirm('Confirm, please.');">
-                Delete
-            </a>
+            <form th:action="@{/cars/delete/{id}(id=${car.id})}" method="post"
+                  onclick="return confirm('Confirm, please.');">
+                <button type="submit">Delete</button>
+            </form>
         </td>
     </tr>
     </tbody>
@@ -80,6 +79,8 @@
     </label>
     <button type="submit">Filter</button>
 </form>
-<a th:href="@{/cars}">Reset filters</a>
+<form th:action="@{/cars}" method="get">
+    <button type="submit">Reset filters</button>
+</form>
 </body>
 </html>

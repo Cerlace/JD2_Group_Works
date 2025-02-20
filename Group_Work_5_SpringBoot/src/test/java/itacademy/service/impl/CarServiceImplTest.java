@@ -1,6 +1,7 @@
 package itacademy.service.impl;
 
 import itacademy.dto.CarDto;
+import itacademy.dto.CarFilterDto;
 import itacademy.service.api.CarService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,7 +50,11 @@ class CarServiceImplTest {
 
     @Test
     void getAllCars() {
-        Page<CarDto> page2 = carService.getAllCars(1, 4);
+        Page<CarDto> page2 = carService.getCarsByFilter(
+                CarFilterDto.builder()
+                        .pageNumber(1)
+                        .pageSize(4)
+                        .build());
         assertEquals(6, page2.getTotalElements());
         assertEquals(2, page2.getTotalPages());
         assertEquals(1, page2.getNumber());
@@ -58,14 +63,24 @@ class CarServiceImplTest {
 
     @Test
     void getCarsByEngineId() {
-        carService.getCarsByEngineId(1L, 0, 6)
+        carService.getCarsByFilter(
+                        CarFilterDto.builder()
+                                .engineId(1L)
+                                .pageNumber(0)
+                                .pageSize(6)
+                                .build())
                 .forEach(carDto ->
                         assertEquals(1L, carDto.getEngine().getId()));
     }
 
     @Test
     void getCarsByBrand() {
-        carService.getCarsByBrand("Ferrari", 0, 6)
+        carService.getCarsByFilter(
+                        CarFilterDto.builder()
+                                .brand("Ferrari")
+                                .pageNumber(0)
+                                .pageSize(6)
+                                .build())
                 .forEach(carDto ->
                         assertEquals("Ferrari", carDto.getBrand()));
     }
