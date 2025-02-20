@@ -1,6 +1,7 @@
 package itacademy.controller;
 
 import itacademy.dto.EngineDto;
+import itacademy.dto.EngineFilterDto;
 import itacademy.service.api.EngineService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -18,16 +19,14 @@ public class EngineController {
     private final EngineService engineService;
 
     @GetMapping("/engines")
-    public String getEngines(@RequestParam(defaultValue = "0") int page,
-                             @RequestParam(defaultValue ="2") int size,
-                             @RequestParam(defaultValue ="0") Integer horsePower,
+    public String getEngines(@ModelAttribute("engineFilter") EngineFilterDto engineFilter,
                              Model model) {
-        Page<EngineDto> enginesPage = engineService.getEnginesByHorsePower(horsePower, page, size);
+        Page<EngineDto> enginesPage = engineService.getEnginesByHorsePower(
+                engineFilter.getHorsePower(),
+                engineFilter.getPageNumber(),
+                engineFilter.getPageSize());
         model.addAttribute("engines", enginesPage.getContent());
-        model.addAttribute("page", page);
-        model.addAttribute("size", size);
         model.addAttribute("totalPages", enginesPage.getTotalPages());
-        model.addAttribute("horsePower", horsePower);
         model.addAttribute("newEngine", new EngineDto());
         return "engines/list";
     }

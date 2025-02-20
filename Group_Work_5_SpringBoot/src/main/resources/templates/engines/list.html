@@ -2,11 +2,14 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="java">
 <head>
     <title>Engines</title>
+
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
 </head>
 <body>
 <main>
     <h1>All engines</h1>
-    <table border="1">
+    <table>
         <thead>
         <tr>
             <th>Model</th>
@@ -35,18 +38,19 @@
     </table>
     <form th:if="${!engines.isEmpty()}"
           th:action="@{/engines}"
+          th:object="${engineFilter}"
           method="get">
-        <input type="hidden" name="horsePower" th:value="${horsePower}">
+        <input type="hidden" th:field="*{horsePower}">
         <div>
-            <div th:if="${page > 0}">
-                <button name="page"
-                        th:value="${page - 1}">
+            <div th:if="*{pageNumber > 0}">
+                <button name="pageNumber"
+                        th:value="*{pageNumber - 1}">
                     <<
                 </button>
             </div>
-            <div th:if="${page < totalPages - 1}">
-                <button name="page"
-                        th:value="${page + 1}">
+            <div th:if="${engineFilter.pageNumber < totalPages - 1}">
+                <button name="pageNumber"
+                        th:value="*{pageNumber + 1}">
                     >>
                 </button>
             </div>
@@ -55,12 +59,12 @@
     <br/>
     <h2>Filter</h2>
     <form th:action="@{/engines}"
+          th:object="${engineFilter}"
           method="get">
         <label for="horsePowerFilter">Min horse power:</label>
         <input id="horsePowerFilter"
                type="number"
-               name="horsePower"
-               th:value="${horsePower}"/>
+               th:field="*{horsePower}"/>
         <button type="submit">Apply</button>
     </form>
 
