@@ -38,7 +38,7 @@ public class EngineEntity {
     @Column(name = "horse_power", nullable = false)
     private Integer horsePower;
 
-    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE},
+    @OneToMany(cascade = {CascadeType.ALL},
             fetch = FetchType.LAZY, mappedBy = "engine")
     @Builder.Default
     private Set<CarEntity> cars = new HashSet<>();

@@ -7,7 +7,7 @@ import itacademy.service.api.EngineService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -41,14 +41,8 @@ public class EngineServiceImpl implements EngineService {
     }
 
     @Override
-    public Page<EngineDto> getAllEngines(Pageable pageable) {
-        return engineRepository.findAll(pageable)
-                .map(entity -> conversionService.convert(entity, EngineDto.class));
-    }
-
-    @Override
-    public Page<EngineDto> getEnginesByHorsePower(Integer horsePower, Pageable pageable) {
-        return engineRepository.findByHorsePowerGreaterThan(horsePower, pageable)
+    public Page<EngineDto> getEnginesByHorsePower(Integer horsePower, int page, int size) {
+        return engineRepository.findByHorsePowerGreaterThan(horsePower, PageRequest.of(page, size))
                 .map(entity -> conversionService.convert(entity, EngineDto.class));
     }
 }

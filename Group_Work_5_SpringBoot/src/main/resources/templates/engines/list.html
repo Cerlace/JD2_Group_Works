@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="java">
+<head>
+    <title>Engines</title>
+</head>
+<body>
+<main>
+    <h1>All engines</h1>
+    <table border="1">
+        <thead>
+        <tr>
+            <th>Model</th>
+            <th>Horse Power</th>
+            <th colspan="2">Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="engine : ${engines}">
+            <td th:text="${engine.model}"/>
+            <td th:text="${engine.horsePower}"/>
+            <td>
+                <form th:action="@{/engines/edit/{id}(id=${engine.id})}"
+                      method="get">
+                    <button th:text="Edit"/>
+                </form>
+            </td>
+            <td>
+                <form th:action="@{/engines/delete/{id}(id=${engine.id})}"
+                      method="post">
+                    <button th:text="Delete"/>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <form th:if="${!engines.isEmpty()}"
+          th:action="@{/engines}"
+          method="get">
+        <input type="hidden" name="horsePower" th:value="${horsePower}">
+        <div>
+            <div th:if="${page > 0}">
+                <button name="page"
+                        th:value="${page - 1}">
+                    <<
+                </button>
+            </div>
+            <div th:if="${page < totalPages - 1}">
+                <button name="page"
+                        th:value="${page + 1}">
+                    >>
+                </button>
+            </div>
+        </div>
+    </form>
+    <br/>
+    <h2>Filter</h2>
+    <form th:action="@{/engines}"
+          method="get">
+        <label for="horsePowerFilter">Min horse power:</label>
+        <input id="horsePowerFilter"
+               type="number"
+               name="horsePower"
+               th:value="${horsePower}"/>
+        <button type="submit">Apply</button>
+    </form>
+
+    <h2>Add engine:</h2>
+    <form th:action="@{/engines/add}"
+          method="post"
+          th:object="${newEngine}">
+        <div>
+            <label for="model">Model:</label>
+            <input id="model"
+                   type="text"
+                   placeholder="Enter model name please"
+                   th:field="*{model}"/>
+        </div>
+        <div>
+            <label for="horsePower">Horse Power:</label>
+            <input id="horsePower"
+                   type="number"
+                   placeholder="Enter horse power please"
+                   th:field="*{horsePower}"/>
+        </div>
+        <button type="submit">Save</button>
+    </form>
+</main>
+</body>
+</html>
