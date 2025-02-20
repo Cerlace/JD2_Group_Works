@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Car List</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
+</head>
+</head>
+<body>
+<h1>Car List</h1>
+
+<a th:href="@{/cars/save}">
+    Add New Car
+</a>
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Brand</th>
+        <th>Model</th>
+        <th colspan="3">Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="car : ${carsPageContent}">
+        <td th:text="${car.id}"></td>
+        <td th:text="${car.brand}"></td>
+        <td th:text="${car.model}"></td>
+        <td>
+            <a th:href="@{/cars/{id}(id=${car.id})}">
+                Details
+            </a>
+        </td>
+        <td>
+            <a th:href="@{/cars/save/{id}(id=${car.id})}">
+                Update
+            </a>
+        </td>
+        <td>
+            <a th:href="@{/cars/delete/{id}(id=${car.id})}"
+               onclick="return confirm('Confirm, please.');">
+                Delete
+            </a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<form th:action="@{/cars}" th:object="${carFilter}" method="get">
+    <input type="hidden" th:field="*{brand}">
+    <input type="hidden" th:field="*{engineId}">
+    <label>
+        Enter page size
+        <input type="text" th:field="*{pageSize}">
+    </label>
+    <button type="submit">Submit</button>
+</form>
+<div th:if="${totalPages > 1}">
+            <span th:each="number : ${#numbers.sequence(1, totalPages)}">
+                <form th:action="@{/cars}" th:object="${carFilter}" method="get">
+                    <input type="hidden" name="pageNumber" th:value="${number - 1}">
+                    <input type="hidden" th:field="*{pageSize}">
+                    <input type="hidden" th:field="*{brand}">
+                    <input type="hidden" th:field="*{engineId}">
+                    <button type="submit" th:text="${number}"
+                            th:disabled="${carFilter.pageNumber == number - 1}"></button>
+                </form>
+        </span>
+</div>
+<form th:action="@{/cars}" th:object="${carFilter}" method="get">
+    <label>
+        Enter brand
+        <input type="text" th:field="*{brand}">
+    </label>
+    <button type="submit">Filter</button>
+</form>
+<form th:action="@{/cars}" th:object="${carFilter}" method="get">
+    <label>
+        Enter engine ID
+        <input type="number" th:field="*{engineId}">
+    </label>
+    <button type="submit">Filter</button>
+</form>
+<a th:href="@{/cars}">Reset filters</a>
+</body>
+</html>

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Car Form</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
+</head>
+<body>
+<h1>Car Form</h1>
+
+<form th:action="@{/cars/save}" th:object="${car}" method="post">
+    <input type="hidden" th:field="*{id}">
+    <div>
+        <label>Brand:</label>
+        <input type="text" th:field="*{brand}">
+    </div>
+    <div>
+        <label>Model:</label>
+        <input type="text" th:field="*{model}">
+    </div>
+    <div>
+        <label>Engine:</label>
+        <select th:field="*{engine.id}">
+            <option value="">-- Select Engine --</option>
+            <option th:each="engineObject : ${enginesList}"
+                    th:value="${engineObject.id}"
+                    th:text="${engineObject.model}">
+            </option>
+        </select>
+    </div>
+    <button type="submit">Save</button>
+</form>
+
+<a th:href="@{/cars}">Back to List</a>
+</body>
+</html>
