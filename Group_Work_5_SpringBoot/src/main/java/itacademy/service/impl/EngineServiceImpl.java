@@ -11,7 +11,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -40,6 +42,14 @@ public class EngineServiceImpl implements EngineService {
                 .orElse(null);
     }
 
+    @Override
+    public List<EngineDto> findAll() {
+        return engineRepository.findAll()
+                .stream()
+                .map(entity -> conversionService.convert(entity, EngineDto.class))
+                .collect(Collectors.toList());
+    }
+  
     @Override
     public Page<EngineDto> getEnginesByHorsePower(Integer horsePower, int page, int size) {
         return engineRepository.findByHorsePowerGreaterThan(horsePower, PageRequest.of(page, size))

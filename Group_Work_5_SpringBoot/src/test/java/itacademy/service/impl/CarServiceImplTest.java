@@ -1,16 +1,15 @@
 package itacademy.service.impl;
 
 import itacademy.dto.CarDto;
-import itacademy.dto.EngineDto;
 import itacademy.service.api.CarService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
+import static itacademy.TestConstants.TEST_CAR;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
@@ -20,29 +19,20 @@ class CarServiceImplTest {
     @Autowired
     private CarService carService;
 
-    public final EngineDto testEngine = EngineDto.builder()
-            .model("BMW Engine")
-            .horsePower(400)
-            .build();
-    public final CarDto testCar = CarDto.builder()
-            .brand("BMW")
-            .model("X5")
-            .engine(testEngine)
-            .build();
-
     @Test
     void saveCar() {
-        CarDto savedCar = carService.saveOrUpdateCar(testCar);
+        CarDto savedCar = carService.saveOrUpdateCar(TEST_CAR);
         assertNotNull(savedCar.getId());
-        assertEquals(testCar.getModel(), savedCar.getModel());
+        assertEquals(TEST_CAR.getModel(), savedCar.getModel());
     }
 
     @Test
     void updateCar() {
-        testCar.setId(1L);
-        CarDto updatedCar = carService.saveOrUpdateCar(testCar);
+        TEST_CAR.setId(1L);
+        CarDto updatedCar = carService.saveOrUpdateCar(TEST_CAR);
         assertEquals(1L, updatedCar.getId());
-        assertEquals(testCar.getModel(), updatedCar.getModel());
+        assertEquals(TEST_CAR.getModel(), updatedCar.getModel());
+        TEST_CAR.setId(null);
     }
 
     @Test
@@ -59,7 +49,7 @@ class CarServiceImplTest {
 
     @Test
     void getAllCars() {
-        Page<CarDto> page2 = carService.getAllCars(PageRequest.of(1, 4));
+        Page<CarDto> page2 = carService.getAllCars(1, 4);
         assertEquals(6, page2.getTotalElements());
         assertEquals(2, page2.getTotalPages());
         assertEquals(1, page2.getNumber());
@@ -68,14 +58,14 @@ class CarServiceImplTest {
 
     @Test
     void getCarsByEngineId() {
-        carService.getCarsByEngineId(1L, PageRequest.of(0, 6))
+        carService.getCarsByEngineId(1L, 0, 6)
                 .forEach(carDto ->
                         assertEquals(1L, carDto.getEngine().getId()));
     }
 
     @Test
     void getCarsByBrand() {
-        carService.getCarsByBrand("Ferrari", PageRequest.of(0, 6))
+        carService.getCarsByBrand("Ferrari", 0, 6)
                 .forEach(carDto ->
                         assertEquals("Ferrari", carDto.getBrand()));
     }

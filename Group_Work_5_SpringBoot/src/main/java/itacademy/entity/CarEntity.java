@@ -32,8 +32,7 @@ public class CarEntity {
     @Column(nullable = false)
     private String model;
 
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE},
-            fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "engine_id", nullable = false)
     private EngineEntity engine;
 }
