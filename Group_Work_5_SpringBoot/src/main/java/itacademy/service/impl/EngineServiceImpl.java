@@ -11,7 +11,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -38,6 +40,14 @@ public class EngineServiceImpl implements EngineService {
         Optional<EngineEntity> engineEntity = engineRepository.findById(id);
         return engineEntity.map(entity -> conversionService.convert(entity, EngineDto.class))
                 .orElse(null);
+    }
+
+    @Override
+    public List<EngineDto> findAll() {
+        return engineRepository.findAll()
+                .stream()
+                .map(entity -> conversionService.convert(entity, EngineDto.class))
+                .collect(Collectors.toList());
     }
 
     @Override
