@@ -7,7 +7,7 @@ import itacademy.service.api.CarService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -42,20 +42,20 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
-    public Page<CarDto> getAllCars(Pageable pageable) {
-        return carRepository.findAll(pageable)
+    public Page<CarDto> getAllCars(int pageNumber, int pageSize) {
+        return carRepository.findAll(PageRequest.of(pageNumber, pageSize))
                 .map(entity -> conversionService.convert(entity, CarDto.class));
     }
 
     @Override
-    public Page<CarDto> getCarsByEngineId(Long engineId, Pageable pageable) {
-        return carRepository.findByEngineId(engineId, pageable)
+    public Page<CarDto> getCarsByEngineId(Long engineId, int pageNumber, int pageSize) {
+        return carRepository.findByEngineId(engineId, PageRequest.of(pageNumber, pageSize))
                 .map(entity -> conversionService.convert(entity, CarDto.class));
     }
 
     @Override
-    public Page<CarDto> getCarsByBrand(String brand, Pageable pageable) {
-        return carRepository.findByBrand(brand, pageable)
+    public Page<CarDto> getCarsByBrand(String brand, int pageNumber, int pageSize) {
+        return carRepository.findByBrand(brand, PageRequest.of(pageNumber, pageSize))
                 .map(entity -> conversionService.convert(entity, CarDto.class));
     }
 }
