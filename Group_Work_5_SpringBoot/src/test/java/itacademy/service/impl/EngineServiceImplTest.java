@@ -1,6 +1,5 @@
 package itacademy.service.impl;
 
-import itacademy.dto.CarDto;
 import itacademy.dto.EngineDto;
 import itacademy.service.api.EngineService;
 import org.junit.jupiter.api.Test;
@@ -11,6 +10,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
+import static itacademy.TestConstants.TEST_ENGINE;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
@@ -20,24 +20,22 @@ class EngineServiceImplTest {
     @Autowired
     private EngineService engineService;
 
-    public final EngineDto testEngine = EngineDto.builder()
-            .model("BMW Engine")
-            .horsePower(400)
-            .build();
+
 
     @Test
     void saveEngine() {
-        EngineDto savedEngine = engineService.saveOrUpdateEngine(testEngine);
+        EngineDto savedEngine = engineService.saveOrUpdateEngine(TEST_ENGINE);
         assertNotNull(savedEngine.getId());
-        assertEquals(testEngine.getModel(), savedEngine.getModel());
+        assertEquals(TEST_ENGINE.getModel(), savedEngine.getModel());
     }
 
     @Test
     void updateEngine() {
-        testEngine.setId(1L);
-        EngineDto savedEngine = engineService.saveOrUpdateEngine(testEngine);
+        TEST_ENGINE.setId(1L);
+        EngineDto savedEngine = engineService.saveOrUpdateEngine(TEST_ENGINE);
         assertEquals(1L, savedEngine.getId());
-        assertEquals(testEngine.getModel(), savedEngine.getModel());
+        assertEquals(TEST_ENGINE.getModel(), savedEngine.getModel());
+        TEST_ENGINE.setId(null);
     }
 
     @Test
