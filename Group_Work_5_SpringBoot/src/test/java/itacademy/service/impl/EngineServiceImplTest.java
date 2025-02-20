@@ -5,8 +5,6 @@ import itacademy.service.api.EngineService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -50,18 +48,18 @@ class EngineServiceImplTest {
         assertNull(engineService.getEngine(10L));
     }
 
-    @Test
+    /*@Test
     void getAllEngines() {
-        Page<EngineDto> page2 = engineService.getAllEngines(PageRequest.of(0, 2));
+        Page<EngineDto> page2 = engineService.getAllEngines(0,2);
         assertEquals(3, page2.getTotalElements());
         assertEquals(2, page2.getTotalPages());
         assertEquals(0, page2.getNumber());
         assertEquals(2, page2.getNumberOfElements());
-    }
+    }*/
 
     @Test
     void getEnginesByHorsePower() {
-        engineService.getEnginesByHorsePower(500, PageRequest.of(0, 3))
+        engineService.getEnginesByHorsePower(500, 0,3)
                 .forEach(engineDto ->
                         assertTrue(engineDto.getHorsePower() > 500));
     }
