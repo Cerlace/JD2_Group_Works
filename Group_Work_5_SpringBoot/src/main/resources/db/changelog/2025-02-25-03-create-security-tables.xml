@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.2.xsd">
+
+    <changeSet id="create-users-table" author="Roman Gulyako">
+        <createTable tableName="users">
+            <column type="bigint" name="id" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column type="varchar(16)" name="user_name">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column type="varchar(255)" name="password">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="create-roles-table" author="Roman Gulyako">
+        <createTable tableName="roles">
+            <column type="bigint" name="id" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column type="varchar(45)" name="name"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="create-user_role-table" author="Roman Gulyako">
+        <createTable tableName="user_role">
+            <column type="bigint" name="user_id">
+                <constraints nullable="false"/>
+            </column>
+            <column type="bigint" name="role_id">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="create-primary-key" author="Roman Gulyako">
+        <addPrimaryKey tableName="user_role"
+                       columnNames="role_id, user_id"
+                       constraintName="user_role_pk"/>
+    </changeSet>
+
+    <changeSet id="create-user-fk" author="Roman Gulyako">
+        <addForeignKeyConstraint baseTableName="user_role"
+                                 baseColumnNames="user_id"
+                                 constraintName="user_fk"
+                                 referencedTableName="users"
+                                 referencedColumnNames="id"/>
+    </changeSet>
+
+    <changeSet id="create-role-fk" author="Roman Gulyako">
+        <addForeignKeyConstraint baseTableName="user_role"
+                                 baseColumnNames="role_id"
+                                 constraintName="role_fk"
+                                 referencedTableName="roles"
+                                 referencedColumnNames="id"/>
+    </changeSet>
+
+    <changeSet id="insert-users" author="Roman Gulyako">
+        <insert tableName="users">
+            <column name="user_name">admin</column>
+            <column name="password">$2y$12$kjBEvSNH8oN9508Vi8gpLOxzxsfc7H/HLRTQatlR4z3JOzrC4YXB6</column>
+        </insert>
+        <insert tableName="users">
+            <column name="user_name">user</column>
+            <column name="password">$2y$12$kjBEvSNH8oN9508Vi8gpLOxzxsfc7H/HLRTQatlR4z3JOzrC4YXB6</column>
+        </insert>
+    </changeSet>
+
+    <changeSet id="insert-roles" author="Roman Gulyako">
+        <insert tableName="roles">
+            <column name="name">ADMIN</column>
+        </insert>
+        <insert tableName="roles">
+            <column name="name">USER</column>
+        </insert>
+    </changeSet>
+
+    <changeSet id="insert-user-role" author="Roman Gulyako">
+        <insert tableName="user_role">
+            <column name="user_id">1</column>
+            <column name="role_id">1</column>
+        </insert>
+        <insert tableName="user_role">
+            <column name="user_id">2</column>
+            <column name="role_id">2</column>
+        </insert>
+    </changeSet>
+
+</databaseChangeLog>

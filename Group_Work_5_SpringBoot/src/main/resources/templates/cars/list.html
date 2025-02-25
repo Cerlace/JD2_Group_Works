@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.springframework.org/schema/security">
 <head>
     <title>Car List</title>
     <meta charset="UTF-8">
@@ -7,8 +8,12 @@
 </head>
 </head>
 <body>
+<form method="post" th:action="@{/logout}">
+    <button type="submit">LOGOUT</button>
+</form>
 <h1>Car List</h1>
-<form th:action="@{/cars/save}" method="get">
+<form sec:authorize="hasAuthority('ADMIN')"
+      th:action="@{/cars/save}" method="get">
     <button type="submit">Add New Car</button>
 </form>
 <table>
@@ -30,12 +35,12 @@
                 <button type="submit">Details</button>
             </form>
         </td>
-        <td>
+        <td sec:authorize="hasAuthority('ADMIN')">
             <form th:action="@{/cars/save/{id}(id=${car.id})}" method="get">
                 <button type="submit">Update</button>
             </form>
         </td>
-        <td>
+        <td sec:authorize="hasAuthority('ADMIN')">
             <form th:action="@{/cars/delete/{id}(id=${car.id})}" method="post"
                   onclick="return confirm('Confirm, please.');">
                 <button type="submit">Delete</button>
@@ -81,6 +86,10 @@
 </form>
 <form th:action="@{/cars}" method="get">
     <button type="submit">Reset filters</button>
+</form>
+<form th:action="@{/engines}"
+      method="get">
+    <button type="submit">All Engines</button>
 </form>
 </body>
 </html>

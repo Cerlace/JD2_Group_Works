@@ -9,5 +9,7 @@
              relativeToChangelogFile="true"/>
     <include file="2025-02-14-02-create-table-cars.xml"
              relativeToChangelogFile="true"/>
+    <include file="2025-02-25-03-create-security-tables.xml"
+             relativeToChangelogFile="true"/>
 
 </databaseChangeLog>
