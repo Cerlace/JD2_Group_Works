@@ -13,6 +13,10 @@
         <button type="submit">LOGOUT</button>
     </form>
 </div>
+<div sec:authorize="hasAuthority('ADMIN')"
+     th:if="${errorMessage != null}">
+    <span class="error" th:text="${errorMessage}"></span>
+</div>
 <main>
     <h1>All engines</h1>
     <table>
