@@ -129,7 +129,7 @@
                     <url>jdbc:mysql://localhost:3306/group_hw_5</url>
                     <defaultSchemaName/>
                     <username>root</username>
-                    <password>lspsds13</password>
+                    <password>123456</password>
                     <referenceUrl>com.mysql.cj.jdbc.Driver</referenceUrl>
                     <logging>debug</logging>
                 </configuration>
