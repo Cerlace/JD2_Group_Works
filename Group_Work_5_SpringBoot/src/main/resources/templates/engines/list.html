@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="java">
+<html xmlns:th="http://www.thymeleaf.org" lang="java"
+      xmlns:sec="http://www.springframework.org/schema/security">
 <head>
     <title>Engines</title>
 
@@ -7,6 +8,11 @@
     <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
 </head>
 <body>
+<div>
+    <form method="post" th:action="@{/logout}">
+        <button type="submit">LOGOUT</button>
+    </form>
+</div>
 <main>
     <h1>All engines</h1>
     <table>
@@ -14,20 +20,20 @@
         <tr>
             <th>Model</th>
             <th>Horse Power</th>
-            <th colspan="2">Action</th>
+            <th sec:authorize="hasAuthority('ADMIN')" colspan="2">Action</th>
         </tr>
         </thead>
         <tbody>
         <tr th:each="engine : ${engines}">
             <td th:text="${engine.model}"/>
             <td th:text="${engine.horsePower}"/>
-            <td>
+            <td sec:authorize="hasAuthority('ADMIN')">
                 <form th:action="@{/engines/edit/{id}(id=${engine.id})}"
                       method="get">
                     <button th:text="Edit"/>
                 </form>
             </td>
-            <td>
+            <td sec:authorize="hasAuthority('ADMIN')">
                 <form th:action="@{/engines/delete/{id}(id=${engine.id})}"
                       method="post">
                     <button th:text="Delete"/>
@@ -68,26 +74,34 @@
         <button type="submit">Apply</button>
     </form>
 
-    <h2>Add engine:</h2>
-    <form th:action="@{/engines/add}"
-          method="post"
-          th:object="${newEngine}">
-        <div>
-            <label for="model">Model:</label>
-            <input id="model"
-                   type="text"
-                   placeholder="Enter model name please"
-                   th:field="*{model}"/>
-        </div>
-        <div>
-            <label for="horsePower">Horse Power:</label>
-            <input id="horsePower"
-                   type="number"
-                   placeholder="Enter horse power please"
-                   th:field="*{horsePower}"/>
-        </div>
-        <button type="submit">Save</button>
-    </form>
+    <div sec:authorize="hasAuthority('ADMIN')">
+        <h2>Add engine:</h2>
+        <form th:action="@{/engines/add}"
+              method="post"
+              th:object="${newEngine}">
+            <div>
+                <label for="model">Model:</label>
+                <input id="model"
+                       type="text"
+                       placeholder="Enter model name please"
+                       th:field="*{model}"/>
+            </div>
+            <div>
+                <label for="horsePower">Horse Power:</label>
+                <input id="horsePower"
+                       type="number"
+                       placeholder="Enter horse power please"
+                       th:field="*{horsePower}"/>
+            </div>
+            <button type="submit">Save</button>
+        </form>
+    </div>
+    <div>
+        <form th:action="@{/cars}"
+              method="get">
+            <button type="submit">All Cars</button>
+        </form>
+    </div>
 </main>
 </body>
 </html>
