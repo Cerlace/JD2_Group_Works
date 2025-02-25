@@ -30,7 +30,7 @@ public class WebSecurityConfig {
                         .requestMatchers(antMatcher("/engines/delete/*")).hasAuthority("ADMIN")
                         .requestMatchers(antMatcher("/engines/edit/*")).hasAuthority("ADMIN")
                         .requestMatchers(antMatcher("/engines")).hasAnyAuthority("ADMIN", "USER")
-                        .requestMatchers(antMatcher("/cars/save/*")).hasAuthority("ADMIN")
+                        .requestMatchers(antMatcher("/cars/save*")).hasAuthority("ADMIN")
                         .requestMatchers(antMatcher("/cars/delete/*")).hasAuthority("ADMIN")
                         .requestMatchers(antMatcher("/cars/*")).hasAnyAuthority("ADMIN", "USER")
                         .anyRequest().authenticated())
